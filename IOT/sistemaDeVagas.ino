@@ -1,5 +1,6 @@
 #include <WiFi.h> // Biblioteca para uso de internet
 #include <PubSubClient.h> // Biblioteca para uso do MQTT
+#include <WiFiClientSecure.h> // Biblioteca usada para a conexão usando criptografia
 
 
 // Declaração de variáveis dos sensores
@@ -34,7 +35,7 @@ const char* ssid = "Wokwi-GUEST"; // Nome da rede
 const char* password =""; // Senha
 
 // topico para receber informações do MQTT
-#define TOPICO_SUBSCRIBE "PI-receber-de-informacoes"
+// #define TOPICO_SUBSCRIBE "PI-receber-de-informacoes"
 
 // Topico para enviar informações do MQTT 
 #define TOPICO_PUBLISH_VAGA1 "vaga1"
@@ -48,13 +49,90 @@ const int TOPICO_PUBLISH_VAGAS[3] = {TOPICO_PUBLISH_VAGA1, TOPICO_PUBLISH_VAGA2,
 #define ID_MQTT  "PI_Cliente_MQTT"
 
 // URL do broker a ser utilizada
-const char* BROKER_MQTT = "broker.hivemq.com"; 
+const char* BROKER_MQTT = "a2ve1hemun842j-ats.iot.us-east-2.amazonaws.com"; 
 
 // Porta do broker
-int BROKER_PORT = 1883;
+int BROKER_PORT = 8883;
 
-WiFiClient espClient;
-PubSubClient MQTT(espClient);
+// Credenciais (coloque os arquivos baixados da AWS IoT)
+const char* certificate = R"KEY(
+-----BEGIN CERTIFICATE-----
+MIIDWjCCAkKgAwIBAgIVAPAvjWbp1HeCcfIrauqgQgCl99ivMA0GCSqGSIb3DQEB
+CwUAME0xSzBJBgNVBAsMQkFtYXpvbiBXZWIgU2VydmljZXMgTz1BbWF6b24uY29t
+IEluYy4gTD1TZWF0dGxlIFNUPVdhc2hpbmd0b24gQz1VUzAeFw0yNTAzMjExNTE2
+NDNaFw00OTEyMzEyMzU5NTlaMB4xHDAaBgNVBAMME0FXUyBJb1QgQ2VydGlmaWNh
+dGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDrcHc0BgPaq4nfhex8
+fRwTWBcajDviYTlMt9qpiCXFhcf70MaFMpakOcXwhLzaY6DxIXrC+9SfKUg3PoUB
+J8JaqFn3gree0j/lW7WeZomOenl384bXQQE801Y5gVuUnkYnovqFz83b9XEdJEQ0
+5p3pLpJjvC3ErUX3aZvorqDnPSJFpZmbxNXHgyhOnxLievt5oY0XZezY7uQHsZuD
+UqdffwM+yD7QJzqCjZb5BDktVPziFf9GSI4bbd+8VFvB11sbyQxKHNCGxxZG9QCS
+Kew/6pXz9mU25gxAlP5trydmYL0lhpWlOG2niBqiMHPAelUdmzzLc6WJyzCngqbn
+mq3vAgMBAAGjYDBeMB8GA1UdIwQYMBaAFGjsUBVF2IuHYfzYauLCNT9s5tImMB0G
+A1UdDgQWBBRG6RAqoZWWySew50I2Ij+1m2nD5zAMBgNVHRMBAf8EAjAAMA4GA1Ud
+DwEB/wQEAwIHgDANBgkqhkiG9w0BAQsFAAOCAQEAFFxWlhSNFedQ9DFSl6uxlLrL
+Qp72hsTbUeV8VenEm1rpPzBsWPOblH93szINGWokavPLOp31p+F2X3DD3sXAYBXN
+2ZS0LVX4Y9JHk15ud1PaiCUgSuJ4n8N4wfPctymvCsfKQNK8FqTWqU8ksfkT50AP
+9L5xqqhnYWPG7CQ2tg9I2j/lxr6WZzJBgP6jZ4M1bDvI0Oalq+H4plAE5nSHWnEP
+yoIeBdFr8HHabagMWu9FYRQ2LiEU9dnWlwwrTV/9kKCeqEyfIsU4jeFJc8hu3l9O
+rSs2QEM3xtQIDWznOzL4ZgzduPa0m9hHtKBj/sAPjgJBJ1LWxEJMK3ZVSQAoSg==
+-----END CERTIFICATE-----
+)KEY";
+
+const char* privateKey = R"KEY(
+-----BEGIN RSA PRIVATE KEY-----
+MIIEowIBAAKCAQEA63B3NAYD2quJ34XsfH0cE1gXGow74mE5TLfaqYglxYXH+9DG
+hTKWpDnF8IS82mOg8SF6wvvUnylINz6FASfCWqhZ94K3ntI/5Vu1nmaJjnp5d/OG
+10EBPNNWOYFblJ5GJ6L6hc/N2/VxHSRENOad6S6SY7wtxK1F92mb6K6g5z0iRaWZ
+m8TVx4MoTp8S4nr7eaGNF2Xs2O7kB7Gbg1KnX38DPsg+0Cc6go2W+QQ5LVT84hX/
+RkiOG23fvFRbwddbG8kMShzQhscWRvUAkinsP+qV8/ZlNuYMQJT+ba8nZmC9JYaV
+pThtp4gaojBzwHpVHZs8y3Olicswp4Km55qt7wIDAQABAoIBACr+nsYhUxLbwJHR
+Ix6YukfODmoKseTlXFFmQcgz1LH9fEfAGIC6fEgBRORnWRWInBtswb5ZvrpSD54H
+DMLpP9TOaZ+Jf37BZmm8Fa6Xiwc51nTRRA6LEG7LKTPXK6I4RRd368gD6tQAPmfT
+96CxfKTYnGMaOkFwYxaLcq1LNpcDeU5YovxVl7hjqglTOleowubTdgDfJ2O9Pyw9
+z4EOeURxHwjHHuwJXK3ulSsrx5tcqHEMRLwg6dEkf7I4MzcRBFnFpjg8HYquFizc
+K3wovxD2SqXvBgj3R4QMm9qP9r+RWS5CA0DIJZVf9ZGW4YmkR0TnRdUqul8CwMTt
+SaxxSgECgYEA+wzOueRW4uTd0ShAI0e5cdJsOt4GPt0UNs1TqLU7hvh2aB/8IyrT
+nPyEvUpEcGRJyQjHcK8eWfY7qDd72C/u+QKNRO/jP68N3EG8/Zvc2Xm6xcKh190a
+WR1UVtKfqM2gZcGGaRL+xeUtWJow5OKCsNWnUwChDbrlNtHinq89tw0CgYEA8BTc
+qeCoYtfK74OFMGX71fubYNkXoZnfZ+Qvfncz/yRqafemS9W/lCB9Jct6P7vyer4r
+LpT9laQ0mDsYDjH9BBemj0T0ppne2vvtkNDn3uMpvylAciR2eF8OsFnH7+PfTHJ6
+UtfMr1d0iNfRSbjhYFHou1KuqsQCC3eMjdSI+esCgYEAsCJAN7O4MeAYsFHpDdeY
+h/716Cc1go1hTUGpXEgqx3syt8MZByNY7F9OUe/1LFVwXxdFtg1m4f8bw92Jihe3
+NgVQT/luGpQayVll2xirTflVzMHNAsIhZjxpm7CSS8BYtIueXcHx9a3grrUfcLZq
+st5zUoyycguaHWgL8wFH71ECgYBtW1NYHfkVbO4HQ4U7kniv87fG2ZwmBAz7Kblo
+hautoEzIkAGzsV1ef54BxTmeJmJA/rZ0tXD85JsAbIp8jNCPOKapw+McsCIO5YpE
+2KOFpzuw032DgJBmLAZo1bx4zPc9vzdw3NNjWxa97nBqgEhIs4arLPJa3oV/66ie
+Qh1SmQKBgF929Q8Ki64EAyjlyW1R74JOWNeqfS2CDLnFhOgqEONPewnCyFWSkzBB
+GG6Ea8ltuNVmCP1qh5waGt5FTCEA0djS8/CNQznUbIvEvPOvD+OMUUUBWuYPwvjw
+fikj0J3cGmHM2TcH8EUIQjSiCmya8uVxvjFiRQSoC2hhfbRQ8u+8
+-----END RSA PRIVATE KEY-----
+)KEY";
+
+const char* rootCA = R"KEY(
+-----BEGIN CERTIFICATE-----
+MIIDQTCCAimgAwIBAgITBmyfz5m/jAo54vB4ikPmljZbyjANBgkqhkiG9w0BAQsF
+ADA5MQswCQYDVQQGEwJVUzEPMA0GA1UEChMGQW1hem9uMRkwFwYDVQQDExBBbWF6
+b24gUm9vdCBDQSAxMB4XDTE1MDUyNjAwMDAwMFoXDTM4MDExNzAwMDAwMFowOTEL
+MAkGA1UEBhMCVVMxDzANBgNVBAoTBkFtYXpvbjEZMBcGA1UEAxMQQW1hem9uIFJv
+b3QgQ0EgMTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALJ4gHHKeNXj
+ca9HgFB0fW7Y14h29Jlo91ghYPl0hAEvrAIthtOgQ3pOsqTQNroBvo3bSMgHFzZM
+9O6II8c+6zf1tRn4SWiw3te5djgdYZ6k/oI2peVKVuRF4fn9tBb6dNqcmzU5L/qw
+IFAGbHrQgLKm+a/sRxmPUDgH3KKHOVj4utWp+UhnMJbulHheb4mjUcAwhmahRWa6
+VOujw5H5SNz/0egwLX0tdHA114gk957EWW67c4cX8jJGKLhD+rcdqsq08p8kDi1L
+93FcXmn/6pUCyziKrlA4b9v7LWIbxcceVOF34GfID5yHI9Y/QCB/IIDEgEw+OyQm
+jgSubJrIqg0CAwEAAaNCMEAwDwYDVR0TAQH/BAUwAwEB/zAOBgNVHQ8BAf8EBAMC
+AYYwHQYDVR0OBBYEFIQYzIU07LwMlJQuCFmcx7IQTgoIMA0GCSqGSIb3DQEBCwUA
+A4IBAQCY8jdaQZChGsV2USggNiMOruYou6r4lK5IpDB/G/wkjUu0yKGX9rbxenDI
+U5PMCCjjmCXPI6T53iHTfIUJrU6adTrCC2qJeHZERxhlbI1Bjjt/msv0tadQ1wUs
+N+gDS63pYaACbvXy8MWy7Vu33PqUXHeeE6V/Uq2V8viTO96LXFvKWlJbYK8U90vv
+o/ufQJVtMVT8QtPHRh8jrdkPSHCa2XV4cdFyQzR1bldZwgJcJmApzyMZFo6IQ6XU
+5MsI+yMRQ+hDKXJioaldXgjUkK642M4UwtBV8ob2xJNDd2ZhwLnoQdeXeGADbkpy
+rqXRfboQnoZsG4q5WTP468SQvvG5
+-----END CERTIFICATE-----
+)KEY";
+
+WiFiClientSecure espClient;
+PubSubClient client(espClient);
 
 
 void setup() {
@@ -63,19 +141,15 @@ void setup() {
 
 void loop() {
 
-  Conecta_WiFi();
-
-  delay(500);
-
-  verifica_conexoes_wifi_mqtt();
-
-  delay(500);
+  if (!client.connected()) {
+    connectAWS();
+  }
+  
+  client.loop();
 
   vagas();
 
-  MQTT.loop();
-
-  delay(1000); 
+  delay(3000); 
 
 }
 
@@ -89,11 +163,11 @@ void config(){
     pinMode(LED_VERDE[i], OUTPUT);
   }
 
-  init_wifi();
-  init_mqtt();
+  connectWifi();
+
 }
 
-void init_wifi() {
+void connectWifi() {
 
   delay(10);
   Serial.println();
@@ -109,20 +183,27 @@ void init_wifi() {
 
   Serial.println("");
   Serial.println("WiFi connected");
-  Serial.println("IP address: ");
-  Serial.println(WiFi.localIP());
+
 }
 
-void Conecta_WiFi()
-{
-  if(WiFi.status()){
-    Serial.println("Conectado");
-  }else{
-    Serial.println("Desconectado");
-  }
-  
-}
+void connectAWS() {
+    espClient.setCACert(rootCA);
+    espClient.setCertificate(certificate);
+    espClient.setPrivateKey(privateKey);
+    client.setServer(BROKER_MQTT, BROKER_PORT);
 
+    while (!client.connected()) {
+        Serial.print("Conectando ao AWS IoT...");
+        if (client.connect("ESP32_HIDRA")) {
+            Serial.println("Conectado!");
+        } else {
+            Serial.print("Falha, rc=");
+            Serial.print(client.state());
+            Serial.println(" Tentando novamente...");
+            delay(5000);
+        }
+    }
+}
 
 void vagas(){
 
@@ -141,66 +222,14 @@ void vagas(){
     if(distancia > 150){
       digitalWrite(LED_VERDE[i], HIGH);
       digitalWrite(LED_VERMELHO[i], LOW);
-      MQTT.publish(TOPICO_PUBLISH_VAGAS[i], "livre");
+      client.publish(TOPICO_PUBLISH_VAGAS[i], "livre");
     }else{
       digitalWrite(LED_VERMELHO[i], HIGH);
       digitalWrite(LED_VERDE[i], LOW);
-      MQTT.publish(TOPICO_PUBLISH_VAGAS[i], "ocupada");
+      client.publish(TOPICO_PUBLISH_VAGAS[i], "ocupada");
     }
   }
 
 }
-
-void init_mqtt(void) 
-{
-    /* informa a qual broker e porta deve ser conectado */
-    MQTT.setServer(BROKER_MQTT, BROKER_PORT); 
-    /* atribui função de callback (função chamada quando qualquer informação do 
-    tópico subescrito chega) */
-    MQTT.setCallback(mqtt_callback);            
-}
-
-void mqtt_callback(char* topic, byte* payload, unsigned int length) 
-{
-    String msg;
- 
-    //obtem a string do payload recebido
-    for(int i = 0; i < length; i++) 
-    {
-       char c = (char)payload[i];
-       msg += c;
-    }
-    Serial.print("[MQTT] Mensagem recebida: ");
-    Serial.println(msg);     
-}
-
-void reconnect_mqtt(void) 
-{
-    while (!MQTT.connected()) 
-    {
-        Serial.print("* Tentando se conectar ao Broker MQTT: ");
-        Serial.println(BROKER_MQTT);
-        if (MQTT.connect(ID_MQTT)) 
-        {
-            Serial.println("Conectado com sucesso ao broker MQTT!");
-            MQTT.subscribe(TOPICO_SUBSCRIBE); 
-        } 
-        else
-        {
-            Serial.println("Falha ao reconectar no broker.");
-            Serial.println("Havera nova tentatica de conexao em 2s");
-            delay(2000);
-        }
-    }
-}
-
-void verifica_conexoes_wifi_mqtt(void)
-{
-    /* se não há conexão com o WiFI, a conexão é refeita */
-    init_wifi(); 
-    /* se não há conexão com o Broker, a conexão é refeita */
-    if (!MQTT.connected()) 
-        reconnect_mqtt(); 
-} 
   
 
