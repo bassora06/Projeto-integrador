@@ -1,12 +1,15 @@
 package fatec.pi.rod.onbus.entity;
 
+import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+import jakarta.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.UUID;
+import org.eclipse.paho.client.mqttv3.MqttClient;
+
 
 import javax.net.ssl.*;
 
@@ -40,11 +43,22 @@ public class MqttAwsClient {
 
             System.out.println("✅ Conectado ao AWS IoT Core!");
 
+
+            subscribeTopic(TOPICO_SUBSCRIBE_VAGA1);
+            subscribeTopic(TOPICO_SUBSCRIBE_VAGA2);
+            subscribeTopic(TOPICO_SUBSCRIBE_VAGA3);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void subscribeTopic(String TOPIC){
+        try {
             mqttClient.subscribe(TOPIC, (topic, msg) -> {
                 System.out.println("📥 Mensagem recebida: " + new String(msg.getPayload()));
             });
-
-        } catch (Exception e) {
+        } catch (Exception e){
             e.printStackTrace();
         }
     }
