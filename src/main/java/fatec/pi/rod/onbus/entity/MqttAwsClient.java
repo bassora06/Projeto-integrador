@@ -4,9 +4,6 @@ import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.springframework.stereotype.Component;
 
 import jakarta.annotation.PostConstruct;
-import java.io.FileInputStream;
-import java.security.KeyStore;
-import java.security.SecureRandom;
 import java.util.UUID;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 
