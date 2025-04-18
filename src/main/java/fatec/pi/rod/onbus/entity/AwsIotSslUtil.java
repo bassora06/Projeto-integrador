@@ -1,21 +1,22 @@
 package fatec.pi.rod.onbus.entity;
 
-import fatec.pi.rod.onbus.util.PrivateKeyConverter;
-
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.KeyManagerFactory;
 import java.io.InputStream;
+import java.security.KeyFactory;
 import java.security.KeyStore;
 import java.security.PrivateKey;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.KeyManagerFactory;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.util.Base64;
 
 public class AwsIotSslUtil {
 
     public static SSLSocketFactory getSocketFactory(String caCrtFile, String crtFile, String keyFile) throws Exception {
-        // Load CA certificate
+        // Log de início do processo de carregamento do certificado CA
         System.out.println("🔍 Procurando o arquivo de certificado CA: " + caCrtFile);
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
         InputStream caInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(caCrtFile);
@@ -26,7 +27,7 @@ public class AwsIotSslUtil {
         X509Certificate caCert = (X509Certificate) cf.generateCertificate(caInputStream);
         System.out.println("✅ Certificado CA carregado com sucesso!");
 
-        // Load client certificate
+        // Log de início do processo de carregamento do certificado do cliente
         System.out.println("🔍 Procurando o arquivo de certificado do cliente: " + crtFile);
         InputStream certInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(crtFile);
         if (certInputStream == null) {
@@ -36,7 +37,7 @@ public class AwsIotSslUtil {
         X509Certificate cert = (X509Certificate) cf.generateCertificate(certInputStream);
         System.out.println("✅ Certificado do cliente carregado com sucesso!");
 
-        // Load private key
+        // Log de início do processo de carregamento da chave privada
         System.out.println("🔍 Procurando o arquivo de chave privada: " + keyFile);
         InputStream keyInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(keyFile);
         if (keyInputStream == null) {
@@ -46,14 +47,16 @@ public class AwsIotSslUtil {
         PrivateKey key = loadPrivateKey(keyInputStream);
         System.out.println("✅ Chave privada carregada com sucesso!");
 
-        // CA keystore
+        // Criar keystore para CA
+        System.out.println("🔒 Criando o keystore da CA...");
         KeyStore caKs = KeyStore.getInstance(KeyStore.getDefaultType());
         caKs.load(null, null);
         caKs.setCertificateEntry("ca-certificate", caCert);
         TrustManagerFactory tmf = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
         tmf.init(caKs);
 
-        // Client keystore
+        // Criar keystore para o cliente
+        System.out.println("🔒 Criando o keystore do cliente...");
         KeyStore ks = KeyStore.getInstance(KeyStore.getDefaultType());
         ks.load(null, null);
         ks.setCertificateEntry("certificate", cert);
@@ -61,7 +64,8 @@ public class AwsIotSslUtil {
         KeyManagerFactory kmf = KeyManagerFactory.getInstance(KeyManagerFactory.getDefaultAlgorithm());
         kmf.init(ks, "".toCharArray());
 
-        // SSL
+        // Configuração do SSLContext
+        System.out.println("🔐 Configurando o SSLContext...");
         SSLContext context = SSLContext.getInstance("TLSv1.2");
         context.init(kmf.getKeyManagers(), tmf.getTrustManagers(), null);
 
@@ -70,12 +74,16 @@ public class AwsIotSslUtil {
     }
 
     private static PrivateKey loadPrivateKey(InputStream keyInputStream) throws Exception {
-        StringBuilder keyBuilder = new StringBuilder();
-        try (keyInputStream) {
-            byte[] keyBytes = keyInputStream.readAllBytes();
-            String keyContent = new String(keyBytes);
-            System.out.println("🔑 Key Content: " + keyContent); // Debugging log
-            return PrivateKeyConverter.convertPkcs1ToPkcs8(keyContent);
-        }
+        byte[] keyBytes = keyInputStream.readAllBytes();
+        String keyPem = new String(keyBytes)
+                .replace("-----BEGIN PRIVATE KEY-----", "")
+                .replace("-----END PRIVATE KEY-----", "")
+                .replaceAll("[\\r\\n]+", "") // Remover quebras de linha
+                .trim();
+
+        System.out.println("🔒 Decodificando a chave privada...");
+        byte[] decoded = Base64.getDecoder().decode(keyPem);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(decoded);
+        return KeyFactory.getInstance("RSA").generatePrivate(keySpec);
     }
 }
