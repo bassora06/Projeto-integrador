@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onbus/home_page.dart';
 import 'package:onbus/reg_screen_pf.dart';
 import 'package:onbus/reg_screen_pj.dart';
 
@@ -28,31 +29,34 @@ class _LoginScreenState extends State<LoginScreen> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            children: [
-              // Purple decorative top bar with back button
-                Container(
-                height: 50, // Increased height for the back arrow
+            children: [ClipPath(
+              clipper: WaveClipper(reverse: true),
+              child: Container(
+                height: 90,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 40, 0, 104),
-                  borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 55, 39, 166),
+                      Color.fromARGB(255, 40, 8, 58),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
                 child: Stack(
                   children: [
                     Positioned(
                       left: 15,
-                      bottom: 5, // Positioned the arrow lower
+                      bottom: 30,
                       child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                     ),
                   ],
                 ),
               ),
-              // Logo at the top
+            ),
               Padding(
                 padding: const EdgeInsets.only(top: 50.0),
                 child: Image.asset(
@@ -147,6 +151,12 @@ class _LoginScreenState extends State<LoginScreen> {
                           final email = _emailController.text;
                           final password = _passwordController.text;
                           print('Email: $email, Password: $password');
+                           Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
                         },
                         child: Ink(
                           decoration: BoxDecoration(
@@ -227,4 +237,44 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+}
+
+
+class WaveClipper extends CustomClipper<Path> {
+  final bool reverse;
+
+  WaveClipper({this.reverse = false});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    
+    if (reverse) {
+      path.moveTo(0, size.height);
+      path.quadraticBezierTo(
+        size.width * 0.25, size.height - 30,
+        size.width * 0.5, size.height - 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, size.height - 10,
+        size.width, size.height - 30);
+      path.lineTo(size.width, 0);
+      path.lineTo(0, 0);
+    } else {
+      path.moveTo(0, 0);
+      path.quadraticBezierTo(
+        size.width * 0.25, 30,
+        size.width * 0.5, 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, 10,
+        size.width, 30);
+      path.lineTo(size.width, size.height);
+      path.lineTo(0, size.height);
+    }
+    
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

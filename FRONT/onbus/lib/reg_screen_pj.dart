@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:onbus/termos.dart';
 
 class RegScreenPJ extends StatefulWidget {
   const RegScreenPJ({super.key});
@@ -60,30 +61,34 @@ class _RegScreenPJState extends State<RegScreenPJ> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              // Purple decorative top bar with back button
-                Container(
-                height: 50, // Increased height for the back arrow
+            ClipPath(
+              clipper: WaveClipper(reverse: true),
+              child: Container(
+                height: 55,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 40, 0, 104),
-                  borderRadius: BorderRadius.only(
-                  bottomLeft: Radius.circular(5),
-                  bottomRight: Radius.circular(5),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 55, 39, 166),
+                      Color.fromARGB(255, 40, 8, 58),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
                 child: Stack(
                   children: [
                     Positioned(
                       left: 15,
-                      bottom: 5, // Positioned the arrow lower
+                      bottom: 15,
                       child: IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
+                      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                      onPressed: () => Navigator.pop(context),
+                    ),
                     ),
                   ],
                 ),
               ),
-              
+            ),
               // Logo at the top
               Padding(
                 padding: const EdgeInsets.only(top: 20.0),
@@ -226,15 +231,29 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                           },
                           activeColor: const Color.fromARGB(255, 40, 0, 104),
                         ),
-                        const Expanded(
-                          child: Text(
-                            'Declaro que li e concordo com os termos de uso',
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.black87,
+                        Expanded(
+                           child: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) => const Termos(),
                             ),
+                          );
+                          },
+                          child: const Text(
+                          'Declaro que li e concordo com os termos de uso',
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.black87,
+                            decoration: TextDecoration.underline,
+                          ),
                           ),
                         ),
+                        ),
+                      ),
                       ],
                     ),
                     const SizedBox(height: 30),
@@ -300,10 +319,66 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                   ],
                 ),
               ),
+              ClipPath(
+              clipper: WaveClipper(),
+              child: Container(
+                height: 65,
+                decoration: const BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 40, 8, 58),
+                      Color.fromARGB(255, 55, 39, 166),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+            ),
             ],
           ),
         ),
       ),
     );
   }
+}
+
+
+class WaveClipper extends CustomClipper<Path> {
+  final bool reverse;
+
+  WaveClipper({this.reverse = false});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    
+    if (reverse) {
+      path.moveTo(0, size.height);
+      path.quadraticBezierTo(
+        size.width * 0.25, size.height - 30,
+        size.width * 0.5, size.height - 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, size.height - 10,
+        size.width, size.height - 30);
+      path.lineTo(size.width, 0);
+      path.lineTo(0, 0);
+    } else {
+      path.moveTo(0, 0);
+      path.quadraticBezierTo(
+        size.width * 0.25, 30,
+        size.width * 0.5, 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, 10,
+        size.width, 30);
+      path.lineTo(size.width, size.height);
+      path.lineTo(0, size.height);
+    }
+    
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

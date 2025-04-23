@@ -15,15 +15,21 @@ class WelcomeScreen extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                height: 50, // Increased height for the back arrow
+              ClipPath(
+              clipper: WaveClipper(reverse: true),
+              child: Container(
+                height: 80,
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(255, 40, 0, 104),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(5),
-                    bottomRight: Radius.circular(5),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromARGB(255, 55, 39, 166),
+                      Color.fromARGB(255, 40, 8, 58),
+                    ],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
                 ),
+              ),
               ),
               const SizedBox(height: 80),
               
@@ -166,4 +172,43 @@ class WelcomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class WaveClipper extends CustomClipper<Path> {
+  final bool reverse;
+
+  WaveClipper({this.reverse = false});
+
+  @override
+  Path getClip(Size size) {
+    final path = Path();
+    
+    if (reverse) {
+      path.moveTo(0, size.height);
+      path.quadraticBezierTo(
+        size.width * 0.25, size.height - 30,
+        size.width * 0.5, size.height - 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, size.height - 10,
+        size.width, size.height - 30);
+      path.lineTo(size.width, 0);
+      path.lineTo(0, 0);
+    } else {
+      path.moveTo(0, 0);
+      path.quadraticBezierTo(
+        size.width * 0.25, 30,
+        size.width * 0.5, 20);
+      path.quadraticBezierTo(
+        size.width * 0.75, 10,
+        size.width, 30);
+      path.lineTo(size.width, size.height);
+      path.lineTo(0, size.height);
+    }
+    
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
