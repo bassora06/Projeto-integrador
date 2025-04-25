@@ -12,6 +12,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "usuario")
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Usuario implements Serializable {
 
     @Id
@@ -53,7 +54,7 @@ public class Usuario implements Serializable {
     public enum Role {
         ROLE_ADMIN,
         ROLE_EMPRESA,
-        ROLE_GESTOREMPRESA
+        ROLE_GESTORENTRADA
     }
 
     // Construtor padrão
