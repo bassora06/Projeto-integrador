@@ -46,9 +46,9 @@ public class MqttAwsClient {
             System.out.println("✅ Conectado ao AWS IoT Core!");
 
 
-            vaga1 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA1);
-            vaga2 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA2);
-            vaga3 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA3);
+            String vaga1 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA1);
+            String vaga2 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA2);
+            String vaga3 = subscribeTopic(TOPICO_SUBSCRIBE_VAGA3);
 
 
 

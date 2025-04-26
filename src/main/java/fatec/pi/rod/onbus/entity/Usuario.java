@@ -10,9 +10,14 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+//@Entity
+//@Table(name = "usuario")
+//@Inheritance(strategy = InheritanceType.JOINED)
+
 @Entity
 @Table(name = "usuario")
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "tipo", discriminatorType = DiscriminatorType.STRING)
 public class Usuario implements Serializable {
 
     @Id
@@ -32,12 +37,9 @@ public class Usuario implements Serializable {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
-    private Role tipo;
-
-    @Column(name = "cnpj", length = 14)
-    private String cnpj;
+//    @Enumerated(EnumType.STRING)
+//    @Column(name = "tipo", nullable = false)
+//    private Role tipo;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -51,23 +53,21 @@ public class Usuario implements Serializable {
 
     }
 
-    public enum Role {
-        ROLE_ADMIN,
-        ROLE_EMPRESA,
-        ROLE_GESTORENTRADA
-    }
+//    public enum Role {
+//        ROLE_ADMIN,
+//        ROLE_EMPRESA,
+//        ROLE_GESTORENTRADA
+//    }
 
     // Construtor padrão
     public Usuario() {}
 
     // Construtor com argumentos
-    public Usuario(String nome, String email, String senha, Boolean ativo, Role tipo, String cnpj) {
+    public Usuario(String nome, String email, String senha, Boolean ativo) {
         this.nome = nome;
         this.email = email;
         this.senha = senha;
         this.ativo = ativo;
-        this.tipo = tipo;
-        this.cnpj = cnpj;
     }
 
     // Getters e Setters
@@ -111,21 +111,13 @@ public class Usuario implements Serializable {
         this.ativo = ativo;
     }
 
-    public Role getTipo() {
-        return tipo;
-    }
-
-    public void setTipo(Role tipo) {
-        this.tipo = tipo;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
-    public void setCnpj(String cnpj) {
-        this.cnpj = cnpj;
-    }
+//    public Role getTipo() {
+//        return tipo;
+//    }
+//
+//    public void setTipo(Role tipo) {
+//        this.tipo = tipo;
+//    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
