@@ -1,7 +1,6 @@
 package fatec.pi.rod.onbus.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,10 +8,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
-
-//@Entity
-//@Table(name = "usuario")
-//@Inheritance(strategy = InheritanceType.JOINED)
 
 @Entity
 @Table(name = "usuario")
@@ -37,9 +32,9 @@ public class Usuario implements Serializable {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo = true;
 
-//    @Enumerated(EnumType.STRING)
-//    @Column(name = "tipo", nullable = false)
-//    private Role tipo;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "tipo", nullable = false)
+    private Role tipo;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -53,11 +48,11 @@ public class Usuario implements Serializable {
 
     }
 
-//    public enum Role {
-//        ROLE_ADMIN,
-//        ROLE_EMPRESA,
-//        ROLE_GESTORENTRADA
-//    }
+    public enum Role {
+        ROLE_ADMIN,
+        ROLE_EMPRESA,
+        ROLE_GESTORENTRADA
+    }
 
     // Construtor padrão
     public Usuario() {}
@@ -111,13 +106,13 @@ public class Usuario implements Serializable {
         this.ativo = ativo;
     }
 
-//    public Role getTipo() {
-//        return tipo;
-//    }
-//
-//    public void setTipo(Role tipo) {
-//        this.tipo = tipo;
-//    }
+    public Role getTipo() {
+        return tipo;
+    }
+
+    public void setTipo(Role tipo) {
+        this.tipo = tipo;
+    }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
