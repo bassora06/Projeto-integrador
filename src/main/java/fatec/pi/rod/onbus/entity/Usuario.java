@@ -33,7 +33,7 @@ public class Usuario implements Serializable {
     private Boolean ativo = true;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
+    @Column(name = "tipo", nullable = false, insertable = false, updatable = false)
     private Role tipo;
 
     @CreationTimestamp

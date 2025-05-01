@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class OnibusService {
@@ -15,6 +17,11 @@ public class OnibusService {
     @Transactional
     public Onibus salvar(Onibus onibus) {
         return onibusRepository.save(onibus);
+    }
+
+    @Transactional(readOnly = true)
+    public List<Onibus> buscarTodos() {
+        return onibusRepository.findAll();
     }
 
     @Transactional(readOnly = true)
