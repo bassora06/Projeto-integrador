@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/home_page.dart';
-import 'package:onbus/reg_screen_pf.dart';
-import 'package:onbus/reg_screen_pj.dart';
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -180,52 +179,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    const SizedBox(height: 40),
-                    const Text(
-                      "Ainda não tem uma conta?",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    // Pessoa Física option
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const RegScreenPF(),
-                          ),
-                        );
-                      },
-                      child: const Text(
-                        "Cadastre-se como Pessoa Física",
-                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-                    // Pessoa Jurídica option
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                        builder: (context) => const RegScreenPJ(),
-                        ),
-                        );
-                      },
-                      child: const Text(
-                        "Cadastre-se como Pessoa Jurídica",
-                        style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      ),
                       ),
                     ),
                   ],

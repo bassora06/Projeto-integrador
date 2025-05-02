@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:onbus/config.dart';
+import 'package:onbus/enterprise_reg.dart';
+import 'package:onbus/twindow_reg.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -27,18 +30,25 @@ class HomePage extends StatelessWidget {
                 ),
                 child: Stack(
                   children: [
-                  Positioned(
-                    right: 15,
-                    bottom: 50,
-                    child: IconButton(
-                    icon: const Icon(Icons.settings, color: Colors.white, size: 30),
-                    onPressed: () {},
+                    Positioned(
+                      right: 15,
+                      bottom: 50,
+                      child: IconButton(
+                        icon: const Icon(Icons.settings, color: Colors.white, size: 30),
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                            builder: (context) => const ConfigPage(),
+                            ),
+                          );
+                        },
+                      ),
                     ),
-                  ),
                   ],
                 ),
-                ),
               ),
+            ),
 
             // Main content
             Expanded(
@@ -88,7 +98,54 @@ class HomePage extends StatelessWidget {
                         _buildMenuButton(
                           icon: Icons.person_add,
                           label: 'Incluir Cadastro',
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Center(child: Text('Incluir Cadastro')),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                          builder: (context) => const EnterpriseReg(),
+                                        ),
+                                    );
+                                        // Add your first button action here
+                                      },
+                                      child: const Center(child: Text('Cadastrar Empresa',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 40, 0, 104),
+                                        fontSize: 20,
+                                      ),
+                                      ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                          builder: (context) => const TWindowReg(),
+                                        ),
+                                    );
+                                        // Add your second button action here
+                                      },
+                                      child: const Center(child: Text('Cadastrar Guichê',
+                                      style: TextStyle(
+                                        color: Color.fromARGB(255, 40, 0, 104),
+                                        fontSize: 20,
+                                      ),
+                                      ),
+                                      ),                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                         _buildMenuButton(
                           icon: Icons.edit,
@@ -138,38 +195,40 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildMenuButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: Color.fromARGB(255, 40, 0, 104),
-                width: 1,
-              ),
+  required IconData icon,
+  required String label,
+  required VoidCallback onPressed,
+}) {
+  return Column(
+    children: [
+      InkWell(
+        onTap: onPressed,
+        borderRadius: BorderRadius.circular(10), // Faz o efeito respeitar o border radius
+        splashColor: Colors.deepPurple, // Cor do efeito de toque
+        child: Container(
+          width: 100,
+          height: 100,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: const Color.fromARGB(255, 40, 0, 104),
+              width: 1,
             ),
-            child: Icon(icon, size: 80),
           ),
+          child: Icon(icon, size: 80),
         ),
-        const SizedBox(height: 10),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
+      ),
+      const SizedBox(height: 10),
+      Text(
+        label,
+        style: const TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.bold,
         ),
-      ],
-    );
-  }
+      ),
+    ],
+  );
+}
 }
 
 class WaveClipper extends CustomClipper<Path> {

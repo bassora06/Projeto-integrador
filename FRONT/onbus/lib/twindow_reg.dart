@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/home_page.dart';
-import 'package:onbus/login_screen.dart';
 import 'package:onbus/termos.dart';
 
-class RegScreenPF extends StatefulWidget {
-  const RegScreenPF({super.key});
+class TWindowReg extends StatefulWidget {
+  const TWindowReg({super.key});
 
   @override
-  State<RegScreenPF> createState() => _RegScreenPFState();
+  State<TWindowReg> createState() => _TWindowRegState();
 }
 
-class _RegScreenPFState extends State<RegScreenPF> {
+class _TWindowRegState extends State<TWindowReg> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
@@ -70,7 +69,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
             ClipPath(
               clipper: WaveClipper(reverse: true),
               child: Container(
-                height: 55,
+                height: 80,
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [
@@ -114,7 +113,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     const Text(
-                      'Criar Conta - Pessoa Física',
+                      'Criar Conta - Guichê',
                       style: TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.bold,
@@ -127,22 +126,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                       decoration: const InputDecoration(
                         border: OutlineInputBorder(),
                         label: Text(
-                          'Nome',
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 40, 0, 104),
-                          ),
-                        ),
-                      ),
-                      onChanged: (_) => setState(() {}),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
-                      controller: _cpfController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        label: Text(
-                          'CPF',
+                          'Nome ',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 40, 0, 104),
@@ -262,7 +246,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                       ),
                       ],
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 50),
                     SizedBox(
                       width: double.infinity,
                       height: 55,
@@ -292,14 +276,20 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                     final name = _nameController.text;
                                     final email = _emailController.text;
                                     final password = _passwordController.text;
-                                    print(
-                                      'Registration data: $name, $email, $password',
-                                    );
-                                    Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const HomePage(),
-                                    ),
+                                                                            showDialog(
+                                          context: context,
+                                          builder: (context) => AlertDialog(
+                                          title: const Text('Sucesso'),
+                                          content: Text(
+                                            'Empresa cadastrada com sucesso!\nEmail: $email\nSenha: $password',
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                            onPressed: () => Navigator.pop(context),
+                                            child: const Text('OK'),
+                                            ),
+                                          ],
+                                          ),
                                   );
                                   }
                                 }
@@ -314,57 +304,9 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 30),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Text(
-                          "Já tem uma conta?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        const SizedBox(width: 4),
-                        TextButton(
-                          onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const LoginScreen(),
-                          ),
-                        );
-                      },
-                          child: const Text(
-                            "Entrar",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 17,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
                   ],
                 ),
               ),
-              ClipPath(
-              clipper: WaveClipper(),
-              child: Container(
-                height: 65,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 40, 8, 58),
-                      Color.fromARGB(255, 55, 39, 166),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-              ),
-            ),
             ],
           ),
         ),
