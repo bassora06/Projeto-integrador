@@ -42,18 +42,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     end: Alignment.bottomRight,
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      left: 15,
-                      bottom: 30,
-                      child: IconButton(
-                      icon: const Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                      onPressed: () => Navigator.pop(context),
-                    ),
-                    ),
-                  ],
-                ),
+                
               ),
             ),
               Padding(

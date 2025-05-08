@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/material.dart' as material;
+import 'package:onbus/login_screen.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -20,10 +21,7 @@ class _ConfigPageState extends State<ConfigPage> {
     
   ];
 
-  void _logout() {
-    // Add your logout logic here
-    print('User logged out');
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -128,7 +126,14 @@ class _ConfigPageState extends State<ConfigPage> {
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
-                        onPressed: _logout,
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const LoginScreen(),
+                            ),
+                          );
+                        },  
                         child: const Text(
                           'SAIR',
                           style: TextStyle(
@@ -136,6 +141,7 @@ class _ConfigPageState extends State<ConfigPage> {
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
+                          
                         ),
                       ),
                     ),

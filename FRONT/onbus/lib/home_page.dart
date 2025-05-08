@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/config.dart';
 import 'package:onbus/enterprise_reg.dart';
+import 'package:onbus/records.dart';
 import 'package:onbus/twindow_reg.dart';
 
 class HomePage extends StatelessWidget {
@@ -149,8 +150,15 @@ class HomePage extends StatelessWidget {
                         ),
                         _buildMenuButton(
                           icon: Icons.edit,
-                          label: 'Alterar Cadastro',
-                          onPressed: () {},
+                          label: 'Atualizar Cadastro',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RecordsPage (),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),

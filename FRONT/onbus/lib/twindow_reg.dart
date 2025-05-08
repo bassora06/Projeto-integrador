@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:onbus/home_page.dart';
 import 'package:onbus/termos.dart';
 
 class TWindowReg extends StatefulWidget {
@@ -281,7 +280,7 @@ class _TWindowRegState extends State<TWindowReg> {
                                           builder: (context) => AlertDialog(
                                           title: const Text('Sucesso'),
                                           content: Text(
-                                            'Empresa cadastrada com sucesso!\nEmail: $email\nSenha: $password',
+                                            'Empresa $name cadastrada com sucesso!\nEmail: $email\nSenha: $password',
                                           ),
                                           actions: [
                                             TextButton(

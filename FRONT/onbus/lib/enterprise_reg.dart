@@ -304,7 +304,7 @@ class _EnterpriseRegState extends State<EnterpriseReg> {
                                           builder: (context) => AlertDialog(
                                           title: const Text('Sucesso'),
                                           content: Text(
-                                            'Empresa cadastrada com sucesso!\nEmail: $email\nSenha: $password',
+                                            'Empresa $name cadastrada com sucesso!\nEmail: $email\nSenha: $password',
                                           ),
                                           actions: [
                                             TextButton(
