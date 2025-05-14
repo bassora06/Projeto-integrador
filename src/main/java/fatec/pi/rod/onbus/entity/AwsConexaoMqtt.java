@@ -1,8 +1,8 @@
 package fatec.pi.rod.onbus.entity;
 
+import org.eclipse.paho.client.mqttv3.IMqttMessageListener;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -20,7 +20,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import javax.net.ssl.SSLSocketFactory;
 
 @Component
-public class MqttAwsClient {
+public class AwsConexaoMqtt {
 
     private static final String BROKER_URL = "ssl://a2ve1hemun842j-ats.iot.us-east-2.amazonaws.com:8883";
     private static final String CLIENT_ID = "spring-client-" + UUID.randomUUID();
@@ -35,6 +35,8 @@ public class MqttAwsClient {
 
     private static final Duration LIMITE = Duration.ofMinutes(1);
 
+    Log log = new Log();
+
     private final Map<String, VagaStatus> cache = new ConcurrentHashMap<>();
 
     private MqttClient mqttClient;
@@ -42,7 +44,7 @@ public class MqttAwsClient {
     @PostConstruct
     public void init() {
         try {
-            SSLSocketFactory sslSocketFactory = AwsIotSslUtil.getSocketFactory(CA_CERT, CLIENT_CERT, PRIVATE_KEY);
+            SSLSocketFactory sslSocketFactory = AwsLeituraCerts.getSocketFactory(CA_CERT, CLIENT_CERT, PRIVATE_KEY);
 
             MqttConnectOptions options = new MqttConnectOptions();
             options.setSocketFactory(sslSocketFactory);
@@ -53,58 +55,72 @@ public class MqttAwsClient {
             mqttClient = new MqttClient(BROKER_URL, CLIENT_ID, null);
             mqttClient.connect(options);
 
-            System.out.println("✅ Conectado ao AWS IoT Core!");
+            log.logSucesso("Conectado ao AWS IoT Core!");
+
+            AwsInscricaoTopico awsIncricaoTopico = new AwsInscricaoTopico(mqttClient);
 
             // Inicializar cache com vagas livres
             cache.put(TOPICO_SUBSCRIBE_VAGA1, new VagaStatus(false, null));
             cache.put(TOPICO_SUBSCRIBE_VAGA2, new VagaStatus(false, null));
             cache.put(TOPICO_SUBSCRIBE_VAGA3, new VagaStatus(false, null));
 
-            subscribeTopic(TOPICO_SUBSCRIBE_VAGA1);
-            subscribeTopic(TOPICO_SUBSCRIBE_VAGA2);
-            subscribeTopic(TOPICO_SUBSCRIBE_VAGA3);
+            String vaga1 = awsIncricaoTopico.inscreverTopico(TOPICO_SUBSCRIBE_VAGA1);
+            String vaga2 = awsIncricaoTopico.inscreverTopico(TOPICO_SUBSCRIBE_VAGA1);
+            String vaga3 = awsIncricaoTopico.inscreverTopico(TOPICO_SUBSCRIBE_VAGA1);
+
+            log.logMensagem("Valor vaga 1: ", vaga1);
+            log.logMensagem("Valor vaga 2: ", vaga2);
+            log.logMensagem("Valor vaga 3: ", vaga3);
 
         } catch (Exception e) {
-            System.err.println("❌ Erro ao conectar ao AWS IoT Core: " + e.getMessage());
+            log.logErro("❌ Erro ao conectar ao AWS IoT Core: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    private void subscribeTopic(String topic) {
-        try {
-            mqttClient.subscribe(topic, (t, msg) -> {
-                String payload = new String(msg.getPayload());
-                System.out.println("DEBUG: Payload bruto recebido para " + t + ": '" +
-                        Arrays.toString(msg.getPayload()) + "'");  // Mostra bytes brutos
-                System.out.println("DEBUG: Payload como string: '" + payload + "'");
-                System.out.println("DEBUG: Comprimento da string: " + payload.length());
-                System.out.println("DEBUG: Código dos caracteres: " +
-                        payload.chars().mapToObj(c -> String.format("%02X ", c))
-                                .collect(Collectors.joining()));
-//                boolean ocupada = payload.equalsIgnoreCase("1") ||
-//                        payload.equalsIgnoreCase("true");
-                boolean ocupada = payload.equalsIgnoreCase("1") ||
-                        payload.equalsIgnoreCase("true") ||
-                        payload.equalsIgnoreCase("ocupada") ||
-                        payload.equalsIgnoreCase("ocupado");
+//    private String subscribeTopic(String topic) {
+//        try {
+//            mqttClient.subscribe(topic, new IMqttMessageListener() {
+//                @Override
+//                public void messageArrived(String t, MqttMessage msg) {
+//                    String payload = new String(msg.getPayload());
+//
+//                    // Logs de depuração
+//                    System.out.println("DEBUG: Payload bruto recebido para " + t + ": '" +
+//                            Arrays.toString(msg.getPayload()) + "'");  // Mostra bytes brutos
+//                    System.out.println("DEBUG: Payload como string: '" + payload + "'");
+//                    System.out.println("DEBUG: Comprimento da string: " + payload.length());
+//                    System.out.println("DEBUG: Código dos caracteres: " +
+//                            payload.chars().mapToObj(c -> String.format("%02X ", c))
+//                                    .collect(Collectors.joining()));
+//
+//                    boolean ocupada = payload.equalsIgnoreCase("1") ||
+//                            payload.equalsIgnoreCase("true") ||
+//                            payload.equalsIgnoreCase("ocupada") ||
+//                            payload.equalsIgnoreCase("ocupado");
+//
+//                    System.out.println("Debug interpretado como ocupada: " + ocupada);
+//
+//                    if (ocupada) {
+//                        cache.put(t, new VagaStatus(true, Instant.now()));
+//                        System.out.printf("📥 %s = %s (ocupada, início: %s)%n", t, payload,
+//                                cache.get(t).inicioOcupacao());
+//                    } else {
+//                        cache.put(t, new VagaStatus(false, null));
+//                        System.out.printf("📥 %s = %s (livre)%n", t, payload);
+//                    }
+//                }
+//            });
+//
+//            System.out.println("✅ Inscrito no tópico: " + topic);
+//
+//            return topic;
+//        } catch (Exception e) {
+//            System.err.println("❌ Erro ao inscrever no tópico " + topic + ": " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//    }
 
-                System.out.println("Debug interpretado como ocupada: " + ocupada);
-
-                if (ocupada) {
-                    cache.put(t, new VagaStatus(true, Instant.now()));
-                    System.out.printf("📥 %s = %s (ocupada, início: %s)%n", t, payload,
-                            cache.get(t).inicioOcupacao());
-                } else {
-                    cache.put(t, new VagaStatus(false, null));
-                    System.out.printf("📥 %s = %s (livre)%n", t, payload);
-                }
-            });
-            System.out.println("✅ Inscrito no tópico: " + topic);
-        } catch (Exception e) {
-            System.err.println("❌ Erro ao inscrever no tópico " + topic + ": " + e.getMessage());
-            e.printStackTrace();
-        }
-    }
 
     @Scheduled(fixedRate = 60_000)
     public void verificarExpiracoes() {
@@ -135,19 +151,20 @@ public class MqttAwsClient {
 
             // Verificar se o cliente está conectado
             if (!mqttClient.isConnected()) {
-                System.out.println("⚠️ Cliente MQTT desconectado, tentando reconectar...");
+                log.logAtencao("Cliente MQTT desconectado, tentando reconectar...");
                 mqttClient.reconnect();
             }
 
             mqttClient.publish(timeoutTopic, message);
-            System.out.printf("⏰ Timeout publicado em %s%n", timeoutTopic);
+            log.logTemporizador("Timeout publicado em %s%n", timeoutTopic);
         } catch (Exception e) {
-            System.err.println("❌ Erro ao publicar timeout: " + e.getMessage());
+            log.logErro("❌ Erro ao publicar timeout: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     // Classe interna para armazenar o status da vaga
     public record VagaStatus(boolean ocupada, Instant inicioOcupacao) {}
+    
 
 }
