@@ -6,6 +6,7 @@ import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 
 import javax.net.ssl.SSLSocketFactory;
+import java.time.Instant;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
@@ -58,10 +59,23 @@ public class MqttService {
                     payload.equalsIgnoreCase("ocupada") ||
                     payload.equalsIgnoreCase("ocupado");
 
-            cache.put(t, new VagaStatus(ocupada, ocupada ? java.time.Instant.now() : null));
+            boolean livre = payload.equalsIgnoreCase("0") ||
+                    payload.equalsIgnoreCase("false") ||
+                    payload.equalsIgnoreCase("livre") ||
+                    payload.equalsIgnoreCase("desocupado");
+
+            if (livre) {
+                cache.put(t, new VagaStatus(false, null, false)); // reset expirada
+            } else {
+                VagaStatus atual = cache.get(t);
+                boolean expirada = atual != null && atual.expirada();
+                cache.put(t, new VagaStatus(true, Instant.now(), expirada));
+            }
+
             System.out.println("📨 Mensagem recebida em " + t + ": '" + payload + "'");
         };
     }
+
 
     public Map<String, VagaStatus> getCache() {
         return cache;
@@ -79,7 +93,7 @@ public class MqttService {
             if (!mqttClient.isConnected()) mqttClient.reconnect();
 
             mqttClient.publish(timeoutTopic, message);
-            log.logTemporizador("Timeout publicado em %s%n", timeoutTopic);
+            log.logTemporizador("Timeout publicado em %s", timeoutTopic);
 
         } catch (Exception e) {
             log.logErro("Erro ao publicar timeout: " + e.getMessage());

@@ -1,11 +1,13 @@
 package fatec.pi.rod.onbus.entity;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 
+@Component
 public class VagaService {
 
     private final Log log = new Log();
@@ -28,16 +30,20 @@ public class VagaService {
                 Duration tempoOcupado = Duration.between(status.inicioOcupacao(), agora);
 
                 if (tempoOcupado.compareTo(LIMITE) > 0) {
-                    log.logAtencao("⚠️ Vaga no tópico '%s' EXPIRADA após %d minutos.".formatted(topic, tempoOcupado.toMinutes()));
-                    mqttService.publicarTimeout(topic);
-                    vagaStatusMap.put(topic, new VagaStatus(false, null));
+                    if(!status.expirada()){
+                        mqttService.publicarTimeout(topic);
+                    }
+                    log.logInfo("\uD83D\uDFE1 Vaga no tópico '%s' EXPIRADA após %d minutos.".formatted(topic, tempoOcupado.toMinutes()));
+                    vagaStatusMap.put(topic, new VagaStatus(true, status.inicioOcupacao(), true));
                 } else {
-                    log.logInfo("✅ Vaga no tópico '%s' ainda dentro do tempo (ocupada há %d minutos).".formatted(topic, tempoOcupado.toMinutes()));
+                    log.logInfo("\uD83D\uDD34 Vaga no tópico '%s' ainda está (ocupada há %d minutos).".formatted(topic, tempoOcupado.toMinutes()));
                 }
             } else {
                 log.logInfo("🟢 Vaga no tópico '%s' está livre ou nunca foi ocupada.".formatted(topic));
             }
         });
+
+        System.out.println(" ");
     }
 
     public StatusVaga getStatusVaga(String topico) {
@@ -47,7 +53,11 @@ public class VagaService {
             return StatusVaga.LIVRE;
         }
 
-        Duration tempo = Duration.between(status.inicioOcupacao(), Instant.now());
-        return tempo.compareTo(LIMITE) > 0 ? StatusVaga.EXPIRADA : StatusVaga.OCUPADA;
+        if (status.expirada()) {
+            return StatusVaga.EXPIRADA;
+        }
+
+        return StatusVaga.OCUPADA;
     }
+
 }
