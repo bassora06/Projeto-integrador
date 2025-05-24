@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:onbus/config.dart';
+import 'package:onbus/cad_empresa.dart';
+import 'package:onbus/records.dart';
+import 'package:onbus/cad_guiche.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -8,42 +12,57 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
-        child: Column(
-          children: [
-            // Abstract curved header
-            ClipPath(
-              clipper: WaveClipper(reverse: true),
-              child: Container(
-                height: 120,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 55, 39, 166),
-                      Color.fromARGB(255, 40, 8, 58),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                  Positioned(
-                    right: 15,
-                    bottom: 50,
-                    child: IconButton(
-                    icon: const Icon(Icons.settings, color: Colors.white, size: 30),
-                    onPressed: () {},
+        child: SingleChildScrollView(
+          // Applying scrollable view
+          child: Column(
+            children: [
+              // Abstract curved header
+              ClipPath(
+                clipper: WaveClipper(reverse: true),
+                child: Container(
+                  height: 120,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 55, 39, 166),
+                        Color.fromARGB(255, 40, 8, 58),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
                     ),
                   ),
-                  ],
-                ),
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        right: 15,
+                        bottom: 50,
+                        child: IconButton(
+                          icon: const Icon(
+                            Icons.settings,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const ConfigPage(),
+                              ),
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
 
-            // Main content
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 20),
+              // Main content
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24.0,
+                  vertical: 20,
+                ),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -58,9 +77,12 @@ class HomePage extends StatelessWidget {
                     const SizedBox(height: 20),
                     const Padding(
                       padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Divider(color: Color.fromARGB(255, 40, 0, 104), thickness: 1),
+                      child: Divider(
+                        color: Color.fromARGB(255, 40, 0, 104),
+                        thickness: 1,
+                      ),
                     ),
-                    
+
                     const SizedBox(height: 30),
                     // First row with Docas and Conversar
                     Row(
@@ -88,17 +110,92 @@ class HomePage extends StatelessWidget {
                         _buildMenuButton(
                           icon: Icons.person_add,
                           label: 'Incluir Cadastro',
-                          onPressed: () {},
+                          onPressed: () {
+                            showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return AlertDialog(
+                                  title: const Center(
+                                    child: Text('Incluir Cadastro'),
+                                  ),
+                                  actions: [
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    const RegScreenPJ(),
+                                          ),
+                                        );
+                                        // Add your first button action here
+                                      },
+                                      child: const Center(
+                                        child: Text(
+                                          'Cadastrar Empresa',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                              255,
+                                              40,
+                                              0,
+                                              104,
+                                            ),
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    TextButton(
+                                      onPressed: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) =>
+                                                    const RegScreenPF(),
+                                          ),
+                                        );
+                                        // Add your second button action here
+                                      },
+                                      child: const Center(
+                                        child: Text(
+                                          'Cadastrar Guichê',
+                                          style: TextStyle(
+                                            color: Color.fromARGB(
+                                              255,
+                                              40,
+                                              0,
+                                              104,
+                                            ),
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              },
+                            );
+                          },
                         ),
                         _buildMenuButton(
                           icon: Icons.edit,
-                          label: 'Alterar Cadastro',
-                          onPressed: () {},
+                          label: 'Atualizar Cadastro',
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const RecordsPage(),
+                              ),
+                            );
+                          },
                         ),
                       ],
                     ),
 
-                    const Spacer(),
+                    const SizedBox(height: 30),
 
                     // Logo at the bottom
                     Padding(
@@ -112,26 +209,26 @@ class HomePage extends StatelessWidget {
                   ],
                 ),
               ),
-            ),
 
-            // Abstract curved footer
-            ClipPath(
-              clipper: WaveClipper(),
-              child: Container(
-                height: 100,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 40, 8, 58),
-                      Color.fromARGB(255, 55, 39, 166),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+              // Abstract curved footer
+              ClipPath(
+                clipper: WaveClipper(),
+                child: Container(
+                  height: 100,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 40, 8, 58),
+                        Color.fromARGB(255, 55, 39, 166),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -162,10 +259,7 @@ class HomePage extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           label,
-          style: const TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.bold,
-          ),
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
         ),
       ],
     );
@@ -180,29 +274,31 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-    
+
     if (reverse) {
       path.moveTo(0, size.height);
       path.quadraticBezierTo(
-        size.width * 0.25, size.height - 30,
-        size.width * 0.5, size.height - 20);
+        size.width * 0.25,
+        size.height - 30,
+        size.width * 0.5,
+        size.height - 20,
+      );
       path.quadraticBezierTo(
-        size.width * 0.75, size.height - 10,
-        size.width, size.height - 30);
+        size.width * 0.75,
+        size.height - 10,
+        size.width,
+        size.height - 30,
+      );
       path.lineTo(size.width, 0);
       path.lineTo(0, 0);
     } else {
       path.moveTo(0, 0);
-      path.quadraticBezierTo(
-        size.width * 0.25, 30,
-        size.width * 0.5, 20);
-      path.quadraticBezierTo(
-        size.width * 0.75, 10,
-        size.width, 30);
+      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
+      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
       path.lineTo(size.width, size.height);
       path.lineTo(0, size.height);
     }
-    
+
     path.close();
     return path;
   }

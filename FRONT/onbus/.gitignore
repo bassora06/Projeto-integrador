@@ -1,3 +1,4 @@
+HEAD
 # Miscellaneous
 *.class
 *.log
@@ -43,3 +44,38 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+HELP.md
+target/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+>>>>>>> 0b9af85cea1d175c200ad6bf1127184365a8d837

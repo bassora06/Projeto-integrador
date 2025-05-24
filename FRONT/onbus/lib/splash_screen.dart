@@ -22,37 +22,38 @@ class _OnBusSplashScreenState extends State<OnBusSplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushReplacement(
           MaterialPageRoute(builder: (_) => const WelcomeScreen()),
         );
       },
-      child: Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF2C1E88), // Top purple
-              Colors.white,
-              Color(0xFF2C1E88), // Bottom purple
-            ],
-            stops: [0.0, 0.5, 1.0],
+      child: Stack(
+        children: [
+          // Imagem de fundo redimensionada dinamicamente
+          SizedBox(
+            width: screenSize.width,
+            height: screenSize.height,
+            child: Image.asset(
+              'lib/assets/images/Fundo_Splash.PNG',
+              fit: BoxFit.fill, // Ajuste da imagem para a tela
+            ),
           ),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Image.asset(
-                'lib/assets/images/onbus.png',
-                height: 200,
-                fit: BoxFit.contain,
-              ),
-            ],
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Image.asset(
+                  'lib/assets/images/onbus.png',
+                  height: 200, // Adjusted size for better fit
+                  fit: BoxFit.contain, // Ensures the logo fits properly
+                ),
+              ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }

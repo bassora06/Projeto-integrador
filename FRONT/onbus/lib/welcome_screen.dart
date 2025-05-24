@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'login_screen.dart';
-import 'reg_screen_pj.dart';
-import 'reg_screen_pf.dart';
+import 'package:onbus/login_screen.dart';
+import 'package:onbus/cad_empresa.dart';
+import 'package:onbus/cad_guiche.dart';
 
 class WelcomeScreen extends StatelessWidget {
   const WelcomeScreen({super.key});
@@ -16,23 +16,23 @@ class WelcomeScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               ClipPath(
-              clipper: WaveClipper(reverse: true),
-              child: Container(
-                height: 80,
-                decoration: const BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Color.fromARGB(255, 55, 39, 166),
-                      Color.fromARGB(255, 40, 8, 58),
-                    ],
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
+                clipper: WaveClipper(reverse: true),
+                child: Container(
+                  height: 80,
+                  decoration: const BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 55, 39, 166),
+                        Color.fromARGB(255, 40, 8, 58),
+                      ],
+                      begin: Alignment.topLeft,
+                      end: Alignment.bottomRight,
+                    ),
                   ),
                 ),
               ),
-              ),
               const SizedBox(height: 80),
-              
+
               Image.asset(
                 'lib/assets/images/onbus.png',
                 height: 200,
@@ -48,7 +48,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 60),
-              
+
               // ENTRAR Button
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -56,7 +56,9 @@ class WelcomeScreen extends StatelessWidget {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
+                      MaterialPageRoute(
+                        builder: (context) => const LoginScreen(),
+                      ),
                     );
                   },
                   child: Container(
@@ -84,7 +86,7 @@ class WelcomeScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              
+
               // REGISTER Buttons Column
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40),
@@ -95,7 +97,9 @@ class WelcomeScreen extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegScreenPF()),
+                          MaterialPageRoute(
+                            builder: (context) => const RegScreenPF(),
+                          ),
                         );
                       },
                       child: Container(
@@ -122,13 +126,15 @@ class WelcomeScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 15),
-                    
+
                     // PJ Button
                     TextButton(
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => const RegScreenPJ()),
+                          MaterialPageRoute(
+                            builder: (context) => const RegScreenPJ(),
+                          ),
                         );
                       },
                       child: Container(
@@ -182,29 +188,31 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   Path getClip(Size size) {
     final path = Path();
-    
+
     if (reverse) {
       path.moveTo(0, size.height);
       path.quadraticBezierTo(
-        size.width * 0.25, size.height - 30,
-        size.width * 0.5, size.height - 20);
+        size.width * 0.25,
+        size.height - 30,
+        size.width * 0.5,
+        size.height - 20,
+      );
       path.quadraticBezierTo(
-        size.width * 0.75, size.height - 10,
-        size.width, size.height - 30);
+        size.width * 0.75,
+        size.height - 10,
+        size.width,
+        size.height - 30,
+      );
       path.lineTo(size.width, 0);
       path.lineTo(0, 0);
     } else {
       path.moveTo(0, 0);
-      path.quadraticBezierTo(
-        size.width * 0.25, 30,
-        size.width * 0.5, 20);
-      path.quadraticBezierTo(
-        size.width * 0.75, 10,
-        size.width, 30);
+      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
+      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
       path.lineTo(size.width, size.height);
       path.lineTo(0, size.height);
     }
-    
+
     path.close();
     return path;
   }
