@@ -2,48 +2,36 @@ package fatec.pi.rod.onbus.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+
 import java.time.LocalDateTime;
 
-@Entity
-@Table(name = "reserva")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Entity
+@Table(name = "reserva")
 public class Reserva {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_reserva;
+    @GeneratedValue( strategy = GenerationType.IDENTITY)
+    private Integer idReserva;
 
-    @ManyToOne
-    @JoinColumn(name = "id_onibus", nullable = false)
-    private Onibus onibus;
+    @Column(name = "id_onibus", nullable = false)
+    private Long idOnibus;
 
-    @ManyToOne
-    @JoinColumn(name = "id_usuario", nullable = false)
-    private Usuario usuario;
+    @Column(name = "id_usuario", nullable = false)
+    private Long idUsuario;
 
-    private LocalDateTime hora_chegada;
-    private LocalDateTime hora_saida;
+    @Column(name = "horario_chegada", nullable = false)
+    private LocalDateTime horaChegada;
 
+    @Column(name = "horario_saida", nullable = false)
+    private LocalDateTime horaSaida;
+
+    @Column(name = "doca", nullable = false)
     private char doca;
+
+    @Column(name = "vaga", nullable = false)
     private char vaga;
-
-    private LocalDateTime created_at;
-    private LocalDateTime updated_at;
-
-    // Essas anotações abaixo são para atualizar as datas automaticamente (datas de criação e de atualização)
-
-    @PrePersist
-    protected void onCreate() {
-        created_at = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        updated_at = LocalDateTime.now();
-    }
 }
-
