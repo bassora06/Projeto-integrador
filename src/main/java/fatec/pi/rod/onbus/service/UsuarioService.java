@@ -16,6 +16,9 @@ public class UsuarioService {
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.findByEmail(usuario.getEmail()).ifPresent(existingUser -> {
+            throw new IllegalArgumentException("Usuário já existente");
+        });
         return usuarioRepository.save(usuario);
     }
 

@@ -7,6 +7,7 @@ import fatec.pi.rod.onbus.web.dto.ReservaResponseDto;
 import fatec.pi.rod.onbus.web.dto.mapper.ReservaMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,6 +20,7 @@ public class ReservaController {
     private final ReservaService reservaService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ROLE_EMPRESA')")
     public ResponseEntity<ReservaResponseDto> criar(@RequestBody ReservaCreateDto dto) {
         Reserva reserva = ReservaMapper.toEntity(dto);
         Reserva savedReserva = reservaService.salvar(reserva);
