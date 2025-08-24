@@ -13,13 +13,13 @@ import java.security.cert.X509Certificate;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 
-public class AwsIotSslUtil {
+public class AwsLeituraCerts {
 
     public static SSLSocketFactory getSocketFactory(String caCrtFile, String crtFile, String keyFile) throws Exception {
         // Log de início do processo de carregamento do certificado CA
         System.out.println("🔍 Procurando o arquivo de certificado CA: " + caCrtFile);
         CertificateFactory cf = CertificateFactory.getInstance("X.509");
-        InputStream caInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(caCrtFile);
+        InputStream caInputStream = AwsLeituraCerts.class.getClassLoader().getResourceAsStream(caCrtFile);
         if (caInputStream == null) {
             throw new RuntimeException("❌ Arquivo de certificado CA não encontrado: " + caCrtFile);
         }
@@ -29,7 +29,7 @@ public class AwsIotSslUtil {
 
         // Log de início do processo de carregamento do certificado do cliente
         System.out.println("🔍 Procurando o arquivo de certificado do cliente: " + crtFile);
-        InputStream certInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(crtFile);
+        InputStream certInputStream = AwsLeituraCerts.class.getClassLoader().getResourceAsStream(crtFile);
         if (certInputStream == null) {
             throw new RuntimeException("❌ Arquivo de certificado do cliente não encontrado: " + crtFile);
         }
@@ -39,7 +39,7 @@ public class AwsIotSslUtil {
 
         // Log de início do processo de carregamento da chave privada
         System.out.println("🔍 Procurando o arquivo de chave privada: " + keyFile);
-        InputStream keyInputStream = AwsIotSslUtil.class.getClassLoader().getResourceAsStream(keyFile);
+        InputStream keyInputStream = AwsLeituraCerts.class.getClassLoader().getResourceAsStream(keyFile);
         if (keyInputStream == null) {
             throw new RuntimeException("❌ Arquivo de chave privada não encontrado: " + keyFile);
         }
