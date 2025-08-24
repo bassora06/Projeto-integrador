@@ -1,63 +1,52 @@
 package fatec.pi.rod.onbus.entity;
 
+import fatec.pi.rod.onbus.repository.VagaRepository; // IMPORTAR
+import lombok.RequiredArgsConstructor; // ADICIONAR
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
 import java.time.Duration;
 import java.time.Instant;
-import java.util.Map;
+import java.util.List; // IMPORTAR
 
 @Component
+@RequiredArgsConstructor // ADICIONAR
 public class VagaService {
 
     private final Log log = new Log();
     private final MqttService mqttService;
+    private final VagaRepository vagaRepository; // INJEÇÃO DE DEPENDÊNCIA
     private static final Duration LIMITE = Duration.ofMinutes(1);
-
-    public VagaService(MqttService mqttService) {
-        this.mqttService = mqttService;
-    }
 
     @Scheduled(fixedRate = 60_000)
     public void verificarExpiracoes() {
-        Instant agora = Instant.now();
-        log.logInfo("🔍 Verificando expiração de vagas...");
+        log.logInfo("🔍 Verificando expiração de vagas no MongoDB...");
 
-        Map<String, VagaStatus> vagaStatusMap = mqttService.getCache();
+        // Calcula o ponto no tempo para considerar uma vaga expirada
+        Instant tempoLimite = Instant.now().minus(LIMITE);
 
-        vagaStatusMap.forEach((topic, status) -> {
-            if (status.ocupada() && status.inicioOcupacao() != null) {
-                Duration tempoOcupado = Duration.between(status.inicioOcupacao(), agora);
+        // Busca no banco todas as vagas que estão OCUPADAS, não foram marcadas como EXCEDIDAS
+        // e cujo tempo de início de ocupação é anterior ao tempoLimite calculado.
+        List<VagaDocument> vagasParaExpirar = vagaRepository
+                .findByStatusAndExcedidaAndInicioOcupacaoBefore(StatusVaga.OCUPADA, false, tempoLimite);
 
-                if (tempoOcupado.compareTo(LIMITE) > 0) {
-                    if(!status.expirada()){
-                        mqttService.publicarTimeout(topic);
-                    }
-                    log.logInfo("\uD83D\uDFE1 Vaga no tópico '%s' EXPIRADA após %d minutos.".formatted(topic, tempoOcupado.toMinutes()));
-                    vagaStatusMap.put(topic, new VagaStatus(true, status.inicioOcupacao(), true));
-                } else {
-                    log.logInfo("\uD83D\uDD34 Vaga no tópico '%s' ainda está (ocupada há %d minutos).".formatted(topic, tempoOcupado.toMinutes()));
-                }
-            } else {
-                log.logInfo("🟢 Vaga no tópico '%s' está livre ou nunca foi ocupada.".formatted(topic));
-            }
-        });
+        for (VagaDocument vaga : vagasParaExpirar) {
+            vaga.setExcedida(true); // Marca como excedida
+            vaga.setStatus(StatusVaga.EXPIRADA); // Atualiza o status
+            vagaRepository.save(vaga); // Salva no banco
 
+            mqttService.publicarTimeout(vaga.getId()); // Notifica via MQTT
+            log.logAtencao("⚠️ Vaga '%s' EXPIRADA e atualizada no banco.".formatted(vaga.getId()));
+        }
+
+        if (vagasParaExpirar.isEmpty()) {
+            log.logInfo("✅ Nenhuma vaga excedeu o tempo limite.");
+        }
         System.out.println(" ");
     }
 
-    public StatusVaga getStatusVaga(String topico) {
-        VagaStatus status = mqttService.getCache().get(topico);
-
-        if (status == null || !status.ocupada()) {
-            return StatusVaga.LIVRE;
-        }
-
-        if (status.expirada()) {
-            return StatusVaga.EXPIRADA;
-        }
-
-        return StatusVaga.OCUPADA;
+    public VagaDocument getStatusVaga(String topico) {
+        // Busca a vaga diretamente do MongoDB. Se não encontrar, retorna um estado LIVRE padrão.
+        return vagaRepository.findById(topico)
+                .orElse(new VagaDocument(topico, StatusVaga.LIVRE, null, false));
     }
-
 }
