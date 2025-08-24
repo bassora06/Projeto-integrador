@@ -1,17 +1,18 @@
 package fatec.pi.rod.onbus.entity;
 
+import fatec.pi.rod.onbus.repository.VagaRepository;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor; // Adicione esta importação
 import org.eclipse.paho.client.mqttv3.*;
 import org.springframework.stereotype.Component;
 
-import jakarta.annotation.PostConstruct;
-
 import javax.net.ssl.SSLSocketFactory;
 import java.time.Instant;
-import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Component
+@RequiredArgsConstructor // <-- ADICIONE esta anotação para injeção de dependência
 public class MqttService {
 
     private static final String BROKER_URL = "ssl://a2ve1hemun842j-ats.iot.us-east-2.amazonaws.com:8883";
@@ -20,28 +21,32 @@ public class MqttService {
     private static final String CLIENT_CERT = "certs/certificate.pem.crt";
     private static final String PRIVATE_KEY = "certs/private_pkcs8.pem";
 
-    private final Map<String, VagaStatus> cache = new ConcurrentHashMap<>();
+    private final VagaRepository vagaRepository; // <-- TORNE A VARIÁVEL 'final'
     private MqttClient mqttClient;
     private final Log log = new Log();
 
     @PostConstruct
     public void init() {
         try {
-            SSLSocketFactory sslSocketFactory = AwsLeituraCerts.getSocketFactory(CA_CERT, CLIENT_CERT, PRIVATE_KEY);
+            // 1. Cria o SocketFactory usando sua classe de leitura de certificados
+            SSLSocketFactory socketFactory = AwsLeituraCerts.getSocketFactory(CA_CERT, CLIENT_CERT, PRIVATE_KEY);
 
+            // 2. Cria e configura as opções de conexão MQTT
             MqttConnectOptions options = new MqttConnectOptions();
-            options.setSocketFactory(sslSocketFactory);
-            options.setCleanSession(true);
-            options.setKeepAliveInterval(60);
-            options.setAutomaticReconnect(true);
+            options.setSocketFactory(socketFactory);
 
+            // 3. Inicializa o cliente MQTT
             mqttClient = new MqttClient(BROKER_URL, CLIENT_ID);
-            mqttClient.connect(options);
 
+            // 4. Conecta usando as opções que você acabou de criar
+            mqttClient.connect(options);
             log.logSucesso("Conectado ao AWS IoT Core!");
 
-            for (String topico : fatec.pi.rod.onbus.entity.Topicos.TODOS) {
-                cache.put(topico, new VagaStatus(false, null));
+            // Inicializa as vagas no banco de dados se não existirem
+            for (String topico : Topicos.TODOS) {
+                vagaRepository.findById(topico).orElseGet(() ->
+                        vagaRepository.save(new VagaDocument(topico, StatusVaga.LIVRE, null, false))
+                );
                 mqttClient.subscribe(topico, criarListener(topico));
             }
 
@@ -54,31 +59,27 @@ public class MqttService {
     private IMqttMessageListener criarListener(String topic) {
         return (t, msg) -> {
             String payload = new String(msg.getPayload());
-            boolean ocupada = payload.equalsIgnoreCase("1") ||
-                    payload.equalsIgnoreCase("true") ||
-                    payload.equalsIgnoreCase("ocupada") ||
-                    payload.equalsIgnoreCase("ocupado");
+            log.logInfo("📨 Mensagem recebida em " + t + ": '" + payload + "'");
 
-            boolean livre = payload.equalsIgnoreCase("0") ||
-                    payload.equalsIgnoreCase("false") ||
-                    payload.equalsIgnoreCase("livre") ||
-                    payload.equalsIgnoreCase("desocupado");
+            boolean ocupadaMsg = payload.equalsIgnoreCase("1") || payload.equalsIgnoreCase("ocupada");
+            boolean livreMsg = payload.equalsIgnoreCase("0") || payload.equalsIgnoreCase("livre");
 
-            if (livre) {
-                cache.put(t, new VagaStatus(false, null, false)); // reset expirada
-            } else {
-                VagaStatus atual = cache.get(t);
-                boolean expirada = atual != null && atual.expirada();
-                cache.put(t, new VagaStatus(true, Instant.now(), expirada));
+            // Busca o documento atual no MongoDB
+            Optional<VagaDocument> vagaOpt = vagaRepository.findById(t);
+            if (vagaOpt.isPresent()) {
+                VagaDocument vaga = vagaOpt.get();
+                if (livreMsg) {
+                    vaga.setStatus(StatusVaga.LIVRE);
+                    vaga.setInicioOcupacao(null);
+                    vaga.setExcedida(false); // Reseta o status de excedida
+                } else if (ocupadaMsg && vaga.getStatus() == StatusVaga.LIVRE) {
+                    // Só marca como ocupada se antes estava livre, para não sobrescrever o timestamp
+                    vaga.setStatus(StatusVaga.OCUPADA);
+                    vaga.setInicioOcupacao(Instant.now());
+                }
+                vagaRepository.save(vaga); // Salva o estado atualizado no MongoDB
             }
-
-            System.out.println("📨 Mensagem recebida em " + t + ": '" + payload + "'");
         };
-    }
-
-
-    public Map<String, VagaStatus> getCache() {
-        return cache;
     }
 
     public void publicarTimeout(String topic) {
@@ -99,6 +100,4 @@ public class MqttService {
             log.logErro("Erro ao publicar timeout: " + e.getMessage());
         }
     }
-
 }
-
