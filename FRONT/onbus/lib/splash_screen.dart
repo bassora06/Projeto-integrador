@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'welcome_screen.dart'; // Make sure the path is correct
+import 'lib/login_screen.dart'; // Make sure the path is correct
 
 class OnBusSplashScreen extends StatefulWidget {
   const OnBusSplashScreen({super.key});
@@ -15,7 +15,7 @@ class _OnBusSplashScreenState extends State<OnBusSplashScreen> {
     super.initState();
     Timer(const Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
       );
     });
   }
@@ -27,7 +27,7 @@ class _OnBusSplashScreenState extends State<OnBusSplashScreen> {
     return GestureDetector(
       onTap: () {
         Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (_) => const WelcomeScreen()),
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
         );
       },
       child: Stack(
