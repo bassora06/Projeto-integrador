@@ -1,41 +1,4 @@
-<<<<<<< HEAD
 HEAD
-=======
-HELP.md
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### IntelliJ IDEA ###
-.idea
-*.iws
-*.iml
-*.ipr
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
->>>>>>> a292b06ce38df97891fa8eb9163c05b10deb854c
 # Miscellaneous
 *.class
 *.log
@@ -81,7 +44,6 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-<<<<<<< HEAD
 
 HELP.md
 target/
@@ -117,5 +79,3 @@ build/
 ### VS Code ###
 .vscode/
 >>>>>>> 0b9af85cea1d175c200ad6bf1127184365a8d837
-=======
->>>>>>> a292b06ce38df97891fa8eb9163c05b10deb854c
