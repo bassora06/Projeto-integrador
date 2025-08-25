@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'lib/login_screen.dart'; // Make sure the path is correct
+import 'login_screen.dart'; 
 
 class OnBusSplashScreen extends StatefulWidget {
   const OnBusSplashScreen({super.key});

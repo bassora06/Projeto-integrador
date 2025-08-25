@@ -212,7 +212,7 @@ class HomePage extends StatelessWidget {
                           label: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24.0),
                             child: Text(
-                            'Incluir Cadastro',
+                            'Alterar Registro',
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
