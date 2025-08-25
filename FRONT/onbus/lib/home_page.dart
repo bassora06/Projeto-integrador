@@ -60,7 +60,7 @@ class HomePage extends StatelessWidget {
               // Main content
               Padding(
                 padding: const EdgeInsets.symmetric(
-                  horizontal: 24.0,
+                  horizontal: 16.0,
                   vertical: 20,
                 ),
                 child: Column(
@@ -85,20 +85,32 @@ class HomePage extends StatelessWidget {
 
                     const SizedBox(height: 30),
                     // First row with Docas and Conversar
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        _buildMenuButton(
-                          icon: Icons.directions_bus,
-                          label: 'Docas',
-                          onPressed: () {},
+                    // Single "Docas" button expanded to fill the row as a big rectangular button
+                    SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton.icon(
+                      icon: const Icon(Icons.directions_bus, size: 40),
+                      label: const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 24.0),
+                        child: Text(
+                        'Docas',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
                         ),
-                        _buildMenuButton(
-                          icon: Icons.chat,
-                          label: 'Conversar',
-                          onPressed: () {},
                         ),
-                      ],
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                        shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        ),
+                        elevation: 2,
+                      ),
+                      onPressed: () {
+                        // TO DO: Add your Docas button action here
+                      },
+                      ),
                     ),
 
                     const SizedBox(height: 30),
@@ -107,90 +119,122 @@ class HomePage extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        _buildMenuButton(
-                          icon: Icons.person_add,
-                          label: 'Incluir Cadastro',
-                          onPressed: () {
-                            showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                return AlertDialog(
-                                  title: const Center(
-                                    child: Text('Incluir Cadastro'),
-                                  ),
-                                  actions: [
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) =>
-                                                    const RegScreenPJ(),
-                                          ),
-                                        );
-                                        // Add your first button action here
-                                      },
-                                      child: const Center(
-                                        child: Text(
-                                          'Cadastrar Empresa',
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                              255,
-                                              40,
-                                              0,
-                                              104,
+                        Expanded(
+                          child: ElevatedButton.icon(
+                          icon: const Icon(Icons.directions_bus, size: 40), //trocar imagem
+                          label: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24.0),
+                            child: Text(
+                            'Incluir Cadastro',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)
+                            ),
+                            elevation: 4,
+                          ),
+                            onPressed: () {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  return AlertDialog(
+                                    title: const Center(
+                                      child: Text('Incluir Cadastro'),
+                                    ),
+                                    actions: [
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) =>
+                                                      const RegScreenPJ(),
                                             ),
-                                            fontSize: 20,
+                                          );
+                                          // Add your first button action here
+                                        },
+                                        child: const Center(
+                                          child: Text(
+                                            'Cadastrar Empresa',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(255, 40, 0, 104),
+                                              fontSize: 20,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                    const SizedBox(height: 10),
-                                    TextButton(
-                                      onPressed: () {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) =>
-                                                    const RegScreenPF(),
-                                          ),
-                                        );
-                                        // Add your second button action here
-                                      },
-                                      child: const Center(
-                                        child: Text(
-                                          'Cadastrar Guichê',
-                                          style: TextStyle(
-                                            color: Color.fromARGB(
-                                              255,
-                                              40,
-                                              0,
-                                              104,
+                                      const SizedBox(height: 10),
+                                      TextButton(
+                                        onPressed: () {
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder:
+                                                  (context) =>
+                                                      const RegScreenPF(),
                                             ),
-                                            fontSize: 20,
+                                          );
+                                          // Add your second button action here
+                                        },
+                                        child: const Center(
+                                          child: Text(
+                                            'Cadastrar Guichê',
+                                            style: TextStyle(
+                                              color: Color.fromARGB(
+                                                255,
+                                                40,
+                                                0,
+                                                104,
+                                              ),
+                                              fontSize: 20,
+                                            ),
                                           ),
                                         ),
                                       ),
-                                    ),
-                                  ],
-                                );
-                              },
-                            );
-                          },
+                                    ],
+                                  );
+                                },
+                              );
+                            },
+                          ),
                         ),
-                        _buildMenuButton(
-                          icon: Icons.edit,
-                          label: 'Atualizar Cadastro',
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RecordsPage(),
-                              ),
-                            );
-                          },
+                        const SizedBox(width: 4),
+                        Expanded(
+                          child: ElevatedButton.icon(
+                          icon: const Icon(Icons.directions_bus, size: 40), //trocar imagem
+                          label: const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 24.0),
+                            child: Text(
+                            'Incluir Cadastro',
+                            style: TextStyle(
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                            ),
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                            shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(16)
+                            ),
+                            elevation: 2,
+                          ),
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const RecordsPage(),
+                                ),
+                              );
+                            },
+                          ),
                         ),
                       ],
                     ),
