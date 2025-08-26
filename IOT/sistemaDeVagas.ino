@@ -10,40 +10,27 @@ const int PINO_ECHO_SENSOR_1 = 19;
 const int PINO_TRIG_SENSOR_2 = 32; 
 const int PINO_ECHO_SENSOR_2 = 35; 
 
-const int PINO_TRIG_SENSOR_3 = 17; 
-const int PINO_ECHO_SENSOR_3 = 16; 
+const int PINO_TRIG_SENSOR_3 = 27; 
+const int PINO_ECHO_SENSOR_3 = 26; 
 
 // Vetores com as variáveis criadas para facilitar no uso delas
 const int TRIGGERS[3] = {PINO_TRIG_SENSOR_1, PINO_TRIG_SENSOR_2, PINO_TRIG_SENSOR_3};
 const int ECHOS[3] = {PINO_ECHO_SENSOR_1, PINO_ECHO_SENSOR_2, PINO_ECHO_SENSOR_3};
 
-// Declaração de variaveis dos leds
-const int LED_VERMELHO_1 = 23;
-const int LED_VERMELHO_2 = 4;
-const int LED_VERMELHO_3 = 21;
-
-const int LED_VERDE_1 = 22;
-const int LED_VERDE_2 = 0;
-const int LED_VERDE_3 = 5;
-
-// Vetores com as variáveis criadas dos leds para facilitar no uso delas
-const int LED_VERMELHO[3] = {LED_VERMELHO_1, LED_VERMELHO_2, LED_VERMELHO_3};
-const int LED_VERDE[3] = {LED_VERDE_1, LED_VERDE_2, LED_VERDE_3};
-
 // Variaveis contendo as infos do wifi
-const char* ssid = "Wokwi-GUEST"; // Nome da rede
-const char* password =""; // Senha
+const char* ssid = "LIA"; // Nome da rede
+const char* password ="Lucas1974"; // Senha
 
 // topico para receber informações do MQTT
 // #define TOPICO_SUBSCRIBE "PI-receber-de-informacoes"
 
 // Topico para enviar informações do MQTT 
-#define TOPICO_PUBLISH_VAGA1 "vaga1"
-#define TOPICO_PUBLISH_VAGA2 "vaga2"
-#define TOPICO_PUBLISH_VAGA3 "vaga3" 
+const char* TOPICO_PUBLISH_VAGA1 = "vaga1";
+const char* TOPICO_PUBLISH_VAGA2 = "vaga2";
+const char* TOPICO_PUBLISH_VAGA3 = "vaga3";
 
 // Coloquei as vagas dentro de um vetor para manipulalas no código mais facilmente
-const int TOPICO_PUBLISH_VAGAS[3] = {TOPICO_PUBLISH_VAGA1, TOPICO_PUBLISH_VAGA2, TOPICO_PUBLISH_VAGA3};
+const char* TOPICO_PUBLISH_VAGAS[3] = {TOPICO_PUBLISH_VAGA1, TOPICO_PUBLISH_VAGA2, TOPICO_PUBLISH_VAGA3};
 
 // ID do broker
 #define ID_MQTT  "PI_Cliente_MQTT"
@@ -159,8 +146,6 @@ void config(){
   for(int i = 0; i < 3; i++){
     pinMode(TRIGGERS[i], OUTPUT);
     pinMode(ECHOS[i], INPUT);
-    pinMode(LED_VERMELHO[i], OUTPUT);
-    pinMode(LED_VERDE[i], OUTPUT);
   }
 
   connectWifi();
@@ -220,16 +205,19 @@ void vagas(){
     float distancia = (duracao * 0.034) / 2;
 
     if(distancia > 150){
-      digitalWrite(LED_VERDE[i], HIGH);
-      digitalWrite(LED_VERMELHO[i], LOW);
+      Serial.print("Vaga ");
+      Serial.print(i);
+      Serial.println(" Livre");
       client.publish(TOPICO_PUBLISH_VAGAS[i], "livre");
     }else{
-      digitalWrite(LED_VERMELHO[i], HIGH);
-      digitalWrite(LED_VERDE[i], LOW);
+      Serial.print("Vaga ");
+      Serial.print(i);
+      Serial.println(" Ocupada");
       client.publish(TOPICO_PUBLISH_VAGAS[i], "ocupada");
     }
   }
-
+  Serial.println("");
 }
+
   
 
