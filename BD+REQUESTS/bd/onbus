@@ -1,0 +1,329 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 17.4
+-- Dumped by pg_dump version 17.4
+
+-- Started on 2025-05-19 16:18:10
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 851 (class 1247 OID 16481)
+-- Name: role; Type: TYPE; Schema: public; Owner: postgres
+--
+
+CREATE TYPE public.role AS ENUM (
+    'ADMIN',
+    'EMPRESA',
+    'GESTOREMPRESA'
+);
+
+
+ALTER TYPE public.role OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 220 (class 1259 OID 16500)
+-- Name: onibus; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.onibus (
+    id_onibus integer NOT NULL,
+    placa character(7) NOT NULL,
+    id_usuario integer NOT NULL
+);
+
+
+ALTER TABLE public.onibus OWNER TO postgres;
+
+--
+-- TOC entry 219 (class 1259 OID 16499)
+-- Name: onibus_id_onibus_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.onibus_id_onibus_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.onibus_id_onibus_seq OWNER TO postgres;
+
+--
+-- TOC entry 4930 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: onibus_id_onibus_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.onibus_id_onibus_seq OWNED BY public.onibus.id_onibus;
+
+
+--
+-- TOC entry 222 (class 1259 OID 16514)
+-- Name: reserva; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.reserva (
+    id_reserva integer NOT NULL,
+    id_onibus integer NOT NULL,
+    id_usuario integer NOT NULL,
+    doca character(1) NOT NULL,
+    vaga character(1) NOT NULL,
+    horario_chegada timestamp without time zone,
+    horario_saida timestamp without time zone,
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.reserva OWNER TO postgres;
+
+--
+-- TOC entry 221 (class 1259 OID 16513)
+-- Name: reserva_id_reserva_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.reserva_id_reserva_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.reserva_id_reserva_seq OWNER TO postgres;
+
+--
+-- TOC entry 4931 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: reserva_id_reserva_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.reserva_id_reserva_seq OWNED BY public.reserva.id_reserva;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16488)
+-- Name: usuario; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.usuario (
+    id_usuario integer NOT NULL,
+    nome character varying(225) NOT NULL,
+    email character varying(225) NOT NULL,
+    senha character varying(225) NOT NULL,
+    ativo boolean DEFAULT true,
+    tipo character varying(255) NOT NULL,
+    cnpj character(14),
+    created_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp without time zone DEFAULT CURRENT_TIMESTAMP
+);
+
+
+ALTER TABLE public.usuario OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 16487)
+-- Name: usuario_id_usuario_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.usuario_id_usuario_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.usuario_id_usuario_seq OWNER TO postgres;
+
+--
+-- TOC entry 4932 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: usuario_id_usuario_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.usuario_id_usuario_seq OWNED BY public.usuario.id_usuario;
+
+
+--
+-- TOC entry 4759 (class 2604 OID 16503)
+-- Name: onibus id_onibus; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.onibus ALTER COLUMN id_onibus SET DEFAULT nextval('public.onibus_id_onibus_seq'::regclass);
+
+
+--
+-- TOC entry 4760 (class 2604 OID 16517)
+-- Name: reserva id_reserva; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reserva ALTER COLUMN id_reserva SET DEFAULT nextval('public.reserva_id_reserva_seq'::regclass);
+
+
+--
+-- TOC entry 4755 (class 2604 OID 16491)
+-- Name: usuario id_usuario; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuario ALTER COLUMN id_usuario SET DEFAULT nextval('public.usuario_id_usuario_seq'::regclass);
+
+
+--
+-- TOC entry 4922 (class 0 OID 16500)
+-- Dependencies: 220
+-- Data for Name: onibus; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.onibus (id_onibus, placa, id_usuario) FROM stdin;
+3	PAW1231	24
+5	PAW1221	25
+\.
+
+
+--
+-- TOC entry 4924 (class 0 OID 16514)
+-- Dependencies: 222
+-- Data for Name: reserva; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.reserva (id_reserva, id_onibus, id_usuario, doca, vaga, horario_chegada, horario_saida, created_at, updated_at) FROM stdin;
+\.
+
+
+--
+-- TOC entry 4920 (class 0 OID 16488)
+-- Dependencies: 218
+-- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.usuario (id_usuario, nome, email, senha, ativo, tipo, cnpj, created_at, updated_at) FROM stdin;
+25	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:24.747064	2025-04-05 10:55:24.747064
+26	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.180426	2025-04-05 10:55:25.181429
+27	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.558072	2025-04-05 10:55:25.558072
+28	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.904792	2025-04-05 10:55:25.904792
+24	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:40:15.077896	2025-04-05 10:58:48.542615
+29	IBM	IBMibm@ibm.com	ibm123	t	Usuario	\N	2025-05-01 15:41:04.684389	2025-05-01 15:41:04.684389
+30	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:33.69192	2025-05-01 15:44:33.69192
+31	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:38.825559	2025-05-01 15:44:38.825559
+32	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:52.303173	2025-05-01 15:44:52.303173
+\.
+
+
+--
+-- TOC entry 4933 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: onibus_id_onibus_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.onibus_id_onibus_seq', 5, true);
+
+
+--
+-- TOC entry 4934 (class 0 OID 0)
+-- Dependencies: 221
+-- Name: reserva_id_reserva_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.reserva_id_reserva_seq', 1, false);
+
+
+--
+-- TOC entry 4935 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: usuario_id_usuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.usuario_id_usuario_seq', 32, true);
+
+
+--
+-- TOC entry 4766 (class 2606 OID 16505)
+-- Name: onibus onibus_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.onibus
+    ADD CONSTRAINT onibus_pkey PRIMARY KEY (id_onibus);
+
+
+--
+-- TOC entry 4768 (class 2606 OID 16507)
+-- Name: onibus onibus_placa_key; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.onibus
+    ADD CONSTRAINT onibus_placa_key UNIQUE (placa);
+
+
+--
+-- TOC entry 4770 (class 2606 OID 16521)
+-- Name: reserva reserva_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reserva
+    ADD CONSTRAINT reserva_pkey PRIMARY KEY (id_reserva);
+
+
+--
+-- TOC entry 4764 (class 2606 OID 16498)
+-- Name: usuario usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT usuario_pkey PRIMARY KEY (id_usuario);
+
+
+--
+-- TOC entry 4771 (class 2606 OID 16508)
+-- Name: onibus onibus_id_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.onibus
+    ADD CONSTRAINT onibus_id_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario);
+
+
+--
+-- TOC entry 4772 (class 2606 OID 16522)
+-- Name: reserva reserva_id_onibus_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reserva
+    ADD CONSTRAINT reserva_id_onibus_fkey FOREIGN KEY (id_onibus) REFERENCES public.onibus(id_onibus);
+
+
+--
+-- TOC entry 4773 (class 2606 OID 16527)
+-- Name: reserva reserva_id_usuario_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.reserva
+    ADD CONSTRAINT reserva_id_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario);
+
+
+-- Completed on 2025-05-19 16:18:10
+
+--
+-- PostgreSQL database dump complete
+--
+
