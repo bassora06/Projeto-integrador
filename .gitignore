@@ -34,3 +34,6 @@ build/
 
 ### certificados ###
 src/main/resources/certs
+
+### MongoDB ###
+BD+REQUESTS
