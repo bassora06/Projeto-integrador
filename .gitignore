@@ -32,8 +32,5 @@ build/
 ### VS Code ###
 .vscode/
 
-### certificados ###
-src/main/resources/certs
-
 ### MongoDB ###
 BD+REQUESTS
