@@ -1,6 +1,7 @@
 package fatec.pi.rod.onbus.web.dto.mapper;
 
 import fatec.pi.rod.onbus.entity.Administrador;
+import fatec.pi.rod.onbus.entity.Usuario;
 import fatec.pi.rod.onbus.web.dto.AdministradorCreateDto;
 import fatec.pi.rod.onbus.web.dto.AdministradorResponseDto;
 
@@ -18,6 +19,12 @@ public class AdministradorMapper {
     }
 
     public static Administrador toEntity(AdministradorCreateDto dto) {
-        return new Administrador(dto.getNome(), dto.getEmail(), dto.getSenha(), true);
+        Administrador administrador = new Administrador();
+        administrador.setNome(dto.getNome());
+        administrador.setEmail(dto.getEmail());
+        administrador.setSenha(dto.getSenha());
+        administrador.setAtivo(true);
+        administrador.setTipo(Usuario.Role.ROLE_ADMIN);
+        return administrador;
     }
 }
