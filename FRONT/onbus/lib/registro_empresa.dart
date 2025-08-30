@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/termos.dart';
 
-class EnterpriseReg extends StatefulWidget {
-  const EnterpriseReg({super.key});
+class _EmpresaRegState extends StatefulWidget {
+  const _EmpresaRegState({super.key});
 
   @override
-  State<EnterpriseReg> createState() => _EnterpriseRegState();
+  State<_EmpresaRegState> createState() => __EmpresaRegStateState();
 }
 
-class _EnterpriseRegState extends State<EnterpriseReg> {
+class __EmpresaRegStateState extends State<_EmpresaRegState> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
@@ -115,7 +115,7 @@ class _EnterpriseRegState extends State<EnterpriseReg> {
                   // Registration Form
                   Padding(
                     padding: const EdgeInsets.symmetric(
-                      horizontal: 24.0,
+                      horizontal: 24.0, 
                       vertical: 20,
                     ),
                     child: Column(
@@ -340,7 +340,7 @@ class _EnterpriseRegState extends State<EnterpriseReg> {
   }
 }
 
-class WaveClipper extends CustomClipper<Path> {
+/*class WaveClipper extends CustomClipper<Path> {
   final bool reverse;
 
   WaveClipper({this.reverse = false});
@@ -380,3 +380,4 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
+*/

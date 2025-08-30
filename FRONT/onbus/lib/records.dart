@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/edit_record.dart';
 
-class RecordsPage extends StatefulWidget {
-  const RecordsPage({super.key});
+class RegistrosPag extends StatefulWidget {
+  const RegistrosPag({super.key});
 
   @override
-  State<RecordsPage> createState() => _RecordsPageState();
+  State<RegistrosPag> createState() => _RecordsPageState();
 }
 
-class _RecordsPageState extends State<RecordsPage> {
+class _RecordsPageState extends State<RegistrosPag> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,8 +99,8 @@ class _RecordsPageState extends State<RecordsPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => EditRecordPage(
-                                  recordId: index + 1, // Pass the record ID
+                                builder: (context) => EditRecord(
+                                  enterpriseId: (index + 1).toString(), // porque enterpriseId é String
                                 ),
                               ),
                             );
