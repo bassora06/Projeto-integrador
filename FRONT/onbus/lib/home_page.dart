@@ -3,6 +3,7 @@ import 'package:onbus/config.dart';
 import 'package:onbus/cad_empresa.dart';
 import 'package:onbus/records.dart';
 import 'package:onbus/cad_guiche.dart';
+import 'package:onbus/docas_ADM.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -108,7 +109,12 @@ class HomePage extends StatelessWidget {
                         elevation: 2,
                       ),
                       onPressed: () {
-                        // TO DO: Add your Docas button action here
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => VagaTela(),
+                          ),
+                        );
                       },
                       ),
                     ),
@@ -224,13 +230,13 @@ class HomePage extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16)
                             ),
-                            elevation: 2,
+                            elevation: 4,
                           ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const RecordsPage(),
+                                  builder: (context) => const RegistrosPag(),
                                 ),
                               );
                             },
