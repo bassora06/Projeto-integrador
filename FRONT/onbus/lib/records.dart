@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/edit_record.dart';
+import 'package:onbus/services/servEmpresa.dart';
 
 class RegistrosPag extends StatefulWidget {
   const RegistrosPag({super.key});
@@ -9,6 +10,32 @@ class RegistrosPag extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RegistrosPag> {
+  final EnterpriseService _service = EnterpriseService();
+  List<Map<String, dynamic>> _records = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchRecords();
+  }
+
+  void _fetchRecords() async {
+    setState(() => _isLoading = true);
+    try {
+      final fetchedRecords = await _service.getAllEnterprises();
+      setState(() {
+        _records = fetchedRecords;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro ao carregar registros: $e')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,10 +88,10 @@ class _RecordsPageState extends State<RegistrosPag> {
                       child: Column(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.edit_note,
                             size: 120,
-                            color: const Color.fromARGB(255, 0, 0, 0),
+                            color: Color.fromARGB(255, 0, 0, 0),
                           ),
                           const Text(
                             'Registros',
@@ -74,41 +101,54 @@ class _RecordsPageState extends State<RegistrosPag> {
                               color: Color.fromARGB(255, 0, 0, 0),
                             ),
                           ),
+                          const SizedBox(height: 20),
+                          _isLoading
+                              ? const CircularProgressIndicator()
+                              : Text(
+                                  "Total de Registros: ${_records.length}",
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w500,
+                                    color: Color.fromARGB(255, 0, 0, 0),
+                                  ),
+                                ),
+                          const SizedBox(height: 10),
                         ],
                       ),
                     ),
                   ),
 
-                  // Aqui tera de ser feita a integração com o banco de dados...
-
-                  // Example List of Records
-                  ListView.builder(
-                    shrinkWrap: true,
-                    physics: const NeverScrollableScrollPhysics(),
-                    itemCount: 10, // Replace with your records count
-                    itemBuilder: (context, index) {
-                      return Card(
-                        margin: const EdgeInsets.symmetric(
-                          horizontal: 24.0,
-                          vertical: 8.0,
-                        ),
-                        child: ListTile(
-                          title: Text('Empresa ${index + 1}'),
-                          subtitle: Text('Dados da empresa ${index + 1}'),
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => EditRecord(
-                                  enterpriseId: (index + 1).toString(), // porque enterpriseId é String
-                                ),
+                  // Lista de registros
+                  _isLoading
+                      ? const SizedBox.shrink() // Esconde a lista enquanto carrega
+                      : ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: _records.length,
+                          itemBuilder: (context, index) {
+                            final record = _records[index];
+                            return Card(
+                              margin: const EdgeInsets.symmetric(
+                                horizontal: 24.0,
+                                vertical: 8.0,
+                              ),
+                              child: ListTile(
+                                title: Text(record['name'] ?? 'Empresa Sem Nome'),
+                                subtitle: Text('ID: ${record['id']}'),
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => EditRecord(
+                                        enterpriseId: record['id'].toString(),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             );
                           },
                         ),
-                      );
-                    },
-                  ),
                 ],
               ),
             ),
@@ -159,3 +199,4 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
+

@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/termos.dart';
 
-class _EmpresaRegState extends StatefulWidget {
-  const _EmpresaRegState({super.key});
+class EmpresaReg extends StatefulWidget {
+  const EmpresaReg({super.key});
 
   @override
-  State<_EmpresaRegState> createState() => __EmpresaRegStateState();
+  State<EmpresaReg> createState() => _EmpresaRegState();
 }
 
-class __EmpresaRegStateState extends State<_EmpresaRegState> {
+class _EmpresaRegState extends State<EmpresaReg> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;

@@ -127,7 +127,7 @@ class HomePage extends StatelessWidget {
                       children: [
                         Expanded(
                           child: ElevatedButton.icon(
-                          icon: const Icon(Icons.directions_bus, size: 40), //trocar imagem
+                          icon: const Icon(Icons.person_add, size: 40), 
                           label: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24.0),
                             child: Text(
@@ -214,7 +214,7 @@ class HomePage extends StatelessWidget {
                         const SizedBox(width: 4),
                         Expanded(
                           child: ElevatedButton.icon(
-                          icon: const Icon(Icons.directions_bus, size: 40), //trocar imagem
+                          icon: const Icon(Icons.edit_note, size: 40),
                           label: const Padding(
                             padding: EdgeInsets.symmetric(vertical: 24.0),
                             child: Text(

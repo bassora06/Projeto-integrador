@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+// import 'package:onbus/services/iot_service.dart'; // BACK-END (comentado)
 
 class VagaTela extends StatefulWidget {
   const VagaTela({super.key});
@@ -9,10 +10,12 @@ class VagaTela extends StatefulWidget {
 }
 
 class _VagaTelaState extends State<VagaTela> {
+  // final IotService _iotService = IotService(); // BACK-END (comentado)
   List<Map<String, dynamic>> _vagas = [];
   Timer? _timer;
   bool _isLoading = true;
 
+  // MOCK de dados para simular o back-end
   final List<String> _mockStatuses = ["livre", "preenchido", "stand by"];
   int _mockStatusIndex = 0;
 
@@ -20,9 +23,9 @@ class _VagaTelaState extends State<VagaTela> {
   void initState() {
     super.initState();
     _fetchVagas();
-
-    // Atualiza os dados a cada 1 minuto
-    _timer = Timer.periodic(const Duration(minutes: 1), (_) => _fetchVagas());
+    _timer = Timer.periodic(const Duration(seconds: 5), (timer) {
+      _fetchVagas();
+    });
   }
 
   @override
@@ -31,12 +34,14 @@ class _VagaTelaState extends State<VagaTela> {
     super.dispose();
   }
 
-  Future<void> _fetchVagas() async {
+  // Simula a busca das vagas na API e atualiza a lista
+  void _fetchVagas() async {
     setState(() => _isLoading = true);
 
-    await Future.delayed(const Duration(milliseconds: 600));
+    // MOCK (substitua por sua chamada de API)
+    await Future.delayed(const Duration(seconds: 1));
     final mockData = List.generate(
-      24,
+      32, // Gerando 24 vagas para demonstrar a rolagem
       (index) {
         final status = _mockStatuses[(_mockStatusIndex + index) % _mockStatuses.length];
         return {
@@ -52,325 +57,268 @@ class _VagaTelaState extends State<VagaTela> {
       _mockStatusIndex = (_mockStatusIndex + 1) % _mockStatuses.length;
       _isLoading = false;
     });
+
+    // BACK-END (comentado)
+    /*
+    try {
+      final vagas = await _iotService.getStatusTodasVagas();
+      setState(() {
+        _vagas = vagas;
+        _isLoading = false;
+      });
+    } catch (e) {
+      print("Erro ao buscar vagas: $e");
+      setState(() {
+        _isLoading = false;
+      });
+    }
+    */
   }
 
+  // Mapeia o status em texto para a cor correspondente
   Color _getCorVaga(String status) {
     switch (status) {
       case 'livre':
-        return Colors.green.shade600;
+        return Color(0xff41d10d)!;
       case 'preenchido':
-        return Colors.red.shade600;
+        return Color(0xffdb0b23)!;
       case 'stand by':
-        return Colors.amber.shade700;
+        return Color(0xfff5ce0c)!;
       default:
-        return Colors.grey.shade500;
+        return Colors.grey[400]!;
     }
   }
 
-  IconData _getIconVaga(String status) {
-    switch (status) {
-      case 'livre':
-        return Icons.check_circle;
-      case 'preenchido':
-        return Icons.block;
-      case 'stand by':
-        return Icons.pause_circle_filled;
-      default:
-        return Icons.help;
-    }
-  }
-
+  // Exibe o pop-up com os detalhes da vaga
   void _showVagaDetails(Map<String, dynamic> vaga) {
     showDialog(
       context: context,
-      builder: (_) => AlertDialog(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
-            const SizedBox(height: 8),
-            Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
-          ],
-        ),
-        actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Fechar')),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildLegendItem({
-    required Color color,
-    required String text,
-    required IconData icon,
-  }) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-      decoration: BoxDecoration(
-        color: color.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: color, width: 1.2),
-      ),
-      child: Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Icon(icon, size: 18, color: color),
-          const SizedBox(width: 8),
-          Text(
-            text,
-            style: const TextStyle(
-              color: Color(0xFF280068),
-              fontWeight: FontWeight.w600,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
+              const SizedBox(height: 8),
+              Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
+              const SizedBox(height: 20),
+              // Adicione mais detalhes aqui se a API retornar mais dados
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Fechar"),
             ),
-          ),
-        ],
-      ),
+          ],
+        );
+      },
     );
   }
 
-  Widget _vagaCard(Map<String, dynamic> vaga) {
-    final status = (vaga['status'] ?? '') as String;
-    final cor = _getCorVaga(status);
-
-    return Material(
-      elevation: 3,
-      borderRadius: BorderRadius.circular(10),
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: () => _showVagaDetails(vaga),
-        child: Container(
+  // Helper para criar os itens da legenda
+  Widget _buildLegendItem({required Color color, required String text, Color textColor = Colors.white}) {
+    return Row(
+      children: [
+        Container(
+          width: 20,
+          height: 20,
           decoration: BoxDecoration(
-            color: cor,
-            border: Border.all(color: Colors.white.withOpacity(0.9), width: 1.2),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-          child: LayoutBuilder(
-            builder: (_, c) {
-              final wide = c.maxWidth >= 200;
-              return Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Icon(_getIconVaga(status), color: Colors.white, size: wide ? 20 : 18),
-                      const SizedBox(width: 6),
-                      Flexible(
-                        child: Text(
-                          vaga['id'] ?? 'N/A',
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w800,
-                            fontSize: wide ? 16 : 14,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 6),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.18),
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(color: Colors.white.withOpacity(0.85), width: 1),
-                    ),
-                    child: Text(
-                      status.toUpperCase(),
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w700,
-                        fontSize: wide ? 12 : 11,
-                        letterSpacing: 0.8,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 4),
-                  Text(
-                    vaga['distancia'] ?? '—',
-                    style: TextStyle(
-                      color: Colors.white.withOpacity(0.95),
-                      fontWeight: FontWeight.w600,
-                      fontSize: wide ? 12 : 11,
-                    ),
-                  ),
-                ],
-              );
-            },
+            color: color,
+            borderRadius: BorderRadius.circular(5),
           ),
         ),
-      ),
+        const SizedBox(width: 8),
+        Text(
+          text,
+          style: TextStyle(color: textColor),
+        ),
+      ],
     );
-  }
-
-  double _targetCardWidth(Size s) {
-    if (s.width < 360) return s.width - 32;
-    if (s.width < 420) return 180;
-    if (s.width < 540) return 200;
-    if (s.width < 760) return 220;
-    if (s.width < 1024) return 240;
-    if (s.width < 1400) return 260;
-    return 300;
-  }
-
-  double _cardAspect(Size s) {
-    if (s.width < 360) return 1.40;
-    if (s.width < 420) return 1.55;
-    if (s.width < 540) return 1.70;
-    if (s.width < 760) return 1.9;
-    if (s.width < 1024) return 2.1;
-    if (s.width < 1400) return 2.25;
-    return 2.4;
   }
 
   @override
   Widget build(BuildContext context) {
-    final media = MediaQuery.of(context);
-    final size = media.size;
-    final bottomSafe = media.padding.bottom;
-
-    final targetWidth = _targetCardWidth(size);
-    final aspect = _cardAspect(size);
-
     return Scaffold(
       body: Stack(
         children: [
-          Positioned.fill(
+          // Imagem de fundo
+          SizedBox(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height,
             child: Image.asset(
               'lib/assets/images/fundo_Docas.PNG',
-              fit: BoxFit.cover,
-              alignment: Alignment.center,
+              fit: BoxFit.fill,
             ),
           ),
           SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8.0, left: 8.0),
-                    child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: IconButton(
-                        icon: const Icon(Icons.arrow_back, size: 30, color: Colors.white),
-                        onPressed: () => Navigator.pop(context),
-                      ),
-                    ),
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(16, 4, 16, 10),
-                    child: Column(
-                      children: const [
-                        Text(
-                          'Monitoramento de Vagas',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF280068),
+            child: Column(
+              children: [
+                // Título e logo
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(top: 30.0),
+                        child: Align(
+                          alignment: Alignment.centerLeft,
+                          child: IconButton(
+                            icon: const Icon(Icons.arrow_back, size: 37, color: Color(0xff4c12de)),
+                            onPressed: () => Navigator.pop(context),
                           ),
                         ),
-                        SizedBox(height: 12),
-                        Divider(color: Color(0xFF280068), thickness: 1),
+                      ),
+                      const SizedBox(height: 40),
+                      const Text(
+                        'Monitoramento',
+                        style: TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xff3a0382),
+                        ),
+                      ),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(vertical: 20),
+                        child: Divider(
+                          color: Color(0xff4c12de),
+                          thickness: 1,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                // Grid de Vagas (Agora rolável)
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: _isLoading
+                        ? const Center(child: CircularProgressIndicator(color: Colors.white))
+                        : LayoutBuilder(
+                            builder: (context, constraints) {
+                              int crossAxisCount = (constraints.maxWidth ~/ 110).clamp(2, 6);
+                              double childAspectRatio = 2.5;
+
+                              return GridView.builder(
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: crossAxisCount,
+                                  crossAxisSpacing: 8.0,
+                                  mainAxisSpacing: 8.0,
+                                  childAspectRatio: childAspectRatio,
+                                ),
+                                itemCount: _vagas.length,
+                                itemBuilder: (context, index) {
+                                  final vaga = _vagas[index];
+                                  final statusCor = _getCorVaga(vaga['status'] ?? '');
+                                  final hsl = HSLColor.fromColor(statusCor);
+                                  final bordaCor = hsl
+                                        .withLightness((hsl.lightness * 0.8).clamp(0.0, 1.0))
+                                        .toColor();
+                                  return GestureDetector(
+                                    onTap: () => _showVagaDetails(vaga),
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      decoration: BoxDecoration(
+                                        color: _getCorVaga(vaga['status'] ?? ''),
+                                        borderRadius: BorderRadius.circular(5),
+                                        border: Border.all(
+                                          color: bordaCor,
+                                          width: 0.7,
+                                        ),                                                     //Border.all(color: Colors.white, width: 1.5),
+                                        /*boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black.withOpacity(0.2),
+                                            blurRadius: 6,
+                                            offset: const Offset(0, 3),
+                                          ),
+                                         
+                                        ], */
+                                      ),
+                                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+                                      child: Text(
+                                        vaga['id'] ?? 'N/A',
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 14,
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                  ),
+                ),
+                // Legenda fixa na parte inferior (corrigida)
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  margin: const EdgeInsets.only(top: 24.0, bottom: 16.0), // ✅ Espaçamento em relação ao grid
+                  padding: const EdgeInsets.all(16.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(15),
+                      border: Border.all(
+                        color: const Color(0xFF280068),
+                        width: 2.0,
+                      ),
+                    /*boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black38,
+                        blurRadius: 10,
+                        offset: Offset(0, -5),
+                      ),
+                    ], 
+                    */
+                  ),
+                  child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Status das Vagas:',
+                      style: TextStyle(
+                      color: Color(0xFF280068),
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                      ),
+                    ),
+                  const SizedBox(height: 10),
+                   // 🔄 Alteramos de Column para Row
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _buildLegendItem(
+                        color: Colors.green,
+                        text: "Livre",
+                        textColor: const Color(0xFF280068)),
+                      _buildLegendItem(
+                        color: Colors.red,
+                        text: "Preenchido",
+                        textColor: const Color(0xFF280068)),
+                      _buildLegendItem(
+                        color: Colors.yellow,
+                        text: "Stand by",
+                        textColor: const Color(0xFF280068)),
                       ],
                     ),
+                  ],
+                ), 
+              ),
+
+                 // Logo fixa na parte inferior
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 20.0),
+                  child: Image.asset(
+                    'lib/assets/images/onbusW.png',
+                    height: 50,
+                    fit: BoxFit.contain,
                   ),
                 ),
-                if (_isLoading)
-                  const SliverFillRemaining(
-                    hasScrollBody: false,
-                    child: Center(child: CircularProgressIndicator(color: Colors.white)),
-                  )
-                else ...[
-                  SliverPadding(
-                    padding: const EdgeInsets.all(10),
-                    sliver: SliverGrid(
-                      gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                        maxCrossAxisExtent: targetWidth,
-                        mainAxisSpacing: 10,
-                        crossAxisSpacing: 10,
-                        childAspectRatio: aspect,
-                      ),
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) => _vagaCard(_vagas[index]),
-                        childCount: _vagas.length,
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      width: double.infinity,
-                      margin: const EdgeInsets.fromLTRB(12, 6, 12, 12),
-                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(20),
-                        border: Border.all(color: const Color(0xFF280068), width: 2),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withOpacity(0.18),
-                            blurRadius: 8,
-                            offset: const Offset(0, -2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Status das Vagas:',
-                            style: TextStyle(
-                              color: Color(0xFF280068),
-                              fontWeight: FontWeight.bold,
-                              fontSize: 18,
-                            ),
-                          ),
-                          const SizedBox(height: 10),
-                          Wrap(
-                            spacing: 12,
-                            runSpacing: 10,
-                            children: [
-                              _buildLegendItem(
-                                color: Colors.green.shade600,
-                                text: "Livre",
-                                icon: Icons.check_circle,
-                              ),
-                              _buildLegendItem(
-                                color: Colors.red.shade600,
-                                text: "Preenchido",
-                                icon: Icons.block,
-                              ),
-                              _buildLegendItem(
-                                color: Colors.amber.shade700,
-                                text: "Stand by",
-                                icon: Icons.pause_circle_filled,
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 12 + bottomSafe),
-                      child: Center(
-                        child: Image.asset(
-                          'lib/assets/images/onbusW.png',
-                          height: 50,
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ),

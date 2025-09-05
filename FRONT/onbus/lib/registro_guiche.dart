@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/termos.dart';
 
-class TWindowReg extends StatefulWidget {
-  const TWindowReg({super.key});
+class GuicheReg extends StatefulWidget {
+  const GuicheReg({super.key});
 
   @override
-  State<TWindowReg> createState() => _TWindowRegState();
+  State<GuicheReg> createState() => _GuicheRegState();
 }
 
-class _TWindowRegState extends State<TWindowReg> {
+class _GuicheRegState extends State<GuicheReg> {
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
