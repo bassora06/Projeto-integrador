@@ -12,278 +12,271 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          // Applying scrollable view
-          child: Column(
-            children: [
-              // Abstract curved header
-              ClipPath(
-                clipper: WaveClipper(reverse: true),
-                child: Container(
-                  height: 120,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 55, 39, 166),
-                        Color.fromARGB(255, 40, 8, 58),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        right: 15,
-                        bottom: 50,
-                        child: IconButton(
-                          icon: const Icon(
-                            Icons.settings,
-                            color: Colors.white,
-                            size: 30,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const ConfigPage(),
+      body: Column(
+        children: [
+          // Conteúdo principal rolável, que inclui o cabeçalho e os botões
+          Expanded(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  // Cabeçalho rolável
+                  ClipPath(
+                    clipper: WaveClipper(reverse: true),
+                    child: Container(
+                      height: 120,
+                      decoration: const BoxDecoration(
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromARGB(255, 55, 39, 166),
+                            Color.fromARGB(255, 40, 8, 58),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Stack(
+                        children: [
+                          Positioned(
+                            right: 15,
+                            bottom: 50,
+                            child: IconButton(
+                              icon: const Icon(
+                                Icons.settings,
+                                color: Colors.white,
+                                size: 30,
                               ),
-                            );
-                          },
-                        ),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const ConfigPage(),
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
+                    ),
                   ),
-                ),
-              ),
 
-              // Main content
-              Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 16.0,
-                  vertical: 20,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text(
-                      'Organização de Docas',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 40, 0, 104),
-                      ),
+                  // Conteúdo principal
+                  Padding(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 16.0,
+                      vertical: 20,
                     ),
-                    const SizedBox(height: 20),
-                    const Padding(
-                      padding: EdgeInsets.symmetric(vertical: 20),
-                      child: Divider(
-                        color: Color.fromARGB(255, 40, 0, 104),
-                        thickness: 1,
-                      ),
-                    ),
-
-                    const SizedBox(height: 30),
-                    // First row with Docas and Conversar
-                    // Single "Docas" button expanded to fill the row as a big rectangular button
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                      icon: const Icon(Icons.directions_bus, size: 40),
-                      label: const Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24.0),
-                        child: Text(
-                        'Docas',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        ),
-                      ),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                        shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        ),
-                        elevation: 2,
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => VagaTela(),
-                          ),
-                        );
-                      },
-                      ),
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    // Second row with Incluir and Alterar Cadastro
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(
-                          child: ElevatedButton.icon(
-                          icon: const Icon(Icons.person_add, size: 40), 
-                          label: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 24.0),
-                            child: Text(
-                            'Incluir Cadastro',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                            ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)
-                            ),
-                            elevation: 4,
-                          ),
-                            onPressed: () {
-                              showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  return AlertDialog(
-                                    title: const Center(
-                                      child: Text('Incluir Cadastro'),
-                                    ),
-                                    actions: [
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) =>
-                                                      const RegScreenPJ(),
-                                            ),
-                                          );
-                                          // Add your first button action here
-                                        },
-                                        child: const Center(
-                                          child: Text(
-                                            'Cadastrar Empresa',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(255, 40, 0, 104),
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      TextButton(
-                                        onPressed: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder:
-                                                  (context) =>
-                                                      const RegScreenPF(),
-                                            ),
-                                          );
-                                          // Add your second button action here
-                                        },
-                                        child: const Center(
-                                          child: Text(
-                                            'Cadastrar Guichê',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                255,
-                                                40,
-                                                0,
-                                                104,
-                                              ),
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
+                        const Text(
+                          'Organização de Docas',
+                          style: TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.bold,
+                            color: Color.fromARGB(255, 40, 0, 104),
                           ),
                         ),
-                        const SizedBox(width: 4),
-                        Expanded(
+                        const SizedBox(height: 20),
+                        const Padding(
+                          padding: EdgeInsets.symmetric(vertical: 20),
+                          child: Divider(
+                            color: Color.fromARGB(255, 40, 0, 104),
+                            thickness: 1,
+                          ),
+                        ),
+
+                        const SizedBox(height: 30),
+                        // Botão "Docas"
+                        SizedBox(
+                          width: double.infinity,
                           child: ElevatedButton.icon(
-                          icon: const Icon(Icons.edit_note, size: 40),
-                          label: const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 24.0),
-                            child: Text(
-                            'Alterar Registro',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
+                            icon: const Icon(Icons.directions_bus, size: 40),
+                            label: const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 24.0),
+                              child: Text(
+                                'Docas',
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              elevation: 2,
                             ),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: const Color.fromARGB(255, 255, 255, 255),
-                            shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16)
-                            ),
-                            elevation: 4,
-                          ),
                             onPressed: () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const RegistrosPag(),
+                                  builder: (context) => const VagaTela(),
                                 ),
                               );
                             },
                           ),
                         ),
+
+                        const SizedBox(height: 30),
+
+                        // Linha de botões "Incluir" e "Alterar"
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                icon: const Icon(Icons.person_add, size: 40), 
+                                label: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                                  child: Text(
+                                    'Incluir Cadastro',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)
+                                  ),
+                                  elevation: 4,
+                                ),
+                                onPressed: () {
+                                  showDialog(
+                                    context: context,
+                                    builder: (BuildContext context) {
+                                      return AlertDialog(
+                                        title: const Center(
+                                          child: Text('Incluir Cadastro'),
+                                        ),
+                                        actions: [
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const RegScreenPJ(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Center(
+                                              child: Text(
+                                                'Cadastrar Empresa',
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(255, 40, 0, 104),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          TextButton(
+                                            onPressed: () {
+                                              Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (context) => const RegScreenPF(),
+                                                ),
+                                              );
+                                            },
+                                            child: const Center(
+                                              child: Text(
+                                                'Cadastrar Guichê',
+                                                style: TextStyle(
+                                                  color: Color.fromARGB(255, 40, 0, 104,),
+                                                  fontSize: 20,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: ElevatedButton.icon(
+                                icon: const Icon(Icons.edit_note, size: 40),
+                                label: const Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                                  child: Text(
+                                    'Alterar Registro',
+                                    style: TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(16)
+                                  ),
+                                  elevation: 4,
+                                ),
+                                onPressed: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const RegistrosPag(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 30),
+
+                        // Logo at the bottom
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 20.0),
+                          child: Image.asset(
+                            'lib/assets/images/onbus.png',
+                            height: 150,
+                            fit: BoxFit.contain,
+                          ),
+                        ),
                       ],
-                    ),
-
-                    const SizedBox(height: 30),
-
-                    // Logo at the bottom
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 20.0),
-                      child: Image.asset(
-                        'lib/assets/images/onbus.png', // Make sure you have this asset in your project
-                        height: 150,
-                        fit: BoxFit.contain,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-              // Abstract curved footer
-              ClipPath(
-                clipper: WaveClipper(),
-                child: Container(
-                  height: 100,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Color.fromARGB(255, 40, 8, 58),
-                        Color.fromARGB(255, 55, 39, 166),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
                     ),
                   ),
+                ],
+              ),
+            ),
+          ),
+          
+          // Rodapé fixo
+          ClipPath(
+            clipper: WaveClipper(),
+            child: Container(
+              height: 100,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color.fromARGB(255, 40, 8, 58),
+                    Color.fromARGB(255, 55, 39, 166),
+                  ],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
                 ),
               ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
 
+  // Métodos auxiliares permanecem inalterados
   Widget _buildMenuButton({
     required IconData icon,
     required String label,
@@ -299,7 +292,7 @@ class HomePage extends StatelessWidget {
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(10),
               border: Border.all(
-                color: Color.fromARGB(255, 40, 0, 104),
+                color: const Color.fromARGB(255, 40, 0, 104),
                 width: 1,
               ),
             ),

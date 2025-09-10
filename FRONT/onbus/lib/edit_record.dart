@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:onbus/services/servEmpresa.dart'; // BACK-END (comentado)
+import 'package:onbus/services/servEmpresa.dart'; // Importando o serviço atualizado
 
 class EditRecord extends StatefulWidget {
   final String? enterpriseId; // se vier preenchido, é edição; se não, é cadastro novo
@@ -12,7 +12,7 @@ class EditRecord extends StatefulWidget {
 
 class _EditRecordState extends State<EditRecord> {
   // Service para comunicação com o back
-  // final ServiceEmpresa _service = ServiceEmpresa(); // BACK-END (comentado)
+  final EnterpriseService _service = EnterpriseService(); // Usando o serviço atualizado
 
   // Controllers dos campos
   final TextEditingController _nameController = TextEditingController();
@@ -33,11 +33,12 @@ class _EditRecordState extends State<EditRecord> {
     }
   }
 
-  /// Simula carregar os dados da empresa
+  /// Carrega os dados da empresa usando o serviço
   void _loadEnterpriseData(String id) async {
     setState(() => _isLoading = true);
 
-    /* BACK-END (comentado)
+    // Lógica do back-end para carregar dados
+    /*
     try {
       final enterprise = await _service.getEnterpriseById(id);
       _nameController.text = enterprise['name'] ?? '';
@@ -54,7 +55,6 @@ class _EditRecordState extends State<EditRecord> {
       setState(() => _isLoading = false);
     }
     */
-
     // MOCK (pra você testar o front)
     await Future.delayed(const Duration(seconds: 1));
     _nameController.text = "Empresa Exemplo";
@@ -78,7 +78,8 @@ class _EditRecordState extends State<EditRecord> {
 
     setState(() => _isLoading = true);
 
-    /* BACK-END (comentado)
+    // Lógica do back-end para salvar ou atualizar
+    /*
     try {
       if (_isEditing) {
         await _service.updateEnterprise(widget.enterpriseId!, {
@@ -87,19 +88,10 @@ class _EditRecordState extends State<EditRecord> {
           'email': _emailController.text,
           'phone': _phoneController.text,
         });
-      } else {
-        await _service.createEnterprise({
-          'name': _nameController.text,
-          'cnpj': _cnpjController.text,
-          'email': _emailController.text,
-          'phone': _phoneController.text,
-        });
       }
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text(_isEditing
-              ? "Empresa atualizada com sucesso!"
-              : "Empresa cadastrada com sucesso!"),
+          content: Text(_isEditing ? "Empresa atualizada com sucesso!" : "Empresa cadastrada com sucesso!"),
         ),
       );
     } catch (e) {
@@ -112,7 +104,6 @@ class _EditRecordState extends State<EditRecord> {
       setState(() => _isLoading = false);
     }
     */
-
     // MOCK (pra você testar o front)
     await Future.delayed(const Duration(seconds: 1));
     ScaffoldMessenger.of(context).showSnackBar(

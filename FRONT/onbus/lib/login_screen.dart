@@ -2,6 +2,83 @@ import 'package:flutter/material.dart';
 import 'package:onbus/home_page.dart';
 import 'package:onbus/cad_guiche.dart';
 import 'package:onbus/cad_empresa.dart';
+import 'package:onbus/services/servLogin.dart';
+import 'package:onbus/docas_ADM.dart';
+import 'package:onbus/config.dart';
+import 'package:onbus/docas_Empresa.dart';
+
+// Novas telas para os menus de cada tipo de usuário
+class EmpresaHomePage extends StatelessWidget {
+  const EmpresaHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Menu Empresa")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VagaTela()),
+                );
+              },
+              child: const Text("Ver Docas"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ConfigPage()),
+                );
+              },
+              child: const Text("Configurações"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class GuicheHomePage extends StatelessWidget {
+  const GuicheHomePage({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Menu Guichê")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const VagaTela()),
+                );
+              },
+              child: const Text("Ver Docas (Guichê)"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const ConfigPage()),
+                );
+              },
+              child: const Text("Configurações"),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,15 +88,60 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final LoginService _loginService = LoginService();
   bool _obscurePassword = true;
+  bool _isLoading = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  // Removendo o DropdownButton para simplificar a lógica
+  // e focar no email e senha para determinar o tipo de usuário
 
   @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();
+  }
+
+  void _handleLogin() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final authData = await _loginService.login(
+        _emailController.text,
+        _passwordController.text,
+      );
+
+      final userType = authData['userType'];
+
+      // Navegação baseada no tipo de usuário
+      Widget destinationPage;
+      switch (userType) {
+        case 'adm':
+          destinationPage = const HomePage();
+          break;
+        case 'empresa':
+          destinationPage = const VagaTelaEmpresa();
+          break;
+        case 'guiche':
+          destinationPage = const GuicheHomePage();
+          break;
+        default:
+          throw Exception("Tipo de usuário desconhecido.");
+      }
+
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => destinationPage),
+      );
+
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Erro: $e')),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -35,10 +157,10 @@ class _LoginScreenState extends State<LoginScreen> {
             height: screenSize.height,
             child: Image.asset(
               'lib/assets/images/fundo_Padrao.PNG',
-              fit: BoxFit.fill, // Ajuste da imagem para a tela
+              fit: BoxFit.fill,
             ),
           ),
-
+          
           SafeArea(
             child: SingleChildScrollView(
               child: Column(
@@ -150,18 +272,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 borderRadius: BorderRadius.circular(30),
                               ),
                             ),
-                            onPressed: () {
-                              // Add login functionality
-                              final email = _emailController.text;
-                              final password = _passwordController.text;
-                              print('Email: $email, Password: $password');
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const HomePage(),
-                                ),
-                              );
-                            },
+                            onPressed: _isLoading ? null : _handleLogin,
                             child: Ink(
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(30),
@@ -174,19 +285,21 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                               child: Container(
                                 alignment: Alignment.center,
-                                child: const Text(
-                                  'ENTRAR',
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 20,
-                                    color: Colors.white,
-                                  ),
-                                ),
+                                child: _isLoading
+                                    ? const CircularProgressIndicator(color: Colors.white)
+                                    : const Text(
+                                        'ENTRAR',
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 20,
+                                          color: Colors.white,
+                                        ),
+                                      ),
                               ),
                             ),
                           ),
                         ),
-                        const SizedBox(height: 40),
+                        /*const SizedBox(height: 40),
                         const Text(
                           "Ainda não tem uma conta?",
                           style: TextStyle(
@@ -231,7 +344,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               color: Colors.black,
                             ),
                           ),
-                        ),
+                        ),*/
                       ],
                     ),
                   ),
@@ -243,45 +356,4 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  /*class WaveClipper extends CustomClipper<Path> {
-  final bool reverse;
-
-  WaveClipper({this.reverse = false});
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    if (reverse) {
-      path.moveTo(0, size.height);
-      path.quadraticBezierTo(
-        size.width * 0.25,
-        size.height - 30,
-        size.width * 0.5,
-        size.height - 20,
-      );
-      path.quadraticBezierTo(
-        size.width * 0.75,
-        size.height - 10,
-        size.width,
-        size.height - 30,
-      );
-      path.lineTo(size.width, 0);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(0, 0);
-      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
-      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-    }
-
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}*/
 }

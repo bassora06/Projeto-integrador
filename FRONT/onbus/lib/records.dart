@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/edit_record.dart';
-import 'package:onbus/services/servEmpresa.dart';
+import 'package:onbus/services/servRegistro.dart'; // Importando o novo serviço de registros
 
 class RegistrosPag extends StatefulWidget {
   const RegistrosPag({super.key});
@@ -10,7 +10,7 @@ class RegistrosPag extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RegistrosPag> {
-  final EnterpriseService _service = EnterpriseService();
+  final RecordsService _service = RecordsService(); // Usando o novo serviço
   List<Map<String, dynamic>> _records = [];
   bool _isLoading = true;
 
@@ -199,4 +199,3 @@ class WaveClipper extends CustomClipper<Path> {
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }
-
