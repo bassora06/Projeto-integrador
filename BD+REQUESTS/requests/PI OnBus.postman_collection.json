@@ -16,7 +16,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"jao\",\r\n  \"email\": \"teste@example.com\",\r\n  \"senha\": \"senha123\",\r\n  \"ativo\": true,\r\n  \"tipo\": \"ROLE_ADMIN\"\r\n}\r\n",
+							"raw": "{\r\n  \"nome\": \"Kauan\",\r\n  \"email\": \"kaka@example.com\",\r\n  \"senha\": \"senha123\",\r\n  \"ativo\": true,\r\n  \"tipo\": \"ROLE_ADMIN\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -203,7 +203,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"idOnibus\": 3,\r\n  \"idUsuario\": 24,\r\n  \"horaChegada\": \"2025-05-01T12:00:00\",\r\n  \"horaSaida\": \"2025-05-01T12:17:00\",\r\n  \"doca\": \"A\",\r\n  \"vaga\": \"3\"\r\n}\r\n",
+							"raw": "{\r\n    \"idOnibus\": 5,\r\n    \"idUsuario\": 34,\r\n    \"horaChegada\": \"2023-10-01T10:00:00\",\r\n    \"horaSaida\": \"2023-10-01T12:00:00\",\r\n    \"doca\": \"A\",\r\n    \"vaga\": \"1\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -255,7 +255,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"nome\": \"IBM\",\r\n  \"email\": \"IBMibm@ibm.com\",\r\n  \"senha\": \"ibm123\",\r\n  \"cnpj\": \"11086761000124\"\r\n}\r\n",
+							"raw": "{\r\n  \"nome\": \"IBM\",\r\n  \"email\": \"ibm@ibm.com\",\r\n  \"senha\": \"ibm123\",\r\n  \"cnpj\": \"11086761000124\"\r\n}\r\n",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -290,6 +290,75 @@
 							"port": "8080",
 							"path": [
 								"empresas"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "LOGIN",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"nome\": \"Kauan\",\r\n  \"email\": \"kaka@example.com\",\r\n  \"senha\": \"$2a$10$h/Js41.nkgkq0BIR2a4Ch.ZoUWwV0TX714tU/KoRKRLPGvhaCfIMS\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Admin",
+			"item": [
+				{
+					"name": "Admin - Create",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": 39,\r\n    \"nome\": \"Kauan\",\r\n    \"senha\": \"senha123\",\r\n    \"email\": \"kaka@example.com\",\r\n    \"role\": \"ROLE_ADMIN\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/administradores",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"administradores"
 							]
 						}
 					},
