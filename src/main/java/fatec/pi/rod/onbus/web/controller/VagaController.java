@@ -5,7 +5,6 @@ import fatec.pi.rod.onbus.entity.Topicos;
 import fatec.pi.rod.onbus.entity.VagaDocument;
 import fatec.pi.rod.onbus.entity.VagaService;
 import fatec.pi.rod.onbus.web.dto.VagaResponseDto;
-import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,24 +24,13 @@ public class VagaController {
         this.vagaService = vagaService;
     }
 
-    /**
-     * Endpoint para buscar o status de todas as vagas.
-     * @return Lista com o status de cada vaga no formato JSON desejado.
-     */
     @GetMapping
     public ResponseEntity<List<VagaResponseDto>> getStatusDeTodasAsVagas() {
-        // Usa a lista de tópicos para buscar o status de cada vaga
         List<VagaResponseDto> listaDeVagas = Topicos.TODOS.stream()
-                .map(this::converterParaDto) // Converte cada vaga para o formato de resposta
+                .map(this::converterParaDto)
                 .collect(Collectors.toList());
         return ResponseEntity.ok(listaDeVagas);
     }
-
-    /**
-     * Endpoint para buscar o status de uma vaga específica.
-     * @param nomeVaga O nome do tópico da vaga (ex: "vaga1").
-     * @return O status da vaga no formato JSON desejado.
-     */
 
     @GetMapping("/{nomeVaga}")
     public ResponseEntity<VagaResponseDto> getStatusDaVaga(@PathVariable String nomeVaga) {
@@ -50,11 +38,7 @@ public class VagaController {
         return ResponseEntity.ok(vagaDto);
     }
 
-    /**
-     * Método auxiliar para converter o status interno da vaga para o DTO de resposta.
-     */
     private VagaResponseDto converterParaDto(String nomeDaVaga) {
-        // O serviço agora retorna o documento completo do MongoDB
         VagaDocument vagaDoc = vagaService.getStatusVaga(nomeDaVaga);
 
         String statusFinal = vagaDoc.getStatus() == StatusVaga.LIVRE ? "livre" : "ocupada";

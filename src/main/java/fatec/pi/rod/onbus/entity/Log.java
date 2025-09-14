@@ -35,4 +35,5 @@ public class Log {
         System.out.println(timestamp() + " 🐞 DEBUG: " + message);
     }
 
+
 }

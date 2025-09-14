@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -95,9 +96,8 @@ public class Usuario implements Serializable {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = new BCryptPasswordEncoder().encode(senha);
     }
-
     public Boolean getAtivo() {
         return ativo;
     }

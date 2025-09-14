@@ -4,4 +4,5 @@ public enum StatusVaga {
     LIVRE,
     OCUPADA,
     EXPIRADA
-}
+
+  }
