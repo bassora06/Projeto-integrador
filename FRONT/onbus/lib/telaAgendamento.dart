@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/services/servAgendamento.dart';
+import 'package:onbus/services/servOnibus.dart'; // Importando o serviço de ônibus
 
 class TelaAgendamento extends StatefulWidget {
-  final String vagaId;
-
-  const TelaAgendamento({super.key, required this.vagaId});
+  const TelaAgendamento({super.key});
 
   @override
   State<TelaAgendamento> createState() => _TelaAgendamentoState();
@@ -12,11 +11,37 @@ class TelaAgendamento extends StatefulWidget {
 
 class _TelaAgendamentoState extends State<TelaAgendamento> {
   final ServicoAgendamento _service = ServicoAgendamento();
-  final TextEditingController _placaOnibusController = TextEditingController();
+  final ServicoOnibus _onibusService = ServicoOnibus(); // Instância do serviço de ônibus
   final TextEditingController _dadosAdicionaisController = TextEditingController();
   DateTime? _horaChegada;
   DateTime? _horaSaida;
   bool _isLoading = false;
+  List<String> _placas = [];
+  String? _placaSelecionada;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchPlacas();
+  }
+
+  // Novo método para buscar as placas de ônibus
+  void _fetchPlacas() async {
+    setState(() => _isLoading = true);
+    try {
+      final fetchedPlacas = await _onibusService.getPlacasOnibus();
+      setState(() {
+        _placas = fetchedPlacas;
+        _placaSelecionada = _placas.isNotEmpty ? _placas.first : null;
+      });
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro ao carregar placas: $e")),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
 
   Future<void> _selecionarHorario(BuildContext context, {required bool isChegada}) async {
     final now = DateTime.now();
@@ -37,7 +62,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   }
 
   void _enviarAgendamento() async {
-    if (_placaOnibusController.text.isEmpty || _horaChegada == null || _horaSaida == null) {
+    if (_placaSelecionada == null || _horaChegada == null || _horaSaida == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Por favor, preencha todos os campos obrigatórios.")),
       );
@@ -48,8 +73,8 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
     try {
       final success = await _service.agendarDoca(
-        vagaId: widget.vagaId,
-        placaOnibus: _placaOnibusController.text,
+        vagaId: "id_da_vaga_atribuida_pelo_backend",
+        placaOnibus: _placaSelecionada!,
         horaChegada: _horaChegada!,
         horaSaida: _horaSaida!,
         dadosAdicionais: _dadosAdicionaisController.text,
@@ -76,7 +101,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Agendar Vaga ${widget.vagaId}"),
+        title: const Text("Agendar Vaga"),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -86,7 +111,22 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const Text("Placa do Ônibus"),
-                  TextField(controller: _placaOnibusController),
+                  DropdownButton<String>(
+                    value: _placaSelecionada,
+                    hint: const Text("Selecione a placa"),
+                    isExpanded: true,
+                    items: _placas.map((String placa) {
+                      return DropdownMenuItem<String>(
+                        value: placa,
+                        child: Text(placa),
+                      );
+                    }).toList(),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _placaSelecionada = newValue;
+                      });
+                    },
+                  ),
                   const SizedBox(height: 20),
                   const Text("Horário de Chegada"),
                   ElevatedButton(

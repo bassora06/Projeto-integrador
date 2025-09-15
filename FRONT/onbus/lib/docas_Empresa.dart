@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:onbus/services/servIoT.dart';
 import 'package:onbus/telaAgendamento.dart';
+import 'package:onbus/telaCadastroOnibus.dart';
 
 class VagaTelaEmpresa extends StatefulWidget {
   const VagaTelaEmpresa({super.key});
@@ -16,7 +17,6 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
   Timer? _timer;
   bool _isLoading = true;
 
-  // MOCK de dados para simular o back-end
   final List<String> _mockStatuses = ["livre", "preenchido", "stand by"];
   int _mockStatusIndex = 0;
 
@@ -35,11 +35,9 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
     super.dispose();
   }
 
-  // Simula a busca das vagas na API e atualiza a lista
   void _fetchVagas() async {
     setState(() => _isLoading = true);
 
-    // MOCK (substitua por sua chamada de API)
     await Future.delayed(const Duration(seconds: 1));
     final mockData = List.generate(
       32,
@@ -73,12 +71,86 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
     }
   }
 
-  void _navegarParaAgendamento(String vagaId) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => TelaAgendamento(vagaId: vagaId),
-      ),
+  void _showSchedulingPopup() {
+    if (_vagas.isNotEmpty) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text("Agendar Chegada"),
+            content: const Text("Deseja cadastrar uma nova placa de ônibus antes de agendar?"),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: const TelaAgendamento(),
+                        contentPadding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text("Não, continuar agendando"),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.of(context).pop(); // Fecha o pop-up atual
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return AlertDialog(
+                        content: const TelaCadastroOnibus(),
+                        contentPadding: EdgeInsets.zero,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
+                      );
+                    },
+                  );
+                },
+                child: const Text("Sim, cadastrar ônibus"),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Não há vagas disponíveis no momento.")),
+      );
+    }
+  }
+
+  void _showVagaDetails(Map<String, dynamic> vaga) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
+              const SizedBox(height: 8),
+              Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
+            ],
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text("Fechar"),
+            ),
+          ],
+        );
+      },
     );
   }
 
@@ -172,15 +244,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                                 itemBuilder: (context, index) {
                                   final vaga = _vagas[index];
                                   return GestureDetector(
-                                    onTap: () {
-                                      if (vaga['status'] == 'livre') {
-                                        _navegarParaAgendamento(vaga['id']);
-                                      } else {
-                                        ScaffoldMessenger.of(context).showSnackBar(
-                                          SnackBar(content: Text("A vaga ${vaga['id']} não está livre.")),
-                                        );
-                                      }
-                                    },
+                                    onTap: () => _showVagaDetails(vaga),
                                     child: Container(
                                       alignment: Alignment.center,
                                       decoration: BoxDecoration(
@@ -203,6 +267,28 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                               );
                             },
                           ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width * 0.9,
+                  margin: const EdgeInsets.symmetric(vertical: 24.0),
+                  child: ElevatedButton(
+                    onPressed: _showSchedulingPopup,
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 18),
+                      backgroundColor: Colors.orange,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    child: const Text(
+                      'AGENDAR CHEGADA',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                 ),
                 Container(

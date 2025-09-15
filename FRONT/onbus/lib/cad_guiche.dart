@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:onbus/home_page.dart';
 import 'package:onbus/login_screen.dart';
 import 'package:onbus/termos.dart';
+import 'package:onbus/services/servCadGuiche.dart'; // Novo import
 
 class RegScreenPF extends StatefulWidget {
   const RegScreenPF({super.key});
@@ -11,9 +12,11 @@ class RegScreenPF extends StatefulWidget {
 }
 
 class _RegScreenPFState extends State<RegScreenPF> {
+  final ServicoCadastroGuiche _service = ServicoCadastroGuiche();
   bool _obscurePassword = true;
   bool _obscureConfirmPassword = true;
   bool _termsAccepted = false;
+  bool _isLoading = false;
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _cpfController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
@@ -31,7 +34,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
         _passwordController.text == _confirmPasswordController.text;
   }
 
-  _showPasswordMismatchDialog(BuildContext context) {
+  void _showPasswordMismatchDialog(BuildContext context) {
     showDialog(
       context: context,
       builder:
@@ -50,6 +53,50 @@ class _RegScreenPFState extends State<RegScreenPF> {
     );
   }
 
+  void _cadastrar() async {
+    if (!_isFormValid) return;
+    if (_passwordController.text != _confirmPasswordController.text) {
+      _showPasswordMismatchDialog(context);
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    final dados = {
+      'nome': _nameController.text,
+      'cpf': _cpfController.text,
+      'email': _emailController.text,
+      'senha': _passwordController.text,
+    };
+
+    try {
+      final sucesso = await _service.cadastrarGuiche(dados);
+      if (sucesso) {
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Sucesso'),
+            content: const Text('Guichê cadastrado com sucesso!'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
+                child: const Text('OK'),
+              ),
+            ],
+          ),
+        );
+      } else {
+        throw Exception("O cadastro falhou. Tente novamente.");
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Erro no cadastro: $e")),
+      );
+    } finally {
+      setState(() => _isLoading = false);
+    }
+  }
+
   @override
   void dispose() {
     _nameController.dispose();
@@ -62,23 +109,26 @@ class _RegScreenPFState extends State<RegScreenPF> {
 
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Stack(
-          children: [
-            // Background image
-            Positioned.fill(
-              child: Image.asset(
-                'lib/assets/images/fundo_Padrao.PNG',
-                fit: BoxFit.fill,
-              ),
+      backgroundColor:  Color.fromARGB(255, 40, 0, 104),
+      body: Stack(
+        children: [
+          // Background Image
+          SizedBox(
+            width: screenSize.width,
+            height: screenSize.height,
+            child: Image.asset(
+              'lib/assets/images/fundo_Padrao.PNG',
+              fit: BoxFit.fill,
             ),
-            // Foreground content
-            SingleChildScrollView(
+          ),
+          SafeArea(
+            child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Botão voltar
+                  // Botão de voltar
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, left: 10.0),
                     child: Align(
@@ -86,13 +136,15 @@ class _RegScreenPFState extends State<RegScreenPF> {
                       child: IconButton(
                         icon: const Icon(
                           Icons.arrow_back,
-                          color: Colors.white,
+                          color:  Color.fromARGB(255, 40, 0, 104),
                           size: 30,
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
                     ),
                   ),
+
+                  // Logo
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Image.asset(
@@ -101,6 +153,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                       fit: BoxFit.contain,
                     ),
                   ),
+
                   // Registration Form
                   Padding(
                     padding: const EdgeInsets.symmetric(
@@ -111,24 +164,26 @@ class _RegScreenPFState extends State<RegScreenPF> {
                       mainAxisSize: MainAxisSize.min,
                       children: [
                         const Text(
-                          'Cadastro - Gestor',
+                          'Criar Conta - Guichê',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 40, 0, 104),
+                            color:  Color.fromARGB(255, 40, 0, 104),
                           ),
                         ),
                         const SizedBox(height: 30),
                         TextField(
                           controller: _nameController,
+                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text(
-                              'Nome',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 40, 0, 104),
-                              ),
+                            label: Text('Nome'),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:  Color.fromARGB(255, 40, 0, 104),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
                             ),
                           ),
                           onChanged: (_) => setState(() {}),
@@ -136,14 +191,16 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         const SizedBox(height: 20),
                         TextField(
                           controller: _cpfController,
+                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text(
-                              'CPF',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 40, 0, 104),
-                              ),
+                            label: Text('CPF'),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:  Color.fromARGB(255, 40, 0, 104),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
                             ),
                           ),
                           onChanged: (_) => setState(() {}),
@@ -151,14 +208,16 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         const SizedBox(height: 20),
                         TextField(
                           controller: _emailController,
+                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: const InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text(
-                              'Email',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 40, 0, 104),
-                              ),
+                            label: Text('Email'),
+                            labelStyle: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:  Color.fromARGB(255, 40, 0, 104),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
                             ),
                           ),
                           onChanged: (_) => setState(() {}),
@@ -167,6 +226,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         TextField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
+                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             suffixIcon: IconButton(
@@ -174,7 +234,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 _obscurePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.grey,
+                                color:  Color.fromARGB(255, 40, 0, 104),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -182,12 +242,13 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Senha',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 40, 0, 104),
-                              ),
+                            label: const Text('Senha'),
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:  Color.fromARGB(255, 40, 0, 104),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
                             ),
                           ),
                           onChanged: (_) => setState(() {}),
@@ -196,6 +257,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         TextField(
                           controller: _confirmPasswordController,
                           obscureText: _obscureConfirmPassword,
+                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             suffixIcon: IconButton(
@@ -203,7 +265,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 _obscureConfirmPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color: Colors.grey,
+                                color:  Color.fromARGB(255, 40, 0, 104),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -212,12 +274,13 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Confirmar Senha',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color.fromARGB(255, 40, 0, 104),
-                              ),
+                            label: const Text('Confirmar Senha'),
+                            labelStyle: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color:  Color.fromARGB(255, 40, 0, 104),
+                            ),
+                            enabledBorder: const OutlineInputBorder(
+                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
                             ),
                           ),
                           onChanged: (_) => setState(() {}),
@@ -232,12 +295,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                   _termsAccepted = value ?? false;
                                 });
                               },
-                              activeColor: const Color.fromARGB(
-                                255,
-                                40,
-                                0,
-                                104,
-                              ),
+                              activeColor:  Color.fromARGB(255, 40, 0, 104),
                             ),
                             Expanded(
                               child: MouseRegion(
@@ -255,7 +313,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                     'Declaro que li e concordo com os termos de uso',
                                     style: TextStyle(
                                       fontSize: 14,
-                                      color: Colors.black87,
+                                      color:  Color.fromARGB(255, 40, 0, 104),
                                       decoration: TextDecoration.underline,
                                     ),
                                   ),
@@ -264,86 +322,34 @@ class _RegScreenPFState extends State<RegScreenPF> {
                             ),
                           ],
                         ),
-                        const SizedBox(height: 30),
+                        const SizedBox(height: 50),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  _isFormValid
-                                      ? const Color.fromARGB(255, 40, 0, 104)
-                                      : Colors.grey,
+                                  _isFormValid ? Colors.orange : Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
                             ),
-                            onPressed:
-                                _isFormValid
-                                    ? () {
-                                      if (_passwordController.text !=
-                                          _confirmPasswordController.text) {
-                                        _showPasswordMismatchDialog(context);
-                                      } else {
-                                        // Registration logic here
-                                        final name = _nameController.text;
-                                        final email = _emailController.text;
-                                        final password =
-                                            _passwordController.text;
-                                        print(
-                                          'Registration data: $name, $email, $password',
-                                        );
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder:
-                                                (context) => const HomePage(),
-                                          ),
-                                        );
-                                      }
-                                    }
-                                    : null,
-                            child: const Text(
-                              'CADASTRAR',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 30),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Text(
-                              "Já tem uma conta?",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey,
-                              ),
-                            ),
-                            const SizedBox(width: 4),
-                            TextButton(
-                              onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => const LoginScreen(),
+                            onPressed: _isLoading || !_isFormValid
+                                ? null
+                                : _cadastrar,
+                            child: _isLoading
+                                ? const CircularProgressIndicator(
+                                    color:  Color.fromARGB(255, 40, 0, 104),
+                                  )
+                                : const Text(
+                                    'CADASTRAR',
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20,
+                                      color:  Color.fromARGB(255, 40, 0, 104),
+                                    ),
                                   ),
-                                );
-                              },
-                              child: const Text(
-                                "Entrar",
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17,
-                                  color: Colors.black,
-                                ),
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
                       ],
                     ),
@@ -351,52 +357,9 @@ class _RegScreenPFState extends State<RegScreenPF> {
                 ],
               ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
 }
-
-/*
-class WaveClipper extends CustomClipper<Path> {
-  final bool reverse;
-
-  WaveClipper({this.reverse = false});
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    if (reverse) {
-      path.moveTo(0, size.height);
-      path.quadraticBezierTo(
-        size.width * 0.25,
-        size.height - 30,
-        size.width * 0.5,
-        size.height - 20,
-      );
-      path.quadraticBezierTo(
-        size.width * 0.75,
-        size.height - 10,
-        size.width,
-        size.height - 30,
-      );
-      path.lineTo(size.width, 0);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(0, 0);
-      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
-      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-    }
-
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-*/
