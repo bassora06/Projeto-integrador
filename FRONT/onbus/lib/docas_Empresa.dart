@@ -80,7 +80,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
             title: const Text("Agendar Chegada"),
             content: const Text("Deseja cadastrar uma nova placa de ônibus antes de agendar?"),
             actions: [
-              TextButton(
+              ElevatedButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                   showDialog(
@@ -90,7 +90,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                         content: const TelaAgendamento(),
                         contentPadding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(13),
                         ),
                       );
                     },
@@ -108,7 +108,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                         content: const TelaCadastroOnibus(),
                         contentPadding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(13),
                         ),
                       );
                     },
@@ -272,14 +272,25 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
                   margin: const EdgeInsets.symmetric(vertical: 24.0),
+                  decoration: BoxDecoration(
+                    gradient: const LinearGradient(
+                      colors: [
+                        Color.fromARGB(255, 30, 0, 161),
+                        Color.fromARGB(255, 40, 0, 104),
+                      ],
+                    ),
+                    borderRadius: BorderRadius.circular(30),
+                  ),
                   child: ElevatedButton(
                     onPressed: _showSchedulingPopup,
                     style: ElevatedButton.styleFrom(
                       padding: const EdgeInsets.symmetric(vertical: 18),
-                      backgroundColor: Colors.orange,
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(30),
                       ),
+                      elevation: 5,
                     ),
                     child: const Text(
                       'AGENDAR CHEGADA',

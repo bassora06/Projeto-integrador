@@ -329,7 +329,7 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  _isFormValid ? Colors.orange : Colors.grey,
+                                  _isFormValid ? Color.fromARGB(255, 30, 0, 161) : Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),

@@ -129,15 +129,12 @@ class _EditRecordState extends State<EditRecord> {
           : Stack(
               children: [
                 // Fundo com gradiente
-                Container(
+                SizedBox(
                   width: screenSize.width,
                   height: screenSize.height,
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [Color(0xFF1E3C72), Color(0xFF2A5298)],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                    ),
+                  child: Image.asset(
+                    'lib/assets/images/fundo_Padrao.PNG',
+                    fit: BoxFit.fill,
                   ),
                 ),
                 SafeArea(
@@ -152,7 +149,7 @@ class _EditRecordState extends State<EditRecord> {
                           alignment: Alignment.topLeft,
                           child: IconButton(
                             icon: const Icon(Icons.arrow_back,
-                                color: Colors.white),
+                                color: Color.fromARGB(255, 40, 0, 104)),
                             onPressed: () => Navigator.pop(context),
                           ),
                         ),
@@ -174,7 +171,7 @@ class _EditRecordState extends State<EditRecord> {
                           style: const TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
-                            color: Colors.white,
+                            color: Color.fromARGB(255, 40, 0, 104),
                           ),
                         ),
                         const SizedBox(height: 40),
@@ -203,32 +200,54 @@ class _EditRecordState extends State<EditRecord> {
                             label: "Telefone",
                             icon: Icons.phone),
                         const SizedBox(height: 40),
-
-                        // Botão principal
-                        ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(screenSize.width * 0.8, 50),
-                            backgroundColor: Colors.orange,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(30),
+                      
+                        Container(
+                          width: MediaQuery.of(context).size.width * 0.9,
+                          margin: const EdgeInsets.symmetric(vertical: 24.0),
+                          decoration: BoxDecoration(
+                            gradient: const LinearGradient(
+                              colors: [
+                                Color.fromARGB(255, 30, 0, 161),
+                                Color.fromARGB(255, 40, 0, 104),
+                              ],
+                            ),
+                            borderRadius: BorderRadius.circular(30),
+                          ),
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(screenSize.width * 0.8, 50),
+                              backgroundColor: Colors.transparent,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              elevation: 5,
+                            ),
+                            onPressed: _saveEnterprise,
+                            child: Text(
+                              _isEditing
+                                  ? "SALVAR ALTERAÇÕES"
+                                  : "CADASTRAR",
+                              style: const TextStyle(
+                                  fontSize: 18, color: Colors.white),
                             ),
                           ),
-                          onPressed: _saveEnterprise,
-                          child: Text(
-                            _isEditing
-                                ? "SALVAR ALTERAÇÕES"
-                                : "CADASTRAR",
-                            style: const TextStyle(
-                                fontSize: 18, color: Colors.white),
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-    );
+              ),
+            ],
+          ),
+        );
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _cnpjController.dispose();
+    _emailController.dispose();
+    _phoneController.dispose();
+    super.dispose();
   }
 
   /// Função helper para criar os textfields
@@ -240,17 +259,17 @@ class _EditRecordState extends State<EditRecord> {
     return TextField(
       controller: controller,
       decoration: InputDecoration(
-        prefixIcon: Icon(icon, color: Colors.white),
+        prefixIcon: Icon(icon, color: Color.fromARGB(255, 40, 0, 104)),
         labelText: label,
-        labelStyle: const TextStyle(color: Colors.white),
+        labelStyle: const TextStyle(color: Color.fromARGB(255, 40, 0, 104)),
         filled: true,
-        fillColor: Colors.white.withOpacity(0.2),
+        fillColor: Color(0xffDBCFFA).withOpacity(0.2),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
       ),
-      style: const TextStyle(color: Colors.white),
+      style: const TextStyle(color: Color.fromARGB(255, 40, 0, 104)),
     );
   }
 }

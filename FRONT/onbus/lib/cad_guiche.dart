@@ -329,7 +329,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor:
-                                  _isFormValid ? Colors.orange : Colors.grey,
+                                  _isFormValid ? Color.fromARGB(255, 30, 0, 161) : Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -346,7 +346,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
-                                      color:  Color.fromARGB(255, 40, 0, 104),
+                                      color:  Colors.white,
                                     ),
                                   ),
                           ),

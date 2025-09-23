@@ -3,82 +3,11 @@ import 'package:onbus/home_page.dart';
 import 'package:onbus/cad_guiche.dart';
 import 'package:onbus/cad_empresa.dart';
 import 'package:onbus/services/servLogin.dart';
-import 'package:onbus/docas_ADM.dart';
-import 'package:onbus/config.dart';
 import 'package:onbus/docas_Empresa.dart';
-
-// Novas telas para os menus de cada tipo de usuário
-class EmpresaHomePage extends StatelessWidget {
-  const EmpresaHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Menu Empresa")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const VagaTela()),
-                );
-              },
-              child: const Text("Ver Docas"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ConfigPage()),
-                );
-              },
-              child: const Text("Configurações"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class GuicheHomePage extends StatelessWidget {
-  const GuicheHomePage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text("Menu Guichê")),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const VagaTela()),
-                );
-              },
-              child: const Text("Ver Docas (Guichê)"),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ConfigPage()),
-                );
-              },
-              child: const Text("Configurações"),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
+import 'package:onbus/docas_ADM.dart';
+import 'package:onbus/docas_Guiche.dart';
+import 'package:flutter/foundation.dart' show kIsWeb; // Import para detectar plataforma
+import 'dart:io' show Platform; // Import para detectar desktop
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -93,8 +22,6 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  // Removendo o DropdownButton para simplificar a lógica
-  // e focar no email e senha para determinar o tipo de usuário
 
   @override
   void dispose() {
@@ -114,7 +41,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
       final userType = authData['userType'];
 
-      // Navegação baseada no tipo de usuário
       Widget destinationPage;
       switch (userType) {
         case 'adm':
@@ -124,7 +50,12 @@ class _LoginScreenState extends State<LoginScreen> {
           destinationPage = const VagaTelaEmpresa();
           break;
         case 'guiche':
-          destinationPage = const GuicheHomePage();
+          // Lógica para verificar se é desktop/web
+          if (kIsWeb || Platform.isWindows || Platform.isLinux || Platform.isMacOS) {
+            destinationPage = const VagaTelaGuicheDesktop();
+          } else {
+            destinationPage = const VagaTela();
+          }
           break;
         default:
           throw Exception("Tipo de usuário desconhecido.");
@@ -151,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       body: Stack(
         children: [
-          // Imagem de fundo redimensionada dinamicamente
           SizedBox(
             width: screenSize.width,
             height: screenSize.height,
@@ -165,7 +95,6 @@ class _LoginScreenState extends State<LoginScreen> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Botão voltar
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, left: 10.0),
                     child: Align(
@@ -180,8 +109,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                     ),
                   ),
-
-                  // Logo
+                  
                   Padding(
                     padding: const EdgeInsets.only(top: 50.0),
                     child: Image.asset(
@@ -191,7 +119,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
 
-                  // Login Form
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24.0,
@@ -299,52 +226,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             ),
                           ),
                         ),
-                        /*const SizedBox(height: 40),
-                        const Text(
-                          "Ainda não tem uma conta?",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        // Pessoa Física option
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RegScreenPF(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Cadastre-se como Pessoa Física",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        // Pessoa Jurídica option
-                        TextButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const RegScreenPJ(),
-                              ),
-                            );
-                          },
-                          child: const Text(
-                            "Cadastre-se como Pessoa Jurídica",
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            ),
-                          ),
-                        ),*/
                       ],
                     ),
                   ),

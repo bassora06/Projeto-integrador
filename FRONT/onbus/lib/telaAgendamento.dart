@@ -14,7 +14,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   final ServicoOnibus _onibusService = ServicoOnibus(); // Instância do serviço de ônibus
   final TextEditingController _dadosAdicionaisController = TextEditingController();
   DateTime? _horaChegada;
-  DateTime? _horaSaida;
+  DateTime? _DataChegada;
   bool _isLoading = false;
   List<String> _placas = [];
   String? _placaSelecionada;
@@ -43,7 +43,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
     }
   }
 
-  Future<void> _selecionarHorario(BuildContext context, {required bool isChegada}) async {
+  Future<void> _selecionarHorario(BuildContext context, {required bool isData}) async {
     final now = DateTime.now();
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,
@@ -52,17 +52,36 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
     if (pickedTime != null) {
       final newTime = DateTime(now.year, now.month, now.day, pickedTime.hour, pickedTime.minute);
       setState(() {
-        if (isChegada) {
+        if (isData) {
           _horaChegada = newTime;
         } else {
-          _horaSaida = newTime;
+          _DataChegada = newTime;
+        }
+      });
+    }
+  }
+
+  Future<void> _selecionarData(BuildContext context, {required bool isData}) async {
+    final now = DateTime.now();
+    final DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: now,
+      firstDate: DateTime(now.year - 5),
+      lastDate: DateTime(now.year + 5),
+    );
+    if (pickedDate != null) {
+      setState(() {
+        if (isData) {
+          _horaChegada = pickedDate;
+        } else {
+          _DataChegada = pickedDate;
         }
       });
     }
   }
 
   void _enviarAgendamento() async {
-    if (_placaSelecionada == null || _horaChegada == null || _horaSaida == null) {
+    if (_placaSelecionada == null || _horaChegada == null || _DataChegada == null) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Por favor, preencha todos os campos obrigatórios.")),
       );
@@ -76,7 +95,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
         vagaId: "id_da_vaga_atribuida_pelo_backend",
         placaOnibus: _placaSelecionada!,
         horaChegada: _horaChegada!,
-        horaSaida: _horaSaida!,
+        horaSaida: _DataChegada!,
         dadosAdicionais: _dadosAdicionaisController.text,
       );
 
@@ -130,14 +149,14 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                   const SizedBox(height: 20),
                   const Text("Horário de Chegada"),
                   ElevatedButton(
-                    onPressed: () => _selecionarHorario(context, isChegada: true),
+                    onPressed: () => _selecionarHorario(context, isData: true),
                     child: Text(_horaChegada != null ? _horaChegada!.toString() : "Selecionar Horário"),
                   ),
                   const SizedBox(height: 20),
-                  const Text("Horário de Saída"),
+                  const Text("Data de Chegada"),
                   ElevatedButton(
-                    onPressed: () => _selecionarHorario(context, isChegada: false),
-                    child: Text(_horaSaida != null ? _horaSaida!.toString() : "Selecionar Horário"),
+                    onPressed: () => _selecionarData(context, isData: false),
+                    child: Text(_DataChegada != null ? _DataChegada!.toString() : "Selecionar Data"),
                   ),
                   const SizedBox(height: 20),
                   const Text("Dados Adicionais"),
