@@ -64,12 +64,6 @@
 			<optional>true</optional>
 		</dependency>
 
-		<!-- Dependência para conexão e implementação do mongoDB-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-mongodb</artifactId>
-		</dependency>
-
 		<!-- Spring Boot Test: Suporte para testes (JUnit, Mockito, etc) -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

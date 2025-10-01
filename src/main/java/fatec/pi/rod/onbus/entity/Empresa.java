@@ -1,57 +1,28 @@
 package fatec.pi.rod.onbus.entity;
 
-import jakarta.persistence.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.DiscriminatorValue;
 
 @Entity
-@Table(name = "usuario")
-public class Empresa extends Usuario implements Serializable {
+@DiscriminatorValue("ROLE_EMPRESA")
+public class Empresa extends Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id_usuario")
-    private Long id;
-
-    @Column(name = "nome", nullable = false, length = 225)
-    private String nome;
-
-    @Column(name = "email", nullable = false, length = 225, unique = true)
-    private String email;
-
-    @Column(name = "senha", nullable = false, length = 225)
-    private String senha;
-
-    @Column(name = "ativo", nullable = false)
-    private Boolean ativo = true;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "tipo", nullable = false)
-    private Role tipo = Role.ROLE_ADMIN;
-
-    @Column(name = "cnpj", length = 14, nullable = false)
+    @Column(name = "cnpj", length = 14, nullable = true)
     private String cnpj;
 
-    @CreationTimestamp
-    @Column(name = "created_at", updatable = false)
-    private LocalDateTime createdAt;
+    public Empresa() {}
 
-    @UpdateTimestamp
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    public Empresa(){}
-
-    public Empresa(String nome, String email, String senha, Boolean ativo, Role tipo, String cnpj) {
-        this.nome = nome;
-        this.email = email;
-        this.senha = senha;
-        this.ativo = ativo;
-        this.tipo = tipo;
+    public Empresa(String nome, String email, String senha, Boolean ativo, String cnpj) {
+        super(nome, email, senha, ativo);
         this.cnpj = cnpj;
     }
 
+    public String getCnpj() {
+        return cnpj;
+    }
+
+    public void setCnpj(String cnpj) {
+        this.cnpj = cnpj;
+    }
 }

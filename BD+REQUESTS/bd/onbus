@@ -5,7 +5,7 @@
 -- Dumped from database version 17.4
 -- Dumped by pg_dump version 17.4
 
--- Started on 2025-09-13 13:31:42
+-- Started on 2025-05-19 16:18:10
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -199,7 +199,6 @@ ALTER TABLE ONLY public.usuario ALTER COLUMN id_usuario SET DEFAULT nextval('pub
 COPY public.onibus (id_onibus, placa, id_usuario) FROM stdin;
 3	PAW1231	24
 5	PAW1221	25
-6	ABC1234	41
 \.
 
 
@@ -210,11 +209,6 @@ COPY public.onibus (id_onibus, placa, id_usuario) FROM stdin;
 --
 
 COPY public.reserva (id_reserva, id_onibus, id_usuario, doca, vaga, horario_chegada, horario_saida, created_at, updated_at) FROM stdin;
-3	3	24	A	1	2023-10-01 10:00:00	2023-10-01 12:00:00	2025-06-10 23:16:24.394484	2025-06-10 23:16:24.394484
-4	5	25	A	1	2023-10-01 10:00:00	2023-10-01 12:00:00	2025-06-10 23:16:51.990387	2025-06-10 23:16:51.990387
-5	5	34	A	1	2023-10-01 10:00:00	2023-10-01 12:00:00	2025-07-15 13:53:05.695582	2025-07-15 13:53:05.695582
-6	5	34	A	1	2023-10-01 10:00:00	2023-10-01 12:00:00	2025-07-15 13:53:28.437574	2025-07-15 13:53:28.437574
-7	6	34	B	3	2025-10-01 10:00:00	2025-10-01 12:00:00	2025-08-30 10:36:16.056789	2025-08-30 10:36:16.056789
 \.
 
 
@@ -225,13 +219,15 @@ COPY public.reserva (id_reserva, id_onibus, id_usuario, doca, vaga, horario_cheg
 --
 
 COPY public.usuario (id_usuario, nome, email, senha, ativo, tipo, cnpj, created_at, updated_at) FROM stdin;
-25	jao	jao@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:24.747064	2025-04-05 10:55:24.747064
-26	lucas	lucas@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.180426	2025-04-05 10:55:25.181429
-27	busi	busi@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.558072	2025-04-05 10:55:25.558072
-28	edu	edu@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.904792	2025-04-05 10:55:25.904792
-24	jm	jm@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:40:15.077896	2025-04-05 10:58:48.542615
-34	IBM	ibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-07-15 13:50:33.839048	2025-07-15 13:50:33.839048
-41	Kauan	kaka@example.com	$2a$10$h/Js41.nkgkq0BIR2a4Ch.ZoUWwV0TX714tU/KoRKRLPGvhaCfIMS	t	ROLE_ADMIN	\N	2025-08-30 10:23:03.029402	2025-08-30 10:23:03.029402
+25	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:24.747064	2025-04-05 10:55:24.747064
+26	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.180426	2025-04-05 10:55:25.181429
+27	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.558072	2025-04-05 10:55:25.558072
+28	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:55:25.904792	2025-04-05 10:55:25.904792
+24	jao	teste@example.com	senha123	t	ROLE_ADMIN	\N	2025-04-05 10:40:15.077896	2025-04-05 10:58:48.542615
+29	IBM	IBMibm@ibm.com	ibm123	t	Usuario	\N	2025-05-01 15:41:04.684389	2025-05-01 15:41:04.684389
+30	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:33.69192	2025-05-01 15:44:33.69192
+31	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:38.825559	2025-05-01 15:44:38.825559
+32	IBM	IBMibm@ibm.com	ibm123	t	ROLE_EMPRESA	11086761000124	2025-05-01 15:44:52.303173	2025-05-01 15:44:52.303173
 \.
 
 
@@ -241,7 +237,7 @@ COPY public.usuario (id_usuario, nome, email, senha, ativo, tipo, cnpj, created_
 -- Name: onibus_id_onibus_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.onibus_id_onibus_seq', 6, true);
+SELECT pg_catalog.setval('public.onibus_id_onibus_seq', 5, true);
 
 
 --
@@ -250,7 +246,7 @@ SELECT pg_catalog.setval('public.onibus_id_onibus_seq', 6, true);
 -- Name: reserva_id_reserva_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.reserva_id_reserva_seq', 7, true);
+SELECT pg_catalog.setval('public.reserva_id_reserva_seq', 1, false);
 
 
 --
@@ -259,7 +255,7 @@ SELECT pg_catalog.setval('public.reserva_id_reserva_seq', 7, true);
 -- Name: usuario_id_usuario_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.usuario_id_usuario_seq', 41, true);
+SELECT pg_catalog.setval('public.usuario_id_usuario_seq', 32, true);
 
 
 --
@@ -325,7 +321,7 @@ ALTER TABLE ONLY public.reserva
     ADD CONSTRAINT reserva_id_usuario_fkey FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario);
 
 
--- Completed on 2025-09-13 13:31:42
+-- Completed on 2025-05-19 16:18:10
 
 --
 -- PostgreSQL database dump complete
