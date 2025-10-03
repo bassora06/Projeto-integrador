@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/services/servAgendamento.dart';
-import 'package:onbus/services/servOnibus.dart'; // Importando o serviço de ônibus
+import 'package:onbus/services/servOnibus.dart';
+import 'l10n/app_localizations.dart';
 
 class TelaAgendamento extends StatefulWidget {
   const TelaAgendamento({super.key});
@@ -11,7 +12,7 @@ class TelaAgendamento extends StatefulWidget {
 
 class _TelaAgendamentoState extends State<TelaAgendamento> {
   final ServicoAgendamento _service = ServicoAgendamento();
-  final ServicoOnibus _onibusService = ServicoOnibus(); // Instância do serviço de ônibus
+  final ServicoOnibus _onibusService = ServicoOnibus(); 
   final TextEditingController _dadosAdicionaisController = TextEditingController();
   DateTime? _horaChegada;
   DateTime? _DataChegada;
@@ -27,6 +28,8 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
   // Novo método para buscar as placas de ônibus
   void _fetchPlacas() async {
+    final l10n = AppLocalizations.of(context)!;
+
     setState(() => _isLoading = true);
     try {
       final fetchedPlacas = await _onibusService.getPlacasOnibus();
@@ -36,7 +39,7 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
       });
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro ao carregar placas: $e")),
+        SnackBar(content: Text(l10n.errorLoadingData(e.toString()))),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -81,9 +84,11 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
   }
 
   void _enviarAgendamento() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_placaSelecionada == null || _horaChegada == null || _DataChegada == null) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Por favor, preencha todos os campos obrigatórios.")),
+        SnackBar(content: Text(l10n.fillAllFields)),
       );
       return;
     }
@@ -101,15 +106,15 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Agendamento realizado com sucesso!")),
+          SnackBar(content: Text(l10n.schedulingSuccess)), //l10n.schedulingSuccess
         );
         Navigator.of(context).pop();
       } else {
-        throw Exception("O agendamento falhou. Tente novamente.");
+        throw Exception(l10n.errorSchedulingFailed); //l10n.errorSchedulingFailed
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro: $e")),
+        SnackBar(content: Text(l10n.errorLoadingData(e.toString()))),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -118,9 +123,11 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!; 
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Agendar Vaga"),
+        title: Text(l10n.scheduleVacancy), //l10n.scheduleVacancy
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -129,15 +136,15 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text("Placa do Ônibus"),
+                  Text(l10n.busPlate), //l10n.busPlate
                   DropdownButton<String>(
                     value: _placaSelecionada,
-                    hint: const Text("Selecione a placa"),
+                    hint: Text(l10n.selectPlate), //l10n.selectPlate
                     isExpanded: true,
                     items: _placas.map((String placa) {
                       return DropdownMenuItem<String>(
                         value: placa,
-                        child: Text(placa),
+                        child: Text(l10n.plate), //l10n.plate
                       );
                     }).toList(),
                     onChanged: (String? newValue) {
@@ -147,24 +154,24 @@ class _TelaAgendamentoState extends State<TelaAgendamento> {
                     },
                   ),
                   const SizedBox(height: 20),
-                  const Text("Horário de Chegada"),
+                  Text(l10n.arrivalTime), //l10n.arrivalTime
                   ElevatedButton(
                     onPressed: () => _selecionarHorario(context, isData: true),
-                    child: Text(_horaChegada != null ? _horaChegada!.toString() : "Selecionar Horário"),
+                    child: Text(_horaChegada != null ? _horaChegada!.toString() : l10n.selectTime), //l10n.selectTime  
                   ),
                   const SizedBox(height: 20),
-                  const Text("Data de Chegada"),
+                  Text(l10n.arrivalDate), //l10n.arrivalDate
                   ElevatedButton(
                     onPressed: () => _selecionarData(context, isData: false),
-                    child: Text(_DataChegada != null ? _DataChegada!.toString() : "Selecionar Data"),
+                    child: Text(_DataChegada != null ? _DataChegada!.toString() : l10n.selectDate), //l10n.selectDate
                   ),
                   const SizedBox(height: 20),
-                  const Text("Dados Adicionais"),
+                  Text(l10n.additionalData ), //l10n.additionalData 
                   TextField(controller: _dadosAdicionaisController),
                   const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: _enviarAgendamento,
-                    child: const Text("AGENDAR"),
+                    child: Text(l10n.schedule), //l10n.schedule 
                   ),
                 ],
               ),

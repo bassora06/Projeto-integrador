@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:onbus/services/servEmpresa.dart'; // Importando o serviço atualizado
+import 'package:onbus/services/servEmpresa.dart'; 
+import 'l10n/app_localizations.dart';
+
 
 class EditRecord extends StatefulWidget {
-  final String? enterpriseId; // se vier preenchido, é edição; se não, é cadastro novo
+  final String? enterpriseId; 
 
   const EditRecord({super.key, this.enterpriseId});
 
@@ -12,7 +14,7 @@ class EditRecord extends StatefulWidget {
 
 class _EditRecordState extends State<EditRecord> {
   // Service para comunicação com o back
-  final EnterpriseService _service = EnterpriseService(); // Usando o serviço atualizado
+  final EnterpriseService _service = EnterpriseService(); 
 
   // Controllers dos campos
   final TextEditingController _nameController = TextEditingController();
@@ -21,7 +23,7 @@ class _EditRecordState extends State<EditRecord> {
   final TextEditingController _phoneController = TextEditingController();
 
   bool _isLoading = false;
-  bool _isEditing = false; // controle pra diferenciar cadastro de edição
+  bool _isEditing = false; 
 
   @override
   void initState() {
@@ -67,6 +69,8 @@ class _EditRecordState extends State<EditRecord> {
 
   /// Salvar ou atualizar no back
   void _saveEnterprise() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_nameController.text.isEmpty ||
         _cnpjController.text.isEmpty ||
         _emailController.text.isEmpty) {
@@ -109,26 +113,26 @@ class _EditRecordState extends State<EditRecord> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(_isEditing
-            ? "Empresa atualizada com sucesso!"
-            : "Empresa cadastrada com sucesso!"),
+            ? l10n.companyUpdatedSuccess
+            : l10n.companyRegisteredSuccess),
       ),
     );
 
     setState(() => _isLoading = false);
 
-    Navigator.pop(context); // volta pra tela anterior
+    Navigator.pop(context); 
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Stack(
               children: [
-                // Fundo com gradiente
                 SizedBox(
                   width: screenSize.width,
                   height: screenSize.height,
@@ -166,8 +170,8 @@ class _EditRecordState extends State<EditRecord> {
                         // Título
                         Text(
                           _isEditing
-                              ? "Editar Empresa"
-                              : "Cadastrar Empresa",
+                              ? l10n.editCompany
+                              : l10n.registerCompany,
                           style: const TextStyle(
                             fontSize: 26,
                             fontWeight: FontWeight.bold,
@@ -179,25 +183,25 @@ class _EditRecordState extends State<EditRecord> {
                         // Campos
                         _buildTextField(
                             controller: _nameController,
-                            label: "Nome da Empresa",
+                            label: l10n.companyName,
                             icon: Icons.business),
                         const SizedBox(height: 16),
 
                         _buildTextField(
                             controller: _cnpjController,
-                            label: "CNPJ",
+                            label: l10n.cnpj,
                             icon: Icons.badge),
                         const SizedBox(height: 16),
 
                         _buildTextField(
                             controller: _emailController,
-                            label: "Email",
+                            label: l10n.email,
                             icon: Icons.email),
                         const SizedBox(height: 16),
 
                         _buildTextField(
                             controller: _phoneController,
-                            label: "Telefone",
+                            label: l10n.phone,
                             icon: Icons.phone),
                         const SizedBox(height: 40),
                       
@@ -225,8 +229,8 @@ class _EditRecordState extends State<EditRecord> {
                             onPressed: _saveEnterprise,
                             child: Text(
                               _isEditing
-                                  ? "SALVAR ALTERAÇÕES"
-                                  : "CADASTRAR",
+                                  ? l10n.saveChanges
+                                  : l10n.register,
                               style: const TextStyle(
                                   fontSize: 18, color: Colors.white),
                             ),

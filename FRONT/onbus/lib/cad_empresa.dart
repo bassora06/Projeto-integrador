@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:onbus/home_page.dart';
-import 'package:onbus/login_screen.dart';
 import 'package:onbus/termos.dart';
 import 'package:onbus/services/servCadEmpresa.dart';
+import 'l10n/app_localizations.dart';
 
 class RegScreenPJ extends StatefulWidget {
   const RegScreenPJ({super.key});
@@ -35,26 +34,26 @@ class _RegScreenPJState extends State<RegScreenPJ> {
   }
 
   void _showPasswordMismatchDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
-      builder:
-          (context) => AlertDialog(
-            title: const Text('Erro de Senha'),
-            content: const Text(
-              'As senhas digitadas não coincidem. Por favor, verifique e tente novamente.',
-            ),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Text('OK'),
-              ),
-            ],
+      builder: (ctx) => AlertDialog(
+        title: Text(l10n.passwordError),
+        content: Text(l10n.passwordsDoNotMatch),
+        actions: <Widget>[
+          TextButton(
+            child: Text(l10n.ok),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+            },
           ),
+        ],
+      ),
     );
   }
 
   void _cadastrar() async {
-    if (!_isFormValid) return;
+    final l10n = AppLocalizations.of(context)!;
     if (_passwordController.text != _confirmPasswordController.text) {
       _showPasswordMismatchDialog(context);
       return;
@@ -62,35 +61,34 @@ class _RegScreenPJState extends State<RegScreenPJ> {
 
     setState(() => _isLoading = true);
 
-    final dados = {
-      'nome': _nameController.text,
-      'cnpj': _cnpjController.text,
-      'email': _emailController.text,
-      'senha': _passwordController.text,
-    };
-
     try {
-      final sucesso = await _service.cadastrarEmpresa(dados);
-      if (sucesso) {
-        showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Sucesso'),
-            content: const Text('Empresa cadastrada com sucesso!'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
-                child: const Text('OK'),
-              ),
-            ],
-          ),
-        );
-      } else {
-        throw Exception("O cadastro falhou. Tente novamente.");
-      }
+      final dadosCadastro = {
+        "name": _nameController.text,
+        "cnpj": _cnpjController.text,
+        "email": _emailController.text,
+        "password": _passwordController.text,
+      };
+      await _service.cadastrarEmpresa(dadosCadastro);
+
+      showDialog(
+        context: context,
+        builder: (ctx) => AlertDialog(
+          title: Text(l10n.success),
+          content: Text(l10n.companyRegisteredSuccess),
+          actions: <Widget>[
+            TextButton(
+              child: Text(l10n.ok),
+              onPressed: () {
+                Navigator.of(ctx).pop();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        ),
+      );
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro no cadastro: $e")),
+        SnackBar(content: Text(l10n.registrationError(e.toString()))),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -98,24 +96,13 @@ class _RegScreenPJState extends State<RegScreenPJ> {
   }
 
   @override
-  void dispose() {
-    _nameController.dispose();
-    _cnpjController.dispose();
-    _emailController.dispose();
-    _passwordController.dispose();
-    _confirmPasswordController.dispose();
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     final screenSize = MediaQuery.of(context).size;
 
     return Scaffold(
-      backgroundColor:  Color.fromARGB(255, 40, 0, 104),
       body: Stack(
         children: [
-          // Background Image
           SizedBox(
             width: screenSize.width,
             height: screenSize.height,
@@ -128,105 +115,69 @@ class _RegScreenPJState extends State<RegScreenPJ> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Botão de voltar
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0, left: 10.0),
                     child: Align(
                       alignment: Alignment.topLeft,
-                      child: IconButton(
-                        icon: const Icon(
-                          Icons.arrow_back,
-                          color:  Color.fromARGB(255, 40, 0, 104),
-                          size: 30,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                      ),
+                      // CORREÇÃO: Cor da seta de retorno ajustada para ser visível
+                      child: BackButton(color: const Color.fromARGB(255, 40, 0, 104)),
                     ),
                   ),
-
-                  // Logo
+                  // CORREÇÃO: Logo da OnBus re-adicionado
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
+                    padding: const EdgeInsets.only(top: 10.0), // Ajuste o padding conforme necessário
                     child: Image.asset(
                       'lib/assets/images/onbus.png',
-                      height: 150,
+                      height: 150, // Ajuste a altura conforme necessário
                       fit: BoxFit.contain,
                     ),
                   ),
-
-                  // Registration Form
                   Padding(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 24.0,
-                      vertical: 20,
+                      vertical: 20.0,
                     ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          'Criar Conta - Empresa',
-                          style: TextStyle(
-                            fontSize: 28,
+                        Text(
+                          l10n.createAccountCompany,
+                          style: const TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Color.fromARGB(255, 40, 0, 104),
+                            fontSize: 24,
+                            color: Color.fromARGB(255, 40, 0, 104), // Cor ajustada para visibilidade
                           ),
                         ),
                         const SizedBox(height: 30),
                         TextField(
                           controller: _nameController,
-                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text('Razão Social'),
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Color.fromARGB(255, 40, 0, 104),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
-                            ),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            label: Text(l10n.corporateName),
                           ),
-                          onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 20),
                         TextField(
                           controller: _cnpjController,
-                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text('CNPJ'),
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Color.fromARGB(255, 40, 0, 104),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
-                            ),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            label: Text(l10n.cnpj),
                           ),
-                          onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 20),
                         TextField(
                           controller: _emailController,
-                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            label: Text('Email'),
-                            labelStyle: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Color.fromARGB(255, 40, 0, 104),
-                            ),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
-                            ),
+                          decoration: InputDecoration(
+                            border: const OutlineInputBorder(),
+                            suffixIcon:
+                                const Icon(Icons.check, color: Colors.grey),
+                            label: Text(l10n.email),
                           ),
-                          onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 20),
                         TextField(
                           controller: _passwordController,
                           obscureText: _obscurePassword,
-                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             suffixIcon: IconButton(
@@ -234,30 +185,18 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                                 _obscurePassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color:  Color.fromARGB(255, 40, 0, 104),
+                                color: Colors.grey,
                               ),
-                              onPressed: () {
-                                setState(() {
-                                  _obscurePassword = !_obscurePassword;
-                                });
-                              },
+                              onPressed: () => setState(
+                                  () => _obscurePassword = !_obscurePassword),
                             ),
-                            label: const Text('Senha'),
-                            labelStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Color.fromARGB(255, 40, 0, 104),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
-                            ),
+                            label: Text(l10n.password),
                           ),
-                          onChanged: (_) => setState(() {}),
                         ),
                         const SizedBox(height: 20),
                         TextField(
                           controller: _confirmPasswordController,
                           obscureText: _obscureConfirmPassword,
-                          style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
                           decoration: InputDecoration(
                             border: const OutlineInputBorder(),
                             suffixIcon: IconButton(
@@ -265,71 +204,51 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                                 _obscureConfirmPassword
                                     ? Icons.visibility_off
                                     : Icons.visibility,
-                                color:  Color.fromARGB(255, 40, 0, 104),
+                                color: Colors.grey,
                               ),
-                              onPressed: () {
-                                setState(() {
+                              onPressed: () => setState(() =>
                                   _obscureConfirmPassword =
-                                      !_obscureConfirmPassword;
-                                });
-                              },
+                                      !_obscureConfirmPassword),
                             ),
-                            label: const Text('Confirmar Senha'),
-                            labelStyle: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color:  Color.fromARGB(255, 40, 0, 104),
-                            ),
-                            enabledBorder: const OutlineInputBorder(
-                              borderSide: BorderSide(color:  Color.fromARGB(255, 40, 0, 104)),
-                            ),
+                            label: Text(l10n.confirmPassword),
                           ),
-                          onChanged: (_) => setState(() {}),
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
                         Row(
                           children: [
                             Checkbox(
                               value: _termsAccepted,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  _termsAccepted = value ?? false;
-                                });
-                              },
-                              activeColor:  Color.fromARGB(255, 40, 0, 104),
+                              onChanged: (value) =>
+                                  setState(() => _termsAccepted = value!),
                             ),
                             Expanded(
-                              child: MouseRegion(
-                                cursor: SystemMouseCursors.click,
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const Termos(),
-                                      ),
-                                    );
-                                  },
-                                  child: const Text(
-                                    'Declaro que li e concordo com os termos de uso',
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      color:  Color.fromARGB(255, 40, 0, 104),
-                                      decoration: TextDecoration.underline,
-                                    ),
+                              child: GestureDetector(
+                                onTap: () => Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Termos(),
+                                  ),
+                                ),
+                                child: Text(
+                                  l10n.termsAndConditions,
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 40, 0, 104),
+                                    decoration: TextDecoration.underline,
                                   ),
                                 ),
                               ),
                             ),
                           ],
                         ),
-                        const SizedBox(height: 50),
+                        const SizedBox(height: 30),
                         SizedBox(
                           width: double.infinity,
                           height: 55,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(
-                              backgroundColor:
-                                  _isFormValid ? Color.fromARGB(255, 30, 0, 161) : Colors.grey,
+                              backgroundColor: _isFormValid
+                                  ? const Color.fromARGB(255, 30, 0, 161)
+                                  : Colors.grey,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(30),
                               ),
@@ -339,14 +258,14 @@ class _RegScreenPJState extends State<RegScreenPJ> {
                                 : _cadastrar,
                             child: _isLoading
                                 ? const CircularProgressIndicator(
-                                    color:  Color.fromARGB(255, 40, 0, 104),
+                                    color: Colors.white,
                                   )
-                                : const Text(
-                                    'CADASTRAR',
-                                    style: TextStyle(
+                                : Text(
+                                    l10n.register,
+                                    style: const TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,
-                                      color:  Color.fromARGB(255, 40, 0, 104),
+                                      color: Colors.white,
                                     ),
                                   ),
                           ),
@@ -363,47 +282,3 @@ class _RegScreenPJState extends State<RegScreenPJ> {
     );
   }
 }
-
-// O WaveClipper é mantido comentado como solicitado
-/*
-class WaveClipper extends CustomClipper<Path> {
-  final bool reverse;
-
-  WaveClipper({this.reverse = false});
-
-  @override
-  Path getClip(Size size) {
-    final path = Path();
-
-    if (reverse) {
-      path.moveTo(0, size.height);
-      path.quadraticBezierTo(
-        size.width * 0.25,
-        size.height - 30,
-        size.width * 0.5,
-        size.height - 20,
-      );
-      path.quadraticBezierTo(
-        size.width * 0.75,
-        size.height - 10,
-        size.width,
-        size.height - 30,
-      );
-      path.lineTo(size.width, 0);
-      path.lineTo(0, 0);
-    } else {
-      path.moveTo(0, 0);
-      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
-      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
-      path.lineTo(size.width, size.height);
-      path.lineTo(0, size.height);
-    }
-
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
-}
-*/

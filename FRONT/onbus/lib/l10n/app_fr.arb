@@ -1,0 +1,165 @@
+{
+    "@@locale": "fr",
+
+    "askRegisterBusBeforeScheduling": "Voulez-vous enregistrer un nouveau bus avant de planifier ?",
+    "changeLanguage": "Changer de langue",
+    "changeRecord": "Modifier l'enregistrement",
+    "close": "Fermer",
+    "cnpj": "CNPJ",
+    "companyName": "Nom de l'entreprise",
+    "companyRegisteredSuccess": "Entreprise enregistrée avec succès !",
+    "companyUpdatedSuccess": "Entreprise mise à jour avec succès !",
+    "confirmPassword": "Confirmez le mot de passe",
+    "corporateName": "Raison sociale",
+    "counterExample": "Guichet d'exemple",
+    "counterRegisteredSuccess": "Guichet enregistré avec succès !",
+    "cpf": "CPF",
+    "createAccountCompany": "Créer un compte - Entreprise",
+    "createAccountCounter": "Créer un compte - Guichet",
+    "distance": "Distance",
+    "docks": "Quais",
+    "docksOrganization": "Organisation des quais",
+    "editCompany": "Modifier l'entreprise",
+    "email": "E-mail",
+    "error": "Erreur",
+    "exit": "SORTIR",
+    "featureInProgress": "Fonctionnalité en cours de développement.",
+    "fillAllFields": "Veuillez remplir tous les champs obligatoires.",
+    "filtering": "Filtrage",
+    "forgotPassword": "Mot de passe oublié ?",
+    "free": "Libre",
+    "includeRegistration": "Ajouter un enregistrement",
+    "language": "Langue",
+    "login": "CONNEXION",
+    "logOut": "Se déconnecter",
+    "monitoring": "Surveillance",
+    "name": "Nom",
+    "noContinueScheduling": "Non, continuer la planification",
+    "noVacanciesAvailable": "Aucune place disponible pour le moment.",
+    "occupied": "Occupé",
+    "ok": "D'accord",
+    "password": "Mot de passe",
+    "passwordError": "Erreur de mot de passe",
+    "passwordsDoNotMatch": "Les mots de passe saisis ne correspondent pas. Veuillez vérifier et réessayer.",
+    "phone": "Téléphone",
+    "register": "S'INSCRIRE",
+    "registerCompany": "Enregistrer l'entreprise",
+    "registerCounter": "Enregistrer le guichet",
+    "registrationFailed": "L'inscription a échoué. Veuillez réessayer.",
+    "removeFilter": "Supprimer le filtre",
+    "saveChanges": "ENREGISTRER LES MODIFICATIONS",
+    "scheduleArrival": "Planifier l'arrivée",
+    "scheduleArrivalButton": "PLANIFIER L'ARRIVÉE",
+    "settings": "Paramètres",
+    "standBy": "En attente",
+    "status": "Statut",
+    "success": "Succès",
+    "termsAndConditions": "Je déclare avoir lu et accepté les conditions d'utilisation",
+    "unknownUserType": "Type d'utilisateur inconnu.",
+    "vacanciesStatus": "Statut des places :",
+    "vacancyDetails": "Détails de la place",
+    "yesRegisterBus": "Oui, enregistrer le bus",
+
+    "errorLoadingData": "Erreur lors du chargement des données : {error}",
+    "@errorLoadingData": {
+        "description": "Message d'erreur affiché lorsque les données ne peuvent pas être chargées.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingVacancies": "Erreur lors du chargement des places : {error}",
+    "@errorLoadingVacancies": {
+        "description": "Message d'erreur affiché lorsque les places ne parviennent pas à se charger.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorSavingCompany": "Erreur lors de l'enregistrement de l'entreprise : {error}",
+    "@errorSavingCompany": {
+        "description": "Message d'erreur affiché en cas d'échec de l'enregistrement de l'entreprise.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "registrationError": "Erreur d'inscription : {error}",
+    "@registrationError": {
+        "description": "Message d'erreur générique pour l'écran d'inscription.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "busPlate": "Plaque d'Immatriculation du Bus",
+    "selectPlate": "Sélectionner la Plaque",
+    "arrivalTime": "Heure d'Arrivée",
+    "selectTime": "Sélectionner l'Heure",
+    "arrivalDate": "Date d'Arrivée",
+    "selectDate": "Sélectionner la Date",
+    "additionalData": "Données Supplémentaires",
+    "schedule": "PLANIFIER",
+    "plateCannotBeEmpty": "La plaque ne peut pas être vide.",
+    "plateRegisteredSuccess": "Plaque enregistrée avec succès !",
+    "plateRegistrationError": "Erreur : Plaque déjà enregistrée ou échec du service.",
+    "registerBus": "Enregistrer le Bus",
+    "attention": "Attention",
+    "selectVacancyToSchedule": "Sélectionnez une place pour planifier l'arrivée.",
+    "confirmSaveChanges": "Voulez-vous enregistrer les modifications ?",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "recordUpdatedSuccess": "Enregistrement mis à jour avec succès.",
+    "recordUpdateFailed": "Échec de la mise à jour de l'enregistrement.",
+    "registrationHistory": "Historique des Enregistrements",
+    "failedToSendSchedule": "Échec de l'envoi de la planification",
+    "serverCommunicationFailed": "Échec de la communication avec le serveur",
+    "failedToFetchCompany": "Échec de la récupération de l'entreprise",
+    "failedToUpdateCompany": "Échec de la mise à jour de l'entreprise",
+    "failedToFetchVacancies": "Échec de la récupération des places",
+    "failedToFetchCounterName": "Échec de la récupération du nom du guichet",
+    "unauthenticatedUser": "Utilisateur non authentifié ou jeton invalide.",
+    "failedToFetchCounterNameStatusCode": "Échec de la récupération du nom du guichet : Code de statut ",
+    "invalidCredentials": "Identifiants invalides",
+    "failedToFetchBusPlates": "Échec de la récupération des plaques de bus",
+    "failedToRegisterBus": "Échec de l'enregistrement du bus",
+    "failedToFetchRecords": "Échec de la récupération des enregistrements",
+    "schedulingSuccess": "Planification réussie !",
+    "errorSchedulingFailed": "La planification a échoué. Veuillez réessayer.",
+    "scheduleVacancy": "Planifier une Place",
+    "termsAndConditionsTitle": "Termes et Conditions",
+    "termsAndConditionsBody": "Voici les termes et conditions d'OnBus. En utilisant l'application, vous acceptez ces termes.",
+    "selectLanguage": "Sélectionner la Langue",
+    "languageNamePortuguese": "Portugais (Brésil)",
+    "languageNameEnglish": "Anglais (États-Unis)",
+    "languageNameSpanish": "Espagnol",
+    "languageNameFrench": "Français",
+    "languageNameGerman": "Allemand",
+    "languageNameItalian": "Italien",
+    "totalRecords": "Total des Enregistrements : ",
+    "records": "Enregistrements",
+    "plate": "Plaque",
+    "unexpectedError": "Erreur inattendue: {error}",
+    "@unexpectedError": {
+        "description": "Message d'erreur pour les échecs imprévus.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "loginError": "Erreur de connexion: {error}",
+    "@loginError": {
+        "description": "Message d'erreur affiché en cas d'échec de la connexion.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "vacancy": "Place"
+}

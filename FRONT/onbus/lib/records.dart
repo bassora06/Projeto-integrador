@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/edit_record.dart';
-import 'package:onbus/services/servRegistro.dart'; // Importando o novo serviço de registros
+import 'package:onbus/services/servRegistro.dart';
+import 'l10n/app_localizations.dart';
 
 class RegistrosPag extends StatefulWidget {
   const RegistrosPag({super.key});
@@ -10,7 +11,7 @@ class RegistrosPag extends StatefulWidget {
 }
 
 class _RecordsPageState extends State<RegistrosPag> {
-  final RecordsService _service = RecordsService(); // Usando o novo serviço
+  final RecordsService _service = RecordsService(); 
   List<Map<String, dynamic>> _records = [];
   bool _isLoading = true;
 
@@ -28,8 +29,9 @@ class _RecordsPageState extends State<RegistrosPag> {
         _records = fetchedRecords;
       });
     } catch (e) {
+      final l10n = AppLocalizations.of(context)!;
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro ao carregar registros: $e')),
+        SnackBar(content: Text(l10n.failedToFetchRecords)),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -38,16 +40,16 @@ class _RecordsPageState extends State<RegistrosPag> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Stack(
           children: [
-            // Scrollable Content
             SingleChildScrollView(
               child: Column(
                 children: [
-                  // Top Wave
                   ClipPath(
                     clipper: WaveClipper(reverse: true),
                     child: Container(
@@ -81,7 +83,6 @@ class _RecordsPageState extends State<RegistrosPag> {
                     ),
                   ),
 
-                  // Centralized Logo
                   Padding(
                     padding: const EdgeInsets.only(top: 20.0),
                     child: Center(
@@ -93,8 +94,8 @@ class _RecordsPageState extends State<RegistrosPag> {
                             size: 120,
                             color: Color.fromARGB(255, 0, 0, 0),
                           ),
-                          const Text(
-                            'Registros',
+                          Text(
+                            l10n.records,
                             style: TextStyle(
                               fontSize: 24,
                               fontWeight: FontWeight.bold,
@@ -105,7 +106,7 @@ class _RecordsPageState extends State<RegistrosPag> {
                           _isLoading
                               ? const CircularProgressIndicator()
                               : Text(
-                                  "Total de Registros: ${_records.length}",
+                                  '${l10n.totalRecords} ${_records.length}',
                                   style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.w500,

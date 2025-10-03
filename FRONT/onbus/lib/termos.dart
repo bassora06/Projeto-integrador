@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'l10n/app_localizations.dart';
 
 void main() {
   SystemChrome.setSystemUIOverlayStyle(
@@ -14,11 +15,11 @@ class Termos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Stack(
         children: [
-          // Imagem de fundo
           SizedBox(
             width: screenSize.width,
             height: screenSize.height,
@@ -53,8 +54,8 @@ class Termos extends StatelessWidget {
                     fit: BoxFit.contain,
                   ),
                   const SizedBox(height: 40),
-                  const Text(
-                    'Termos & Condições',
+                  Text(
+                    l10n.termsAndConditionsTitle,
                     style: TextStyle(
                       fontSize: 30,
                       color: Color.fromARGB(255, 40, 0, 104),
@@ -62,10 +63,10 @@ class Termos extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 40),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      'Aqui estão os termos e condições do OnBus. Ao usar o aplicativo, você concorda com estes termos.',
+                     l10n.termsAndConditionsBody,
                       textAlign: TextAlign.center,
                       style: TextStyle(fontSize: 16, color: Colors.black),
                     ),

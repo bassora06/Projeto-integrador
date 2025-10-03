@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-// import 'package:onbus/services/iot_service.dart'; // BACK-END (comentado)
+// import 'package:onbus/services/servIoT.dart'; // BACK-END (comentado)
+import 'l10n/app_localizations.dart';
+
 
 class VagaTela extends StatefulWidget {
   const VagaTela({super.key});
@@ -41,11 +43,12 @@ class _VagaTelaState extends State<VagaTela> {
     // MOCK (substitua por sua chamada de API)
     await Future.delayed(const Duration(seconds: 1));
     final mockData = List.generate(
-      32, // Gerando 24 vagas para demonstrar a rolagem
+      32, 
       (index) {
+        final l10n = AppLocalizations.of(context)!;
         final status = _mockStatuses[(_mockStatusIndex + index) % _mockStatuses.length];
         return {
-          "id": "Vaga ${index + 1}",
+          "id": "${l10n.vacancy} ${index + 1}",
           "status": status,
           "distancia": "${(10 + index * 5)} cm",
         };
@@ -91,27 +94,29 @@ class _VagaTelaState extends State<VagaTela> {
 
   // Exibe o pop-up com os detalhes da vaga
   void _showVagaDetails(Map<String, dynamic> vaga) {
+    final l10n = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
+          title: Text('${vaga['id'] ?? 'N/A'}', style: const TextStyle(fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
+              Text('${l10n.status}: ${vaga['status']?.toUpperCase() ?? 'N/A'}'),
               const SizedBox(height: 8),
-              Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
+              Text('${l10n.distance}: ${vaga['distance'] ?? 'N/A'}'),
               const SizedBox(height: 20),
-              // Adicione mais detalhes aqui se a API retornar mais dados
+              // Adicionar outros dados IoT aqui
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Fechar"),
+              child: Text(l10n.close),
             ),
           ],
         );
@@ -142,10 +147,11 @@ class _VagaTelaState extends State<VagaTela> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
-          // Imagem de fundo
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
@@ -157,7 +163,6 @@ class _VagaTelaState extends State<VagaTela> {
           SafeArea(
             child: Column(
               children: [
-                // Título e logo
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   child: Column(
@@ -173,8 +178,8 @@ class _VagaTelaState extends State<VagaTela> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      const Text(
-                        'Monitoramento',
+                      Text(
+                        l10n.monitoring,
                         style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -191,7 +196,7 @@ class _VagaTelaState extends State<VagaTela> {
                     ],
                   ),
                 ),
-                // Grid de Vagas (Agora rolável)
+                // Grid de Vagas 
                 Expanded(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 8.0),
@@ -254,10 +259,10 @@ class _VagaTelaState extends State<VagaTela> {
                           ),
                   ),
                 ),
-                // Legenda fixa na parte inferior (corrigida)
+                // Legenda fixa na parte inferior 
                 Container(
                   width: MediaQuery.of(context).size.width * 0.9,
-                  margin: const EdgeInsets.only(top: 24.0, bottom: 16.0), // ✅ Espaçamento em relação ao grid
+                  margin: const EdgeInsets.only(top: 24.0, bottom: 16.0),
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
@@ -279,8 +284,8 @@ class _VagaTelaState extends State<VagaTela> {
                   mainAxisSize: MainAxisSize.min,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const Text(
-                      'Status das Vagas:',
+                    Text(
+                      l10n.vacanciesStatus,
                       style: TextStyle(
                       color: Color(0xFF280068),
                       fontWeight: FontWeight.bold,
@@ -288,21 +293,20 @@ class _VagaTelaState extends State<VagaTela> {
                       ),
                     ),
                   const SizedBox(height: 10),
-                   // 🔄 Alteramos de Column para Row
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
                       _buildLegendItem(
                         color: Colors.green,
-                        text: "Livre",
+                        text: l10n.free,
                         textColor: const Color(0xFF280068)),
                       _buildLegendItem(
                         color: Colors.red,
-                        text: "Preenchido",
+                        text: l10n.occupied,
                         textColor: const Color(0xFF280068)),
                       _buildLegendItem(
                         color: Colors.yellow,
-                        text: "Stand by",
+                        text: l10n.standBy,
                         textColor: const Color(0xFF280068)),
                       ],
                     ),

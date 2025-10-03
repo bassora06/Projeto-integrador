@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/material.dart' as material;
 import 'package:onbus/login_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:onbus/providers/locale_provider.dart';
+import 'l10n/app_localizations.dart';
 
 class ConfigPage extends StatefulWidget {
   const ConfigPage({super.key});
@@ -10,21 +12,11 @@ class ConfigPage extends StatefulWidget {
 }
 
 class _ConfigPageState extends State<ConfigPage> {
-  String? _selectedLanguage = 'Português (Brasil)';
-  final List<String> _languages = [
-    'Português (Brasil)',
-    'English (US)',
-    'Espanhol',
-    'Francês',
-    'Alemão',
-    'Italiano',
-    
-  ];
-
-
-
   @override
   Widget build(BuildContext context) {
+    // 1. Buscando o provider para poder usá-lo no widget
+    final localeProvider = Provider.of<LocaleProvider>(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -44,25 +36,20 @@ class _ConfigPageState extends State<ConfigPage> {
                     end: Alignment.bottomRight,
                   ),
                 ),
-            // Header with back button and title
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: IconButton(
-                      icon: const Icon(Icons.arrow_back, size: 30, color: Colors.white,),
-                      onPressed: () => Navigator.pop(context),
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: IconButton(
+                        icon: const Icon(Icons.arrow_back, size: 30, color: Colors.white),
+                        onPressed: () => Navigator.pop(context),
+                      ),
                     ),
-                  ),
-                  
-                  
-                ],
-              ),
+                  ],
+                ),
               ),
             ),
-
-            // Main content
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -72,37 +59,62 @@ class _ConfigPageState extends State<ConfigPage> {
                     const SizedBox(height: 40),
                     const Center(child: Icon(Icons.settings, size: 40, color: Color.fromARGB(255, 40, 0, 104))),
                     const SizedBox(height: 8),
-                    const Center(child: Text(
-                      'Configurações',
-                      style: TextStyle(
-                        fontSize: 35,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 40, 0, 104),
+                    Center(
+                      // 2. Usando a chave de tradução para o título
+                      child: Text(
+                        AppLocalizations.of(context)!.settings,
+                        style: const TextStyle(
+                          fontSize: 35,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 40, 0, 104),
+                        ),
                       ),
                     ),
-                    ),
-                    const SizedBox(height: 40,),
-                    const Text(
-                      'Idioma',
-                      style: TextStyle(
+                    const SizedBox(height: 40),
+                    // 3. Usando a chave de tradução para o label
+                    Text(
+                      AppLocalizations.of(context)!.language,
+                      style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.black87,
                       ),
                     ),
                     const SizedBox(height: 10),
-                    material.DropdownButtonFormField<String>(
-                      value: _selectedLanguage,
-                      items: _languages.map((String value) {
-                        return material.DropdownMenuItem<String>(
-                          value: value,
-                          child: Text(value),
+                    // 4. Dropdown corrigido
+                    DropdownButtonFormField<Locale>(
+                      value: localeProvider.locale ?? Localizations.localeOf(context),
+                      items: AppLocalizations.supportedLocales.map((locale) {
+                        String languageName = '';
+                        switch (locale.languageCode) {
+                          case 'pt':
+                            languageName = 'Português (Brasil)';
+                            break;
+                          case 'en':
+                            languageName = 'English (US)';
+                            break;
+                          case 'es':
+                            languageName = 'Español';
+                            break;
+                          case 'fr':
+                            languageName = 'Français';
+                            break;
+                          case 'de':
+                            languageName = 'Deutsch';
+                            break;
+                          case 'it':
+                            languageName = 'Italiano';
+                            break;
+                        }
+                        return DropdownMenuItem(
+                          value: locale,
+                          child: Text(languageName),
                         );
                       }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _selectedLanguage = newValue;
-                        });
+                      onChanged: (Locale? newLocale) {
+                        if (newLocale != null) {
+                          localeProvider.setLocale(newLocale);
+                        }
                       },
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
@@ -121,27 +133,25 @@ class _ConfigPageState extends State<ConfigPage> {
                       height: 50,
                       child: ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 40, 0, 104),
+                          backgroundColor: const Color.fromARGB(255, 40, 0, 104),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
                         ),
                         onPressed: () {
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                             context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
+                            MaterialPageRoute(builder: (context) => const LoginScreen()),
+                            (route) => false, 
                           );
-                        },  
-                        child: const Text(
-                          'SAIR',
-                          style: TextStyle(
+                        },
+                        child: Text(
+                          AppLocalizations.of(context)!.exit,
+                          style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
-                          
                         ),
                       ),
                     ),
@@ -156,43 +166,28 @@ class _ConfigPageState extends State<ConfigPage> {
     );
   }
 }
-
-
 class WaveClipper extends CustomClipper<Path> {
   final bool reverse;
-
   WaveClipper({this.reverse = false});
-
   @override
   Path getClip(Size size) {
     final path = Path();
-    
     if (reverse) {
       path.moveTo(0, size.height);
-      path.quadraticBezierTo(
-        size.width * 0.25, size.height - 30,
-        size.width * 0.5, size.height - 20);
-      path.quadraticBezierTo(
-        size.width * 0.75, size.height - 10,
-        size.width, size.height - 30);
+      path.quadraticBezierTo(size.width * 0.25, size.height - 30, size.width * 0.5, size.height - 20);
+      path.quadraticBezierTo(size.width * 0.75, size.height - 10, size.width, size.height - 30);
       path.lineTo(size.width, 0);
       path.lineTo(0, 0);
     } else {
       path.moveTo(0, 0);
-      path.quadraticBezierTo(
-        size.width * 0.25, 30,
-        size.width * 0.5, 20);
-      path.quadraticBezierTo(
-        size.width * 0.75, 10,
-        size.width, 30);
+      path.quadraticBezierTo(size.width * 0.25, 30, size.width * 0.5, 20);
+      path.quadraticBezierTo(size.width * 0.75, 10, size.width, 30);
       path.lineTo(size.width, size.height);
       path.lineTo(0, size.height);
     }
-    
     path.close();
     return path;
   }
-
   @override
   bool shouldReclip(covariant CustomClipper<Path> oldClipper) => false;
 }

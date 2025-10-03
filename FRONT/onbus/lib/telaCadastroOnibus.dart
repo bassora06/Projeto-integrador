@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:onbus/services/servOnibus.dart';
+import 'l10n/app_localizations.dart';
 
 class TelaCadastroOnibus extends StatefulWidget {
   const TelaCadastroOnibus({super.key});
@@ -14,9 +15,11 @@ class _TelaCadastroOnibusState extends State<TelaCadastroOnibus> {
   bool _isLoading = false;
 
   void _cadastrarPlaca() async {
+    final l10n = AppLocalizations.of(context)!;
+
     if (_placaController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("A placa não pode estar vazia.")),
+        SnackBar(content: Text(l10n.plateCannotBeEmpty)),
       );
       return;
     }
@@ -26,12 +29,12 @@ class _TelaCadastroOnibusState extends State<TelaCadastroOnibus> {
       final success = await _service.cadastrarOnibus(_placaController.text);
       if (success) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Placa cadastrada com sucesso!")),
+          SnackBar(content: Text(l10n.plateRegisteredSuccess)),
         );
-        Navigator.of(context).pop(); // Fecha o pop-up
+        Navigator.of(context).pop(); 
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text("Erro: Placa já cadastrada ou falha no serviço.")),
+          SnackBar(content: Text(l10n.plateRegistrationError)),
         );
       }
     } catch (e) {
@@ -45,8 +48,10 @@ class _TelaCadastroOnibusState extends State<TelaCadastroOnibus> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Material(
-      color: Colors.transparent, // Adicionado Material com cor transparente
+      color: Colors.transparent,
       child: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : Padding(
@@ -55,8 +60,8 @@ class _TelaCadastroOnibusState extends State<TelaCadastroOnibus> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Text(
-                    "Cadastrar Ônibus",
+                  Text(
+                    l10n.registerBus, 
                     style: TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -64,12 +69,12 @@ class _TelaCadastroOnibusState extends State<TelaCadastroOnibus> {
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 20),
-                  const Text("Placa do Ônibus"),
+                  Text(l10n.busPlate),
                   TextField(controller: _placaController),
                   const SizedBox(height: 40),
                   ElevatedButton(
                     onPressed: _cadastrarPlaca,
-                    child: const Text("CADASTRAR"),
+                    child: Text(l10n.register),
                   ),
                 ],
               ),

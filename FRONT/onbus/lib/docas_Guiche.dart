@@ -2,6 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:onbus/services/servIoT.dart';
 import 'package:onbus/login_screen.dart';
 import 'dart:async';
+import 'package:provider/provider.dart';
+import 'package:onbus/providers/locale_provider.dart';
+import 'l10n/app_localizations.dart';
 
 class VagaTelaGuicheDesktop extends StatefulWidget {
   const VagaTelaGuicheDesktop({super.key});
@@ -16,7 +19,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
   String _filtroStatus = 'Todos';
   Timer? _timer;
   bool _isLoading = true;
-  String _guicheName = ''; // Adicionado para armazenar o nome do guichê
+  String _guicheName = ''; 
 
   @override
   void initState() {
@@ -44,12 +47,14 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     await Future.delayed(const Duration(seconds: 1));
     if (mounted) {
       setState(() {
-        _guicheName = 'Guichê Exemplo'; // Nome mockado
+        _guicheName = 'Guichê Exemplo';
       });
     }
   }
 
   void _fetchVagas() async {
+    final l10n = AppLocalizations.of(context)!;
+
     // Mantém o estado de loading apenas na primeira carga
     if (_isLoading) {
       setState(() => _isLoading = true);
@@ -65,7 +70,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text("Erro ao carregar vagas: $e")),
+          SnackBar(content: Text(l10n.errorLoadingVacancies(e.toString()))),
         );
       }
     } finally {
@@ -106,32 +111,78 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
 
   // Método para a internacionalização (simulado)
   void _changeLanguage() {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Funcionalidade de internacionalização em desenvolvimento.")),
+    final localeProvider = Provider.of<LocaleProvider>(context, listen: false);
+    final l10n = AppLocalizations.of(context)!;
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(l10n.selectLanguage),
+          content: DropdownButtonFormField<Locale>(
+            value: localeProvider.locale ?? Localizations.localeOf(context),
+            items: AppLocalizations.supportedLocales.map((locale) {
+              String languageName = '';
+              switch (locale.languageCode) {
+                case 'pt':
+                  languageName = l10n.languageNamePortuguese;
+                  break;
+                case 'en':
+                  languageName = l10n.languageNameEnglish;
+                  break;
+                case 'es':
+                  languageName = l10n.languageNameSpanish;
+                  break;
+                case 'fr':
+                  languageName = l10n.languageNameFrench;
+                  break;
+                case 'de':
+                  languageName = l10n.languageNameGerman;
+                  break;
+                case 'it':
+                  languageName = l10n.languageNameItalian;
+                  break;
+              }
+              return DropdownMenuItem(
+                value: locale,
+                child: Text(languageName),
+              );
+            }).toList(),
+            onChanged: (Locale? newLocale) {
+              if (newLocale != null) {
+                localeProvider.setLocale(newLocale);
+                Navigator.of(context).pop();
+              }
+            },
+          ),
+        );
+      },
     );
   }
 
   // Novo método para exibir os detalhes da vaga em um pop-up
   void _showVagaDetails(Map<String, dynamic> vaga) {
+    final l10n = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
+          title: Text('${l10n.vacancy}${vaga['id'] ?? 'N/A'}', style: const TextStyle(fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
+              Text('${l10n.status}: ${vaga['status']?.toUpperCase() ?? 'N/A'}'),
               const SizedBox(height: 8),
-              Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
+              Text('${l10n.distance}: ${vaga['distance'] ?? 'N/A'}'),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Fechar"),
+              child: Text(l10n.close),
             ),
           ],
         );
@@ -150,25 +201,35 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
       onTap: onTap,
       child: Column(
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: 24,
-            height: 24,
-            decoration: BoxDecoration(
-              color: color,
-              shape: BoxShape.circle,
-              border: ativo
-                  ? Border.all(color: Colors.black, width: 2)
-                  : null,
-            ),
-          ),
-          const SizedBox(height: 6),
-          Text(
-            text,
-            style: TextStyle(
-              color: textColor,
-              fontWeight: ativo ? FontWeight.bold : FontWeight.normal,
-            ),
+          Row(
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 32,
+                height: 32,
+                decoration: BoxDecoration(
+                  color: color,
+                  shape: BoxShape.circle,
+                  border: ativo
+                      ? Border.all(color: Colors.black, width: 2)
+                      : null,
+                ),
+                child: Icon(
+                  Icons.circle,
+                  color: Colors.transparent, 
+                  size: 0,
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                text,
+                style: TextStyle(
+                  color: textColor,
+                  fontWeight: ativo ? FontWeight.bold : FontWeight.normal,
+                  fontSize: 16,
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -178,6 +239,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Row(
@@ -185,7 +247,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
           Container(
             width: screenSize.width * 0.25,
             padding: const EdgeInsets.all(16.0),
-            color: const Color(0xff871CE8),
+            color: const Color(0xff1C00B5),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -233,8 +295,8 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Filtragem:',
+                      Text(
+                        l10n.filtering,
                         style: TextStyle(
                           color: Color(0xFF280068),
                           fontWeight: FontWeight.bold,
@@ -247,7 +309,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                         children: [
                           _buildLegendItem(
                             color: const Color(0xff41d10d),
-                            text: "Livre",
+                            text: l10n.free,
                             textColor: const Color(0xFF280068),
                             ativo: _filtroStatus == "Livre",
                             onTap: () {
@@ -259,7 +321,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                           const SizedBox(height: 10),
                           _buildLegendItem(
                             color: const Color(0xffdb0b23),
-                            text: "Preenchido",
+                            text: l10n.occupied,
                             textColor: const Color(0xFF280068),
                             ativo: _filtroStatus == "Preenchido",
                             onTap: () {
@@ -271,7 +333,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                           const SizedBox(height: 10),
                           _buildLegendItem(
                             color: const Color(0xfff5ce0c),
-                            text: "Stand by",
+                            text: l10n.standBy,
                             textColor: const Color(0xFF280068),
                             ativo: _filtroStatus == "Stand by",
                             onTap: () {
@@ -288,7 +350,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                               });
                             },
                             child: Text(
-                              "Remover Filtro",
+                              l10n.removeFilter,
                               style: TextStyle(
                                 color: const Color(0xFF280068),
                                 fontWeight: _filtroStatus == "Todos" ? FontWeight.bold : FontWeight.normal,
@@ -302,34 +364,30 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                 ),
                 const Spacer(),
                 Column(
-                // crossAxisAlignment.start alinha os filhos (os botões) à esquerda
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   // Botão de Mudar Idioma
                   TextButton.icon(
                     onPressed: _changeLanguage,
-                    icon: const Icon(Icons.language, size: 30), // Ícone
-                    label: const Text('Mudar Idioma'),        // Texto ao lado do ícone
+                    icon: const Icon(Icons.language, size: 32), 
+                    label: Text(l10n.changeLanguage),        
                     style: TextButton.styleFrom(
-                      foregroundColor: Colors.white, // Define a cor do ícone e do texto
+                      foregroundColor: Colors.white, 
                       textStyle: const TextStyle(
-                        fontSize: 16, // Tamanho da fonte
+                        fontSize: 20, 
                       ),
                     ),
                   ),
-
-                  // Espaçamento entre os botões
                   const SizedBox(height: 8), 
-
                   // Botão de Sair
                   TextButton.icon(
                     onPressed: _handleLogout,
-                    icon: const Icon(Icons.logout, size: 30),
+                    icon: const Icon(Icons.logout, size: 32),
                     label: const Text('Sair da Conta'),
                     style: TextButton.styleFrom(
                       foregroundColor: Colors.white,
                       textStyle: const TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                       ),
                     ),
                   ),
@@ -340,7 +398,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
           ),
           Expanded(
             child: Padding(
-              padding: const EdgeInsets.all(24.0),
+              padding: const EdgeInsets.all(32.0),
               child: Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
@@ -385,7 +443,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                                             border: Border.all(color: Colors.white, width: 2),
                                           ),
                                           child: Text(
-                                            vaga['id'] ?? 'N/A',
+                                            vaga['id']?.replaceFirst('-', l10n.vacancy) ?? 'N/A',
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,

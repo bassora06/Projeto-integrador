@@ -1,0 +1,165 @@
+{
+    "@@locale": "it",
+
+    "askRegisterBusBeforeScheduling": "Vuoi registrare un nuovo autobus prima di programmare?",
+    "changeLanguage": "Cambia lingua",
+    "changeRecord": "Modifica record",
+    "close": "Chiudi",
+    "cnpj": "CNPJ",
+    "companyName": "Nome dell'azienda",
+    "companyRegisteredSuccess": "Azienda registrata con successo!",
+    "companyUpdatedSuccess": "Azienda aggiornata con successo!",
+    "confirmPassword": "Conferma password",
+    "corporateName": "Ragione sociale",
+    "counterExample": "Sportello di esempio",
+    "counterRegisteredSuccess": "Sportello registrato con successo!",
+    "cpf": "CPF",
+    "createAccountCompany": "Crea account - Azienda",
+    "createAccountCounter": "Crea account - Sportello",
+    "distance": "Distanza",
+    "docks": "Banchine",
+    "docksOrganization": "Organizzazione banchine",
+    "editCompany": "Modifica azienda",
+    "email": "Email",
+    "error": "Errore",
+    "exit": "ESCI",
+    "featureInProgress": "Funzionalità in fase di sviluppo.",
+    "fillAllFields": "Si prega di compilare tutti i campi obbligatori.",
+    "filtering": "Filtraggio",
+    "forgotPassword": "Hai dimenticato la password?",
+    "free": "Libero",
+    "includeRegistration": "Aggiungi registrazione",
+    "language": "Lingua",
+    "login": "ACCEDI",
+    "logOut": "Esci",
+    "monitoring": "Monitoraggio",
+    "name": "Nome",
+    "noContinueScheduling": "No, continua a programmare",
+    "noVacanciesAvailable": "Nessun posto disponibile al momento.",
+    "occupied": "Occupato",
+    "ok": "OK",
+    "password": "Password",
+    "passwordError": "Errore password",
+    "passwordsDoNotMatch": "Le password inserite non corrispondono. Si prega di controllare e riprovare.",
+    "phone": "Telefono",
+    "register": "REGISTRATI",
+    "registerCompany": "Registra azienda",
+    "registerCounter": "Registra sportello",
+    "registrationFailed": "Registrazione fallita. Si prega di riprovare.",
+    "removeFilter": "Rimuovi filtro",
+    "saveChanges": "SALVA MODIFICHE",
+    "scheduleArrival": "Programma arrivo",
+    "scheduleArrivalButton": "PROGRAMMA ARRIVO",
+    "settings": "Impostazioni",
+    "standBy": "In attesa",
+    "status": "Stato",
+    "success": "Successo",
+    "termsAndConditions": "Dichiaro di aver letto e di accettare i termini di utilizzo",
+    "unknownUserType": "Tipo di utente sconosciuto.",
+    "vacanciesStatus": "Stato posti:",
+    "vacancyDetails": "Dettagli posto",
+    "yesRegisterBus": "Sì, registra autobus",
+
+    "errorLoadingData": "Errore durante il caricamento dei dati: {error}",
+    "@errorLoadingData": {
+        "description": "Messaggio di errore visualizzato quando non è possibile caricare i dati.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingVacancies": "Errore during il caricamento dei posti: {error}",
+    "@errorLoadingVacancies": {
+        "description": "Messaggio di errore visualizzato quando il caricamento dei posti non riesce.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorSavingCompany": "Errore durante il salvataggio dell'azienda: {error}",
+    "@errorSavingCompany": {
+        "description": "Messaggio di errore visualizzato in caso di errore nel salvataggio dell'azienda.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "registrationError": "Errore di registrazione: {error}",
+    "@registrationError": {
+        "description": "Messaggio di errore generico per la schermata di registrazione.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "busPlate": "Targa Autobus",
+    "selectPlate": "Seleziona Targa",
+    "arrivalTime": "Orario di Arrivo",
+    "selectTime": "Seleziona Orario",
+    "arrivalDate": "Data di Arrivo",
+    "selectDate": "Seleziona Data",
+    "additionalData": "Dati Aggiuntivi",
+    "schedule": "PROGRAMMA",
+    "plateCannotBeEmpty": "La targa non può essere vuota.",
+    "plateRegisteredSuccess": "Targa registrata con successo!",
+    "plateRegistrationError": "Errore: Targa già registrata o errore del servizio.",
+    "registerBus": "Registra Autobus",
+    "attention": "Attenzione",
+    "selectVacancyToSchedule": "Seleziona un posto per programmare l'arrivo.",
+    "confirmSaveChanges": "Vuoi salvare le modifiche?",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "recordUpdatedSuccess": "Record aggiornato con successo.",
+    "recordUpdateFailed": "Aggiornamento del record fallito.",
+    "registrationHistory": "Cronologia Registrazioni",
+    "failedToSendSchedule": "Invio della programmazione fallito",
+    "serverCommunicationFailed": "Comunicazione con il server fallita",
+    "failedToFetchCompany": "Recupero azienda fallito",
+    "failedToUpdateCompany": "Aggiornamento azienda fallito",
+    "failedToFetchVacancies": "Recupero posti fallito",
+    "failedToFetchCounterName": "Recupero nome sportello fallito",
+    "unauthenticatedUser": "Utente non autenticato o token non valido.",
+    "failedToFetchCounterNameStatusCode": "Recupero nome sportello fallito: Codice di stato ",
+    "invalidCredentials": "Credenziali non valide",
+    "failedToFetchBusPlates": "Recupero targhe autobus fallito",
+    "failedToRegisterBus": "Registrazione autobus fallita",
+    "failedToFetchRecords": "Recupero record fallito",
+    "schedulingSuccess": "Programmazione eseguita con successo!",
+    "errorSchedulingFailed": "Programmazione fallita. Si prega di riprovare.",
+    "scheduleVacancy": "Programma Posto",
+    "termsAndConditionsTitle": "Termini e Condizioni",
+    "termsAndConditionsBody": "Ecco i termini e le condizioni di OnBus. Utilizzando l'applicazione, accetti questi termini.",
+    "selectLanguage": "Seleziona Lingua",
+    "languageNamePortuguese": "Portoghese (Brasile)",
+    "languageNameEnglish": "Inglese (USA)",
+    "languageNameSpanish": "Spagnolo",
+    "languageNameFrench": "Francese",
+    "languageNameGerman": "Tedesco",
+    "languageNameItalian": "Italiano",
+    "totalRecords": "Totale Record: ",
+    "records": "Record",
+    "plate": "Targa",
+    "unexpectedError": "Errore imprevisto: {error}",
+    "@unexpectedError": {
+        "description": "Messaggio di errore per guasti imprevisti.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "loginError": "Errore durante l'accesso: {error}",
+    "@loginError": {
+        "description": "Messaggio di errore visualizzato in caso di fallimento del login.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "vacancy": "Posto"
+}

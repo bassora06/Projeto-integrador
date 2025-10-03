@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:onbus/services/servIoT.dart';
 import 'package:onbus/telaAgendamento.dart';
 import 'package:onbus/telaCadastroOnibus.dart';
+import 'l10n/app_localizations.dart';
 
 class VagaTelaEmpresa extends StatefulWidget {
   const VagaTelaEmpresa({super.key});
@@ -42,9 +43,10 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
     final mockData = List.generate(
       32,
       (index) {
+        final l10n = AppLocalizations.of(context)!;
         final status = _mockStatuses[(_mockStatusIndex + index) % _mockStatuses.length];
         return {
-          "id": "Vaga ${index + 1}",
+          "id": "${l10n.vacancy} ${index + 1}",
           "status": status,
           "distancia": "${(10 + index * 5)} cm",
         };
@@ -72,13 +74,15 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
   }
 
   void _showSchedulingPopup() {
+    final l10n = AppLocalizations.of(context)!;
+    
     if (_vagas.isNotEmpty) {
       showDialog(
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text("Agendar Chegada"),
-            content: const Text("Deseja cadastrar uma nova placa de ônibus antes de agendar?"),
+            title: Text(l10n.scheduleArrival),
+            content: Text(l10n.askRegisterBusBeforeScheduling),
             actions: [
               ElevatedButton(
                 onPressed: () {
@@ -96,11 +100,11 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                     },
                   );
                 },
-                child: const Text("Não, continuar agendando"),
+                child: Text(l10n.noContinueScheduling),
               ),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.of(context).pop(); // Fecha o pop-up atual
+                  Navigator.of(context).pop(); 
                   showDialog(
                     context: context,
                     builder: (context) {
@@ -114,7 +118,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                     },
                   );
                 },
-                child: const Text("Sim, cadastrar ônibus"),
+                child: Text(l10n.yesRegisterBus),
               ),
             ],
           );
@@ -122,31 +126,33 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Não há vagas disponíveis no momento.")),
+        SnackBar(content: Text(l10n.noVacanciesAvailable)),
       );
     }
   }
 
   void _showVagaDetails(Map<String, dynamic> vaga) {
+    final l10n = AppLocalizations.of(context)!;
+
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-          title: Text(vaga['id'] ?? 'Detalhes da Vaga', style: const TextStyle(fontWeight: FontWeight.bold)),
+          title: Text('${l10n.vacancy} - ${vaga['id'] ?? 'N/A'}', style: const TextStyle(fontWeight: FontWeight.bold)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Status: ${vaga['status']?.toUpperCase() ?? 'N/A'}"),
+              Text('${l10n.status}: ${vaga['status']?.toUpperCase() ?? 'N/A'}'),
               const SizedBox(height: 8),
-              Text("Distância: ${vaga['distancia'] ?? 'N/A'}"),
+              Text('${l10n.distance}: ${vaga['distance'] ?? 'N/A'}'),
             ],
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: const Text("Fechar"),
+              child: Text(l10n.close),
             ),
           ],
         );
@@ -176,6 +182,8 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       body: Stack(
         children: [
@@ -205,8 +213,8 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                         ),
                       ),
                       const SizedBox(height: 40),
-                      const Text(
-                        'Monitoramento',
+                      Text(
+                        l10n.monitoring,
                         style: TextStyle(
                           fontSize: 35,
                           fontWeight: FontWeight.bold,
@@ -254,7 +262,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                       child: Text(
-                                        vaga['id'] ?? 'N/A',
+                                        '${l10n.vacancy} - ${vaga['id'] ?? 'N/A'}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
@@ -292,8 +300,8 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                       ),
                       elevation: 5,
                     ),
-                    child: const Text(
-                      'AGENDAR CHEGADA',
+                    child: Text(
+                      l10n.scheduleArrivalButton,
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -318,8 +326,8 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                     mainAxisSize: MainAxisSize.min,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
-                        'Status das Vagas:',
+                      Text(
+                        l10n.vacanciesStatus,
                         style: TextStyle(
                           color: Color(0xFF280068),
                           fontWeight: FontWeight.bold,
@@ -332,17 +340,17 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                         children: [
                           _buildLegendItem(
                             color: const Color(0xff41d10d),
-                            text: "Livre",
+                            text: l10n.free,
                             textColor: const Color(0xFF280068),
                           ),
                           _buildLegendItem(
                             color: const Color(0xffdb0b23),
-                            text: "Preenchido",
+                            text: l10n.occupied,
                             textColor: const Color(0xFF280068),
                           ),
                           _buildLegendItem(
                             color: const Color(0xfff5ce0c),
-                            text: "Stand by",
+                            text: l10n.standBy,
                             textColor: const Color(0xFF280068),
                           ),
                         ],

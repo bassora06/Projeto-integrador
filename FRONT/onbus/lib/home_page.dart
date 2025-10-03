@@ -4,12 +4,15 @@ import 'package:onbus/cad_empresa.dart';
 import 'package:onbus/records.dart';
 import 'package:onbus/cad_guiche.dart';
 import 'package:onbus/docas_ADM.dart';
+import 'l10n/app_localizations.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
@@ -19,7 +22,6 @@ class HomePage extends StatelessWidget {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  // Cabeçalho rolável
                   ClipPath(
                     clipper: WaveClipper(reverse: true),
                     child: Container(
@@ -69,9 +71,9 @@ class HomePage extends StatelessWidget {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Text(
-                          'Organização de Docas',
-                          style: TextStyle(
+                        Text(
+                          l10n.docksOrganization,
+                          style: const TextStyle(
                             fontSize: 35,
                             fontWeight: FontWeight.bold,
                             color: Color.fromARGB(255, 40, 0, 104),
@@ -92,18 +94,19 @@ class HomePage extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton.icon(
                             icon: const Icon(Icons.directions_bus, size: 40),
-                            label: const Padding(
-                              padding: EdgeInsets.symmetric(vertical: 24.0),
+                            label: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 24.0),
                               child: Text(
-                                'Docas',
-                                style: TextStyle(
+                                l10n.docks,
+                                style: const TextStyle(
                                   fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                              backgroundColor:
+                                  const Color.fromARGB(255, 255, 255, 255),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
                               ),
@@ -113,7 +116,7 @@ class HomePage extends StatelessWidget {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(
-                                  builder: (context) => const VagaTela(),
+                                  builder: (context) => const VagaTela(), 
                                 ),
                               );
                             },
@@ -128,22 +131,23 @@ class HomePage extends StatelessWidget {
                           children: [
                             Expanded(
                               child: ElevatedButton.icon(
-                                icon: const Icon(Icons.person_add, size: 40), 
-                                label: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                                icon: const Icon(Icons.person_add, size: 40),
+                                label: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 24.0),
                                   child: Text(
-                                    'Incluir Cadastro',
-                                    style: TextStyle(
+                                    l10n.includeRegistration,
+                                    style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.circular(16)),
                                   elevation: 4,
                                 ),
                                 onPressed: () {
@@ -151,24 +155,27 @@ class HomePage extends StatelessWidget {
                                     context: context,
                                     builder: (BuildContext context) {
                                       return AlertDialog(
-                                        title: const Center(
-                                          child: Text('Incluir Cadastro'),
+                                        title: Center(
+                                          child: Text(l10n.includeRegistration),
                                         ),
                                         actions: [
                                           TextButton(
                                             onPressed: () {
+                                              Navigator.of(context).pop(); 
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => const RegScreenPJ(),
+                                                  builder: (context) =>
+                                                      const RegScreenPJ(),
                                                 ),
                                               );
                                             },
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Cadastrar Empresa',
-                                                style: TextStyle(
-                                                  color: Color.fromARGB(255, 40, 0, 104),
+                                                l10n.registerCompany,
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                      255, 40, 0, 104),
                                                   fontSize: 20,
                                                 ),
                                               ),
@@ -177,18 +184,25 @@ class HomePage extends StatelessWidget {
                                           const SizedBox(height: 10),
                                           TextButton(
                                             onPressed: () {
+                                              Navigator.of(context).pop(); 
                                               Navigator.push(
                                                 context,
                                                 MaterialPageRoute(
-                                                  builder: (context) => const RegScreenPF(),
+                                                  builder: (context) =>
+                                                      const RegScreenPF(),
                                                 ),
                                               );
                                             },
-                                            child: const Center(
+                                            child: Center(
                                               child: Text(
-                                                'Cadastrar Guichê',
-                                                style: TextStyle(
-                                                  color: Color.fromARGB(255, 40, 0, 104,),
+                                                l10n.registerCounter,
+                                                style: const TextStyle(
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    40,
+                                                    0,
+                                                    104,
+                                                  ),
                                                   fontSize: 20,
                                                 ),
                                               ),
@@ -205,21 +219,22 @@ class HomePage extends StatelessWidget {
                             Expanded(
                               child: ElevatedButton.icon(
                                 icon: const Icon(Icons.edit_note, size: 40),
-                                label: const Padding(
-                                  padding: EdgeInsets.symmetric(vertical: 24.0),
+                                label: Padding(
+                                  padding: const EdgeInsets.symmetric(vertical: 24.0),
                                   child: Text(
-                                    'Alterar Registro',
-                                    style: TextStyle(
+                                    l10n.changeRecord,
+                                    style: const TextStyle(
                                       fontSize: 24,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
                                 ),
                                 style: ElevatedButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(255, 255, 255, 255),
+                                  backgroundColor:
+                                      const Color.fromARGB(255, 255, 255, 255),
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(16)
-                                  ),
+                                      borderRadius:
+                                          BorderRadius.circular(16)),
                                   elevation: 4,
                                 ),
                                 onPressed: () {
@@ -253,7 +268,7 @@ class HomePage extends StatelessWidget {
               ),
             ),
           ),
-          
+
           // Rodapé fixo
           ClipPath(
             clipper: WaveClipper(),
@@ -273,38 +288,6 @@ class HomePage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  // Métodos auxiliares permanecem inalterados
-  Widget _buildMenuButton({
-    required IconData icon,
-    required String label,
-    required VoidCallback onPressed,
-  }) {
-    return Column(
-      children: [
-        GestureDetector(
-          onTap: onPressed,
-          child: Container(
-            width: 100,
-            height: 100,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(
-                color: const Color.fromARGB(255, 40, 0, 104),
-                width: 1,
-              ),
-            ),
-            child: Icon(icon, size: 80),
-          ),
-        ),
-        const SizedBox(height: 10),
-        Text(
-          label,
-          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
-        ),
-      ],
     );
   }
 }

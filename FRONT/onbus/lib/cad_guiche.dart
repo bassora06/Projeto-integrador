@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:onbus/home_page.dart';
 import 'package:onbus/login_screen.dart';
 import 'package:onbus/termos.dart';
-import 'package:onbus/services/servCadGuiche.dart'; // Novo import
+import 'package:onbus/services/servCadGuiche.dart'; 
+import 'l10n/app_localizations.dart';
 
 class RegScreenPF extends StatefulWidget {
   const RegScreenPF({super.key});
@@ -35,13 +36,14 @@ class _RegScreenPFState extends State<RegScreenPF> {
   }
 
   void _showPasswordMismatchDialog(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
     showDialog(
       context: context,
       builder:
           (context) => AlertDialog(
-            title: const Text('Erro de Senha'),
-            content: const Text(
-              'As senhas digitadas não coincidem. Por favor, verifique e tente novamente.',
+            title: Text(l10n.passwordError),
+            content: Text(
+              l10n.passwordsDoNotMatch,
             ),
             actions: [
               TextButton(
@@ -54,6 +56,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
   }
 
   void _cadastrar() async {
+    final l10n = AppLocalizations.of(context)!;
     if (!_isFormValid) return;
     if (_passwordController.text != _confirmPasswordController.text) {
       _showPasswordMismatchDialog(context);
@@ -75,8 +78,8 @@ class _RegScreenPFState extends State<RegScreenPF> {
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Sucesso'),
-            content: const Text('Guichê cadastrado com sucesso!'),
+            title: Text(l10n.success),
+            content: Text(l10n.counterRegisteredSuccess),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(context).popUntil((route) => route.isFirst),
@@ -86,11 +89,11 @@ class _RegScreenPFState extends State<RegScreenPF> {
           ),
         );
       } else {
-        throw Exception("O cadastro falhou. Tente novamente.");
+        throw Exception(l10n.registrationFailed);
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erro no cadastro: $e")),
+        SnackBar(content: Text(l10n.registrationError(e.toString()))),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -110,12 +113,12 @@ class _RegScreenPFState extends State<RegScreenPF> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       backgroundColor:  Color.fromARGB(255, 40, 0, 104),
       body: Stack(
         children: [
-          // Background Image
           SizedBox(
             width: screenSize.width,
             height: screenSize.height,
@@ -137,7 +140,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         icon: const Icon(
                           Icons.arrow_back,
                           color:  Color.fromARGB(255, 40, 0, 104),
-                          size: 30,
+                          size: 37,
                         ),
                         onPressed: () => Navigator.pop(context),
                       ),
@@ -163,8 +166,8 @@ class _RegScreenPFState extends State<RegScreenPF> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Text(
-                          'Criar Conta - Guichê',
+                        Text(
+                          l10n.createAccountCounter,
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
@@ -175,9 +178,9 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         TextField(
                           controller: _nameController,
                           style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text('Nome'),
+                            label: Text(l10n.name),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color:  Color.fromARGB(255, 40, 0, 104),
@@ -192,9 +195,9 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         TextField(
                           controller: _cpfController,
                           style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text('CPF'),
+                            label: Text(l10n.cpf),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color:  Color.fromARGB(255, 40, 0, 104),
@@ -209,9 +212,9 @@ class _RegScreenPFState extends State<RegScreenPF> {
                         TextField(
                           controller: _emailController,
                           style: const TextStyle(color:  Color.fromARGB(255, 40, 0, 104)),
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(),
-                            label: Text('Email'),
+                            label: Text(l10n.email),
                             labelStyle: TextStyle(
                               fontWeight: FontWeight.bold,
                               color:  Color.fromARGB(255, 40, 0, 104),
@@ -242,7 +245,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 });
                               },
                             ),
-                            label: const Text('Senha'),
+                            label: Text(l10n.password),
                             labelStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color:  Color.fromARGB(255, 40, 0, 104),
@@ -274,7 +277,7 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 });
                               },
                             ),
-                            label: const Text('Confirmar Senha'),
+                            label: Text(l10n.confirmPassword),
                             labelStyle: const TextStyle(
                               fontWeight: FontWeight.bold,
                               color:  Color.fromARGB(255, 40, 0, 104),
@@ -309,8 +312,8 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                       ),
                                     );
                                   },
-                                  child: const Text(
-                                    'Declaro que li e concordo com os termos de uso',
+                                  child: Text(
+                                    l10n.termsAndConditions,
                                     style: TextStyle(
                                       fontSize: 14,
                                       color:  Color.fromARGB(255, 40, 0, 104),
@@ -341,8 +344,8 @@ class _RegScreenPFState extends State<RegScreenPF> {
                                 ? const CircularProgressIndicator(
                                     color:  Color.fromARGB(255, 40, 0, 104),
                                   )
-                                : const Text(
-                                    'CADASTRAR',
+                                : Text(
+                                    l10n.register,
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 20,

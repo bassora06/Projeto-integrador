@@ -1,0 +1,166 @@
+{
+    "@@locale": "pt",
+
+    "askRegisterBusBeforeScheduling": "Deseja cadastrar uma nova placa de ônibus antes de agendar?",
+    "changeLanguage": "Mudar Idioma",
+    "changeRecord": "Alterar Registro",
+    "close": "Fechar",
+    "cnpj": "CNPJ",
+    "companyName": "Nome da Empresa",
+    "companyRegisteredSuccess": "Empresa cadastrada com sucesso!",
+    "companyUpdatedSuccess": "Empresa atualizada com sucesso!",
+    "confirmPassword": "Confirmar Senha",
+    "corporateName": "Razão Social",
+    "counterExample": "Guichê Exemplo",
+    "counterRegisteredSuccess": "Guichê cadastrado com sucesso!",
+    "cpf": "CPF",
+    "createAccountCompany": "Criar Conta - Empresa",
+    "createAccountCounter": "Criar Conta - Guichê",
+    "distance": "Distância",
+    "docks": "Docas",
+    "docksOrganization": "Organização de Docas",
+    "editCompany": "Editar Empresa",
+    "email": "Email",
+    "error": "Erro",
+    "exit": "SAIR",
+    "featureInProgress": "Funcionalidade em desenvolvimento.",
+    "fillAllFields": "Preencha todos os campos obrigatórios.",
+    "filtering": "Filtragem",
+    "forgotPassword": "Esqueceu sua senha?",
+    "free": "Livre",
+    "includeRegistration": "Incluir Cadastro",
+    "language": "Idioma",
+    "login": "ENTRAR",
+    "logOut": "Sair da Conta",
+    "monitoring": "Monitoramento",
+    "name": "Nome",
+    "noContinueScheduling": "Não, continuar agendando",
+    "noVacanciesAvailable": "Não há vagas disponíveis no momento.",
+    "occupied": "Preenchido",
+    "ok": "OK",
+    "password": "Senha",
+    "passwordError": "Erro de Senha",
+    "passwordsDoNotMatch": "As senhas digitadas não coincidem. Por favor, verifique e tente novamente.",
+    "phone": "Telefone",
+    "register": "CADASTRAR",
+    "registerCompany": "Cadastrar Empresa",
+    "registerCounter": "Cadastrar Guichê",
+    "registrationFailed": "O cadastro falhou. Tente novamente.",
+    "removeFilter": "Remover Filtro",
+    "saveChanges": "SALVAR ALTERAÇÕES",
+    "scheduleArrival": "Agendar Chegada",
+    "scheduleArrivalButton": "AGENDAR CHEGADA",
+    "settings": "Configurações",
+    "standBy": "Stand by",
+    "status": "Status",
+    "success": "Sucesso",
+    "termsAndConditions": "Declaro que li e concordo com os termos de uso",
+    "unknownUserType": "Tipo de usuário desconhecido.",
+    "vacanciesStatus": "Status das Vagas:",
+    "vacancyDetails": "Detalhes da Vaga",
+    "yesRegisterBus": "Sim, cadastrar ônibus",
+
+    "errorLoadingData": "Erro ao carregar os dados: {error}",
+    "@errorLoadingData": {
+        "description": "Mensagem de erro exibida quando os dados não podem ser carregados.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingVacancies": "Erro ao carregar vagas: {error}",
+    "@errorLoadingVacancies": {
+        "description": "Mensagem de erro exibida quando as vagas não podem ser carregadas.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorSavingCompany": "Erro ao salvar a empresa: {error}",
+    "@errorSavingCompany": {
+        "description": "Mensagem de erro exibida quando há uma falha ao salvar a empresa.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "registrationError": "Erro no cadastro: {error}",
+    "@registrationError": {
+        "description": "Mensagem de erro genérica para a tela de cadastro.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+
+    "busPlate": "Placa do Ônibus",
+    "selectPlate": "Selecione a Placa",
+    "arrivalTime": "Horário de Chegada",
+    "selectTime": "Selecionar Horário",
+    "arrivalDate": "Data de Chegada",
+    "selectDate": "Selecionar Data",
+    "additionalData": "Dados Adicionais",
+    "schedule": "AGENDAR",
+    "plateCannotBeEmpty": "A placa não pode estar vazia.",
+    "plateRegisteredSuccess": "Placa cadastrada com sucesso!",
+    "plateRegistrationError": "Erro: Placa já cadastrada ou falha no serviço.",
+    "registerBus": "Cadastrar Ônibus",
+    "attention": "Atenção",
+    "selectVacancyToSchedule": "Selecione uma vaga para agendar a chegada.",
+    "confirmSaveChanges": "Deseja salvar as alterações?",
+    "cancel": "Cancelar",
+    "save": "Salvar",
+    "recordUpdatedSuccess": "Registro atualizado com sucesso.",
+    "recordUpdateFailed": "Falha ao atualizar o registro.",
+    "registrationHistory": "Histórico de Registros",
+    "failedToSendSchedule": "Falha ao enviar agendamento",
+    "serverCommunicationFailed": "Falha na comunicação com o servidor",
+    "failedToFetchCompany": "Falha ao buscar empresa",
+    "failedToUpdateCompany": "Falha ao atualizar empresa",
+    "failedToFetchVacancies": "Falha ao buscar vagas",
+    "failedToFetchCounterName": "Falha ao buscar nome do guichê",
+    "unauthenticatedUser": "Usuário não autenticado ou token inválido.",
+    "failedToFetchCounterNameStatusCode": "Falha ao buscar nome do guichê: Status code ",
+    "invalidCredentials": "Credenciais inválidas",
+    "failedToFetchBusPlates": "Falha ao buscar placas de ônibus",
+    "failedToRegisterBus": "Falha ao cadastrar ônibus",
+    "failedToFetchRecords": "Falha ao buscar registros",
+    "schedulingSuccess": "Agendamento realizado com sucesso!",
+    "errorSchedulingFailed": "O agendamento falhou. Tente novamente.",
+    "scheduleVacancy": "Agendar Vaga",
+    "termsAndConditionsTitle": "Termos & Condições",
+    "termsAndConditionsBody": "Aqui estão os termos e condições do OnBus. Ao usar o aplicativo, você concorda com estes termos.",
+    "selectLanguage": "Selecionar Idioma",
+    "languageNamePortuguese": "Português (Brasil)",
+    "languageNameEnglish": "Inglês (EUA)",
+    "languageNameSpanish": "Espanhol",
+    "languageNameFrench": "Francês",
+    "languageNameGerman": "Alemão",
+    "languageNameItalian": "Italiano",
+    "totalRecords": "Total de Registros: ",
+    "records": "Registros",
+    "plate": "Placa",
+    "unexpectedError": "Erro inesperado: {error}",
+    "@unexpectedError": {
+        "description": "Mensagem de erro para falhas não previstas.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "loginError": "Erro ao fazer login: {error}",
+    "@loginError": {
+        "description": "Mensagem de erro exibida ao falhar o login.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "vacancy": "Vaga"
+}

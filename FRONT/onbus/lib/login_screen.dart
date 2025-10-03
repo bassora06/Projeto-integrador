@@ -8,6 +8,9 @@ import 'package:onbus/docas_ADM.dart';
 import 'package:onbus/docas_Guiche.dart';
 import 'package:flutter/foundation.dart' show kIsWeb; // Import para detectar plataforma
 import 'dart:io' show Platform; // Import para detectar desktop
+import 'l10n/app_localizations.dart';
+
+
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -32,6 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _handleLogin() async {
     setState(() => _isLoading = true);
+    final l10n = AppLocalizations.of(context)!;
 
     try {
       final authData = await _loginService.login(
@@ -58,7 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
           }
           break;
         default:
-          throw Exception("Tipo de usuário desconhecido.");
+          throw Exception(l10n.unknownUserType);
       }
 
       Navigator.push(
@@ -68,7 +72,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Erro: $e')),
+        SnackBar(content: Text(l10n.unexpectedError(e.toString()))),
       );
     } finally {
       setState(() => _isLoading = false);
@@ -78,6 +82,7 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final l10n = AppLocalizations.of(context)!;
 
     return Scaffold(
       body: Stack(
@@ -130,11 +135,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         const SizedBox(height: 8),
                         TextField(
                           controller: _emailController,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: OutlineInputBorder(),
                             suffixIcon: Icon(Icons.check, color: Colors.grey),
                             label: Text(
-                              'Email',
+                              l10n.email,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 40, 0, 104),
@@ -161,8 +166,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                             ),
-                            label: const Text(
-                              'Senha',
+                            label: Text(
+                              l10n.password,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color.fromARGB(255, 40, 0, 104),
@@ -177,8 +182,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             onPressed: () {
                               // Add forgot password functionality
                             },
-                            child: const Text(
-                              'Esqueceu sua senha?',
+                            child: Text(
+                              l10n.forgotPassword,
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 17,
@@ -214,8 +219,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 alignment: Alignment.center,
                                 child: _isLoading
                                     ? const CircularProgressIndicator(color: Colors.white)
-                                    : const Text(
-                                        'ENTRAR',
+                                    : Text(
+                                        l10n.login,
                                         style: TextStyle(
                                           fontWeight: FontWeight.bold,
                                           fontSize: 20,

@@ -24,7 +24,7 @@ class IotService {
         final List<String> mockStatuses = ["livre", "preenchido", "stand by"];
         final status = mockStatuses[index % mockStatuses.length];
         return {
-          "id": "Vaga ${index + 1}",
+          "id": " - ${index + 1}",
           "status": status,
           "distancia": "${(10 + index * 5)} cm",
         };
