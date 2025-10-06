@@ -22,7 +22,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
   bool _isLoading = true;
   String _guicheName = '';
 
-  // 1. NOVO ESTADO PARA CONTROLAR A SIDEBAR
+  //variável para controlar o estado da sidebar (expandida ou recolhida)
   bool _isSideBarCollapsed = false;
 
   @override
@@ -41,7 +41,7 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     super.dispose();
   }
 
-  // 2. FUNÇÃO PARA ALTERAR O ESTADO DA SIDEBAR
+  // função que ativa a redução/expansão da sidebar
   void _toggleSideBar() {
     setState(() {
       _isSideBarCollapsed = !_isSideBarCollapsed;
@@ -176,17 +176,15 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     return Scaffold(
       body: Row(
         children: [
-          // 3. A SIDEBAR AGORA ESTÁ DENTRO DE UM AnimatedContainer
+          // Trecho com a funcionalidade de redução/expansão da sidebar c/ AnimatedContainer
           AnimatedContainer(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOutCubic,
-            // A largura muda com base no estado
             width: _isSideBarCollapsed ? 90 : screenSize.width * 0.25,
             child: SideBarGuiche(
               guicheName: _guicheName,
               filtroAtual: _filtroStatus,
               l10n: l10n,
-              // Passamos o estado e a função para o widget filho
               isCollapsed: _isSideBarCollapsed,
               onToggle: _toggleSideBar,
               onFiltroChanged: (novoFiltro) {
@@ -274,15 +272,13 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
   }
 }
 
-// =========================================================================
-// WIDGET DA SIDEBAR - AGORA COM LÓGICA DE EXPANSÃO/RECOLHIMENTO
-// =========================================================================
+// Widget da sidebar separado em um stateless widget
 class SideBarGuiche extends StatelessWidget {
   final String guicheName;
   final String filtroAtual;
   final AppLocalizations l10n;
-  final bool isCollapsed; // Novo parâmetro
-  final VoidCallback onToggle; // Novo parâmetro
+  final bool isCollapsed; 
+  final VoidCallback onToggle; 
   final ValueChanged<String> onFiltroChanged;
   final VoidCallback onChangeLanguage;
   final VoidCallback onLogout;
@@ -318,7 +314,7 @@ class SideBarGuiche extends StatelessWidget {
           ),
           const SizedBox(height: 30),
 
-          // Conteúdo que muda com base no estado
+          // Conteúdo que muda com base no estado da sidebar
           AnimatedSwitcher(
             duration: const Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
@@ -386,7 +382,7 @@ class SideBarGuiche extends StatelessWidget {
     );
   }
 
-  // Conteúdo para a sidebar recolhida (apenas ícones)
+  // Conteúdo para a sidebar recolhida (só os ícones)
   Widget _buildCollapsedContent(BuildContext context) {
     return Column(
       key: const ValueKey('collapsed'),
@@ -394,12 +390,12 @@ class SideBarGuiche extends StatelessWidget {
         const SizedBox(height: 20),
         const Icon(Icons.directions_bus, color: Colors.white, size: 40),
         const SizedBox(height: 40),
-        // BOTÃO DE FILTRO MODIFICADO
+        // Botão da filtragem reduzido
         IconButton(
           icon: const Icon(Icons.filter_list, color: Colors.white, size: 30),
           tooltip: l10n.filtering,
           onPressed: () {
-            // 1. Chamar a função showDialog para exibir o AlertDialog
+            // Pop-up com dropdown dos filtros
             showDialog(
               context: context,
               builder: (BuildContext dialogContext) {
@@ -407,17 +403,13 @@ class SideBarGuiche extends StatelessWidget {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  // O AlertDialog pode conter qualquer widget, inclusive o nosso!
                   content: SizedBox(
-                    width: 250, // Damos uma largura fixa para o dropdown ficar bem formatado
-                    child: _FiltrosDropdown(
+                    width: 250, 
+                    child: _FiltrosDropdown( // Widget responsável pela filtragem em dropdown
                       l10n: l10n,
                       filtroAtual: filtroAtual,
-                      // 2. A adaptação CRÍTICA está aqui:
                       onFiltroChanged: (novoFiltro) {
-                        // Primeiro, executa a função original para mudar o estado
                         onFiltroChanged(novoFiltro);
-                        // Em seguida, fecha o AlertDialog
                         Navigator.of(dialogContext).pop();
                       },
                     ),
@@ -460,7 +452,7 @@ class SideBarGuiche extends StatelessWidget {
     );
   }
 
-  // Ações do rodapé recolhidas
+  // Ações do rodapé reduzidas
   Widget _buildCollapsedActions() {
     return Column(
       key: const ValueKey('collapsed_actions'),
@@ -483,7 +475,6 @@ class SideBarGuiche extends StatelessWidget {
 
 
 // Widgets de filtro (incluindo o dropdown com esferas)
-
 class _FiltrosOriginais extends StatelessWidget {
   final AppLocalizations l10n;
   final String filtroAtual;

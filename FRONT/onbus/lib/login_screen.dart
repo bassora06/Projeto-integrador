@@ -180,7 +180,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           alignment: Alignment.centerRight,
                           child: TextButton(
                             onPressed: () {
-                              // Add forgot password functionality
+                             
                             },
                             child: Text(
                               l10n.forgotPassword,

@@ -32,13 +32,12 @@ class _OnBusSplashScreenState extends State<OnBusSplashScreen> {
       },
       child: Stack(
         children: [
-          // Imagem de fundo redimensionada dinamicamente
           SizedBox(
             width: screenSize.width,
             height: screenSize.height,
             child: Image.asset(
               'lib/assets/images/Fundo_Splash.PNG',
-              fit: BoxFit.fill, // Ajuste da imagem para a tela
+              fit: BoxFit.fill, 
             ),
           ),
           Center(
@@ -47,8 +46,8 @@ class _OnBusSplashScreenState extends State<OnBusSplashScreen> {
               children: [
                 Image.asset(
                   'lib/assets/images/onbus.png',
-                  height: 200, // Adjusted size for better fit
-                  fit: BoxFit.contain, // Ensures the logo fits properly
+                  height: 200, 
+                  fit: BoxFit.contain, 
                 ),
               ],
             ),

@@ -1,5 +1,3 @@
-// lib/main.dart (versão corrigida)
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:onbus/splash_screen.dart';
