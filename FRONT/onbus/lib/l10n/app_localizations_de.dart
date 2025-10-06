@@ -368,4 +368,7 @@ class AppLocalizationsDe extends AppLocalizations {
 
   @override
   String get vacancy => 'Platz';
+
+  @override
+  String get all => 'Alle';
 }

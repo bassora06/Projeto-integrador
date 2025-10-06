@@ -161,5 +161,6 @@
             }
         }
     },
-    "vacancy": "Posto"
+    "vacancy": "Posto",
+    "all": "Tutti"
 }

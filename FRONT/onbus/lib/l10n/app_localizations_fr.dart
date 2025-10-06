@@ -373,4 +373,7 @@ class AppLocalizationsFr extends AppLocalizations {
 
   @override
   String get vacancy => 'Place';
+
+  @override
+  String get all => 'Tous';
 }

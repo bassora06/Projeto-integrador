@@ -361,4 +361,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get vacancy => 'Vacancy';
+
+  @override
+  String get all => 'All';
 }

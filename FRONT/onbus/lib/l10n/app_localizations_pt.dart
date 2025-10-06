@@ -363,4 +363,7 @@ class AppLocalizationsPt extends AppLocalizations {
 
   @override
   String get vacancy => 'Vaga';
+
+  @override
+  String get all => 'Todos';
 }

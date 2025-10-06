@@ -162,5 +162,6 @@
             }
         }
     },
-    "vacancy": "Vaga"
+    "vacancy": "Vaga",
+    "all": "Todos"
 }

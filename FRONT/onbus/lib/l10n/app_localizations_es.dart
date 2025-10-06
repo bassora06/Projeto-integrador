@@ -369,4 +369,7 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get vacancy => 'Plaza';
+
+  @override
+  String get all => 'Todos';
 }

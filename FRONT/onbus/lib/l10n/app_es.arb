@@ -161,5 +161,6 @@
             }
         }
     },
-    "vacancy": "Plaza"
+    "vacancy": "Plaza",
+    "all": "Todos"
 }

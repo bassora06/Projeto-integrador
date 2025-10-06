@@ -161,5 +161,6 @@
             }
         }
     },
-    "vacancy": "Platz"
+    "vacancy": "Platz",
+    "all": "Alle"
 }
