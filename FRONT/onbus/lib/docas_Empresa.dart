@@ -4,6 +4,7 @@ import 'package:onbus/services/servIoT.dart';
 import 'package:onbus/telaAgendamento.dart';
 import 'package:onbus/telaCadastroOnibus.dart';
 import 'l10n/app_localizations.dart';
+import 'package:onbus/config.dart';
 
 class VagaTelaEmpresa extends StatefulWidget {
   const VagaTelaEmpresa({super.key});
@@ -190,9 +191,41 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
           SizedBox(
             width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height,
-            child: Image.asset(
-              'lib/assets/images/fundo_Docas.PNG',
-              fit: BoxFit.fill,
+            child: Stack(
+              children: [
+                Image.asset(
+                  'lib/assets/images/fundo_Docas.PNG',
+                  fit: BoxFit.fill,
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                ),
+                Padding(
+                padding: const EdgeInsets.only(top: 30.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween, 
+                  children: [
+                    // Botão de Voltar (já existente)
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, size: 37, color: Color(0xff4c12de)),
+                      onPressed: () => Navigator.pop(context),
+                    ),
+
+                    // Botão de Configurações (movido para cá)
+                    IconButton(
+                      icon: const Icon(Icons.settings, size: 37, color: Colors.white),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ConfigPage(),
+                          ),
+                        );
+                      },
+                    ),
+                  ],
+                ),
+              ),
+              ],
             ),
           ),
           SafeArea(
@@ -262,7 +295,7 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                       child: Text(
-                                        '${l10n.vacancy} - ${vaga['id'] ?? 'N/A'}',
+                                        '${vaga['id'] ?? 'N/A'}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
