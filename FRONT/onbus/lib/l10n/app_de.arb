@@ -1,0 +1,166 @@
+{
+    "@@locale": "de",
+
+    "askRegisterBusBeforeScheduling": "Möchten Sie vor der Terminplanung einen neuen Bus registrieren?",
+    "changeLanguage": "Sprache ändern",
+    "changeRecord": "Eintrag ändern",
+    "close": "Schließen",
+    "cnpj": "CNPJ",
+    "companyName": "Firmenname",
+    "companyRegisteredSuccess": "Firma erfolgreich registriert!",
+    "companyUpdatedSuccess": "Firma erfolgreich aktualisiert!",
+    "confirmPassword": "Passwort bestätigen",
+    "corporateName": "Offizieller Firmenname",
+    "counterExample": "Beispiel-Schalter",
+    "counterRegisteredSuccess": "Schalter erfolgreich registriert!",
+    "cpf": "CPF",
+    "createAccountCompany": "Konto erstellen - Firma",
+    "createAccountCounter": "Konto erstellen - Schalter",
+    "distance": "Entfernung",
+    "docks": "Laderampen",
+    "docksOrganization": "Laderampen-Organisation",
+    "editCompany": "Firma bearbeiten",
+    "email": "E-Mail",
+    "error": "Fehler",
+    "exit": "BEENDEN",
+    "featureInProgress": "Funktion in Entwicklung.",
+    "fillAllFields": "Bitte füllen Sie alle Pflichtfelder aus.",
+    "filtering": "Filterung",
+    "forgotPassword": "Passwort vergessen?",
+    "free": "Frei",
+    "includeRegistration": "Eintrag hinzufügen",
+    "language": "Sprache",
+    "login": "ANMELDEN",
+    "logOut": "Abmelden",
+    "monitoring": "Überwachung",
+    "name": "Name",
+    "noContinueScheduling": "Nein, mit der Planung fortfahren",
+    "noVacanciesAvailable": "Derzeit keine Plätze verfügbar.",
+    "occupied": "Besetzt",
+    "ok": "OK",
+    "password": "Passwort",
+    "passwordError": "Passwortfehler",
+    "passwordsDoNotMatch": "Die eingegebenen Passwörter stimmen nicht überein. Bitte überprüfen und erneut versuchen.",
+    "phone": "Telefon",
+    "register": "REGISTRIEREN",
+    "registerCompany": "Firma registrieren",
+    "registerCounter": "Schalter registrieren",
+    "registrationFailed": "Registrierung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "removeFilter": "Filter entfernen",
+    "saveChanges": "ÄNDERUNGEN SPEICHERN",
+    "scheduleArrival": "Ankunft planen",
+    "scheduleArrivalButton": "ANKUNFT PLANEN",
+    "settings": "Einstellungen",
+    "standBy": "Stand-by",
+    "status": "Status",
+    "success": "Erfolg",
+    "termsAndConditions": "Ich erkläre, dass ich die Nutzungsbedingungen gelesen habe und ihnen zustimme",
+    "unknownUserType": "Unbekannter Benutzertyp.",
+    "vacanciesStatus": "Status der Plätze:",
+    "vacancyDetails": "Details zum Platz",
+    "yesRegisterBus": "Ja, Bus registrieren",
+
+    "errorLoadingData": "Fehler beim Laden der Daten: {error}",
+    "@errorLoadingData": {
+        "description": "Fehlermeldung, die angezeigt wird, wenn Daten nicht geladen werden können.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingVacancies": "Fehler beim Laden der Plätze: {error}",
+    "@errorLoadingVacancies": {
+        "description": "Fehlermeldung, die angezeigt wird, wenn das Laden der Plätze fehlschlägt.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorSavingCompany": "Fehler beim Speichern der Firma: {error}",
+    "@errorSavingCompany": {
+        "description": "Fehlermeldung, die beim Speichern der Firma angezeigt wird.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "registrationError": "Registrierungsfehler: {error}",
+    "@registrationError": {
+        "description": "Allgemeine Fehlermeldung für den Registrierungsbildschirm.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "busPlate": "Bus-Kennzeichen",
+    "selectPlate": "Kennzeichen auswählen",
+    "arrivalTime": "Ankunftszeit",
+    "selectTime": "Zeit auswählen",
+    "arrivalDate": "Ankunftsdatum",
+    "selectDate": "Datum auswählen",
+    "additionalData": "Zusätzliche Daten",
+    "schedule": "PLANEN",
+    "plateCannotBeEmpty": "Das Kennzeichen darf nicht leer sein.",
+    "plateRegisteredSuccess": "Kennzeichen erfolgreich registriert!",
+    "plateRegistrationError": "Fehler: Kennzeichen bereits registriert oder Dienstfehler.",
+    "registerBus": "Bus registrieren",
+    "attention": "Achtung",
+    "selectVacancyToSchedule": "Wählen Sie einen Platz aus, um die Ankunft zu planen.",
+    "confirmSaveChanges": "Möchten Sie die Änderungen speichern?",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "recordUpdatedSuccess": "Eintrag erfolgreich aktualisiert.",
+    "recordUpdateFailed": "Aktualisierung des Eintrags fehlgeschlagen.",
+    "registrationHistory": "Registrierungsverlauf",
+    "failedToSendSchedule": "Senden des Plans fehlgeschlagen",
+    "serverCommunicationFailed": "Serverkommunikation fehlgeschlagen",
+    "failedToFetchCompany": "Abrufen der Firma fehlgeschlagen",
+    "failedToUpdateCompany": "Aktualisierung der Firma fehlgeschlagen",
+    "failedToFetchVacancies": "Abrufen der Plätze fehlgeschlagen",
+    "failedToFetchCounterName": "Abrufen des Schalternamens fehlgeschlagen",
+    "unauthenticatedUser": "Nicht authentifizierter Benutzer oder ungültiges Token.",
+    "failedToFetchCounterNameStatusCode": "Abrufen des Schalternamens fehlgeschlagen: Statuscode ",
+    "invalidCredentials": "Ungültige Anmeldeinformationen",
+    "failedToFetchBusPlates": "Abrufen der Buskennzeichen fehlgeschlagen",
+    "failedToRegisterBus": "Registrierung des Busses fehlgeschlagen",
+    "failedToFetchRecords": "Abrufen der Einträge fehlgeschlagen",
+    "schedulingSuccess": "Terminplanung erfolgreich!",
+    "errorSchedulingFailed": "Terminplanung fehlgeschlagen. Bitte versuchen Sie es erneut.",
+    "scheduleVacancy": "Platz planen",
+    "termsAndConditionsTitle": "Allgemeine Geschäftsbedingungen",
+    "termsAndConditionsBody": "Hier sind die Allgemeinen Geschäftsbedingungen von OnBus. Durch die Nutzung der App stimmen Sie diesen Bedingungen zu.",
+    "selectLanguage": "Sprache auswählen",
+    "languageNamePortuguese": "Portugiesisch (Brasilien)",
+    "languageNameEnglish": "Englisch (USA)",
+    "languageNameSpanish": "Spanisch",
+    "languageNameFrench": "Französisch",
+    "languageNameGerman": "Deutsch",
+    "languageNameItalian": "Italienisch",
+    "totalRecords": "Gesamtzahl der Einträge: ",
+    "records": "Einträge",
+    "plate": "Kennzeichen",
+    "unexpectedError": "Unerwarteter Fehler: {error}",
+    "@unexpectedError": {
+        "description": "Fehlermeldung für unvorhergesehene Ausfälle.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "loginError": "Fehler beim Anmelden: {error}",
+    "@loginError": {
+        "description": "Fehlermeldung, die bei fehlgeschlagener Anmeldung angezeigt wird.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "vacancy": "Platz",
+    "all": "Alle"
+}

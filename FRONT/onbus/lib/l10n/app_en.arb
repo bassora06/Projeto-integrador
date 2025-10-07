@@ -1,0 +1,167 @@
+{
+    "@@locale": "en",
+
+    "askRegisterBusBeforeScheduling": "Do you want to register a new bus before scheduling?",
+    "changeLanguage": "Change Language",
+    "changeRecord": "Change Record",
+    "close": "Close",
+    "cnpj": "CNPJ",
+    "companyName": "Company Name",
+    "companyRegisteredSuccess": "Company registered successfully!",
+    "companyUpdatedSuccess": "Company updated successfully!",
+    "confirmPassword": "Confirm Password",
+    "corporateName": "Corporate Name",
+    "counterExample": "Example Counter",
+    "counterRegisteredSuccess": "Counter registered successfully!",
+    "cpf": "CPF",
+    "createAccountCompany": "Create Account - Company",
+    "createAccountCounter": "Create Account - Counter",
+    "distance": "Distance",
+    "docks": "Docks",
+    "docksOrganization": "Docks Organization",
+    "editCompany": "Edit Company",
+    "email": "Email",
+    "error": "Error",
+    "exit": "EXIT",
+    "featureInProgress": "Feature in development.",
+    "fillAllFields": "Please fill in all required fields.",
+    "filtering": "Filtering",
+    "forgotPassword": "Forgot your password?",
+    "free": "Free",
+    "includeRegistration": "Add Record",
+    "language": "Language",
+    "login": "LOGIN",
+    "logOut": "Log Out",
+    "monitoring": "Monitoring",
+    "name": "Name",
+    "noContinueScheduling": "No, continue scheduling",
+    "noVacanciesAvailable": "No vacancies available at the moment.",
+    "occupied": "Occupied",
+    "ok": "OK",
+    "password": "Password",
+    "passwordError": "Password Error",
+    "passwordsDoNotMatch": "The entered passwords do not match. Please check and try again.",
+    "phone": "Phone",
+    "register": "REGISTER",
+    "registerCompany": "Register Company",
+    "registerCounter": "Register Counter",
+    "registrationFailed": "Registration failed. Please try again.",
+    "removeFilter": "Remove Filter",
+    "saveChanges": "SAVE CHANGES",
+    "scheduleArrival": "Schedule Arrival",
+    "scheduleArrivalButton": "SCHEDULE ARRIVAL",
+    "settings": "Settings",
+    "standBy": "Stand by",
+    "status": "Status",
+    "success": "Success",
+    "termsAndConditions": "I declare that I have read and agree to the terms of use",
+    "unknownUserType": "Unknown user type.",
+    "vacanciesStatus": "Vacancies Status:",
+    "vacancyDetails": "Vacancy Details",
+    "yesRegisterBus": "Yes, register bus",
+
+    "errorLoadingData": "Error loading data: {error}",
+    "@errorLoadingData": {
+        "description": "Error message displayed when data cannot be loaded.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorLoadingVacancies": "Error loading vacancies: {error}",
+    "@errorLoadingVacancies": {
+        "description": "Error message displayed when vacancies fail to load.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "errorSavingCompany": "Error saving company: {error}",
+    "@errorSavingCompany": {
+        "description": "Error message displayed on failure to save the company.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "registrationError": "Registration error: {error}",
+    "@registrationError": {
+        "description": "Generic error message for the registration screen.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+
+    "busPlate": "Bus Plate",
+    "selectPlate": "Select Plate",
+    "arrivalTime": "Arrival Time",
+    "selectTime": "Select Time",
+    "arrivalDate": "Arrival Date",
+    "selectDate": "Select Date",
+    "additionalData": "Additional Data",
+    "schedule": "SCHEDULE",
+    "plateCannotBeEmpty": "The plate cannot be empty.",
+    "plateRegisteredSuccess": "Plate registered successfully!",
+    "plateRegistrationError": "Error: Plate already registered or service failure.",
+    "registerBus": "Register Bus",
+    "attention": "Attention",
+    "selectVacancyToSchedule": "Select a vacancy to schedule arrival.",
+    "confirmSaveChanges": "Do you want to save the changes?",
+    "cancel": "Cancel",
+    "save": "Save",
+    "recordUpdatedSuccess": "Record updated successfully.",
+    "recordUpdateFailed": "Failed to update record.",
+    "registrationHistory": "Registration History",
+    "failedToSendSchedule": "Failed to send schedule",
+    "serverCommunicationFailed": "Server communication failed",
+    "failedToFetchCompany": "Failed to fetch company",
+    "failedToUpdateCompany": "Failed to update company",
+    "failedToFetchVacancies": "Failed to fetch vacancies",
+    "failedToFetchCounterName": "Failed to fetch counter name",
+    "unauthenticatedUser": "Unauthenticated user or invalid token.",
+    "failedToFetchCounterNameStatusCode": "Failed to fetch counter name: Status code ",
+    "invalidCredentials": "Invalid credentials",
+    "failedToFetchBusPlates": "Failed to fetch bus plates",
+    "failedToRegisterBus": "Failed to register bus",
+    "failedToFetchRecords": "Failed to fetch records",
+    "schedulingSuccess": "Scheduling successful!",
+    "errorSchedulingFailed": "Scheduling failed. Please try again.",
+    "scheduleVacancy": "Schedule Vacancy",
+    "termsAndConditionsTitle": "Terms & Conditions",
+    "termsAndConditionsBody": "Here are the terms and conditions of OnBus. By using the app, you agree to these terms.",
+    "selectLanguage": "Select Language",
+    "languageNamePortuguese": "Portuguese (Brazil)",
+    "languageNameEnglish": "English (US)",
+    "languageNameSpanish": "Spanish",
+    "languageNameFrench": "French",
+    "languageNameGerman": "German",
+    "languageNameItalian": "Italian",
+    "totalRecords": "Total Records: ",
+    "records": "Records",
+    "plate": "Plate",
+    "unexpectedError": "Unexpected error: {error}",
+    "@unexpectedError": {
+        "description": "Error message for unforeseen failures.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "loginError": "Error logging in: {error}",
+    "@loginError": {
+        "description": "Error message displayed when login fails.",
+        "placeholders": {
+            "error": {
+                "type": "String"
+            }
+        }
+    },
+    "vacancy": "Vacancy",
+    "all": "All"
+}
