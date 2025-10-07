@@ -1,0 +1,347 @@
+[INFO] Scanning for projects...
+[WARNING] 
+[WARNING] Some problems were encountered while building the effective model for fatec.pi.onbus:onbus:jar:0.0.1-SNAPSHOT
+[WARNING] 'dependencies.dependency.(groupId:artifactId:type:classifier)' must be unique: org.bouncycastle:bcpkix-jdk15on:jar -> duplicate declaration of version 1.70 @ line 115, column 15
+[WARNING] 
+[WARNING] It is highly recommended to fix these problems because they threaten the stability of your build.
+[WARNING] 
+[WARNING] For this reason, future Maven versions might no longer support building such malformed projects.
+[WARNING] 
+[INFO] 
+[INFO] ------------------------< fatec.pi.onbus:onbus >------------------------
+[INFO] Building onbus 0.0.1-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] >>> spring-boot:3.4.3:run (default-cli) > test-compile @ onbus >>>
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ onbus ---
+[INFO] Copying 1 resource from src\main\resources to target\classes
+[INFO] Copying 4 resources from src\main\resources to target\classes
+[INFO] 
+[INFO] --- compiler:3.13.0:compile (default-compile) @ onbus ---
+[INFO] Recompiling the module because of changed source code.
+[INFO] Compiling 55 source files with javac [debug parameters release 17] to target\classes
+[WARNING] /C:/Users/Gabriel/Desktop/Projeto-integrador-joaoAmbrosio/src/main/java/fatec/pi/rod/onbus/config/SpringSecConfig.java:[31,25] frameOptions() in org.springframework.security.config.annotation.web.configurers.HeadersConfigurer has been deprecated and marked for removal
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ onbus ---
+[INFO] Copying 1 resource from src\test\resources to target\test-classes
+[INFO] 
+[INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ onbus ---
+[INFO] Recompiling the module because of changed dependency.
+[INFO] Compiling 1 source file with javac [debug parameters release 17] to target\test-classes
+[INFO] 
+[INFO] <<< spring-boot:3.4.3:run (default-cli) < test-compile @ onbus <<<
+[INFO] 
+[INFO] 
+[INFO] --- spring-boot:3.4.3:run (default-cli) @ onbus ---
+[INFO] Attaching agents: []
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2025-07-28T21:57:39.226-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Starting OnbusApplication using Java 21.0.3 with PID 25572 (C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio\target\classes started by Gabriel in C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio)
+2025-07-28T21:57:39.228-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : No active profile set, falling back to 1 default profile: "default"
+2025-07-28T21:57:39.258-03:00  INFO 25572 --- [onbus] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : Devtools property defaults active! Set 'spring.devtools.add-properties' to 'false' to disable
+2025-07-28T21:57:39.258-03:00  INFO 25572 --- [onbus] [  restartedMain] .e.DevToolsPropertyDefaultsPostProcessor : For additional web related logging consider setting the 'logging.level.web' property to 'DEBUG'
+2025-07-28T21:57:39.794-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-28T21:57:39.849-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 48 ms. Found 6 JPA repository interfaces.
+2025-07-28T21:57:40.374-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-28T21:57:40.384-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-28T21:57:40.384-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-07-28T21:57:40.425-03:00  INFO 25572 --- [onbus] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-28T21:57:40.426-03:00  INFO 25572 --- [onbus] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1166 ms
+2025-07-28T21:57:40.531-03:00  INFO 25572 --- [onbus] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-28T21:57:40.565-03:00  INFO 25572 --- [onbus] [  restartedMain] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.8.Final
+2025-07-28T21:57:40.585-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-28T21:57:40.772-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-28T21:57:40.793-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-07-28T21:57:40.915-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection conn0: url=jdbc:h2:mem:onbus user=SA
+2025-07-28T21:57:40.916-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-07-28T21:57:40.932-03:00  WARN 25572 --- [onbus] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-28T21:57:40.948-03:00  INFO 25572 --- [onbus] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-28T21:57:41.561-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists onibus cascade 
+Hibernate: drop table if exists reserva cascade 
+Hibernate: drop table if exists usuario cascade 
+Hibernate: create table onibus (placa varchar(7) not null unique, id_onibus bigint generated by default as identity, id_usuario bigint not null, primary key (id_onibus))
+Hibernate: create table reserva (doca char(1) not null, id_reserva integer generated by default as identity, vaga char(1) not null, horario_chegada timestamp(6) not null, horario_saida timestamp(6) not null, id_onibus bigint not null, id_usuario bigint not null, primary key (id_reserva))
+Hibernate: create table usuario (ativo boolean not null, created_at timestamp(6), id_usuario bigint generated by default as identity, updated_at timestamp(6), cnpj varchar(14) not null, tipo varchar(31) not null, email varchar(225) not null unique, nome varchar(225) not null, senha varchar(225) not null, primary key (id_usuario))
+Hibernate: alter table if exists onibus add constraint FKh11qseghjl6jd224fo22a3270 foreign key (id_usuario) references usuario
+2025-07-28T21:57:41.596-03:00  INFO 25572 --- [onbus] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+? Procurando o arquivo de certificado CA: certs/AmazonRootCA1.pem
+? Arquivo de certificado CA encontrado!
+? Certificado CA carregado com sucesso!
+? Procurando o arquivo de certificado do cliente: certs/certificate.pem.crt
+? Arquivo de certificado do cliente encontrado!
+? Certificado do cliente carregado com sucesso!
+? Procurando o arquivo de chave privada: certs/private_pkcs8.pem
+? Arquivo de chave privada encontrado!
+? Decodificando a chave privada...
+? Chave privada carregada com sucesso!
+? Criando o keystore da CA...
+? Criando o keystore do cliente...
+? Configurando o SSLContext...
+? SocketFactory criado com sucesso!
+? Conectado ao AWS IoT Core!
+2025-07-28T21:57:47.088-03:00  WARN 25572 --- [onbus] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-28T21:57:47.101-03:00  WARN 25572 --- [onbus] [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f6202940-9dbd-4121-b493-7754bb88a625
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-28T21:57:47.106-03:00  INFO 25572 --- [onbus] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-28T21:57:47.353-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-07-28T21:57:47.468-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:onbus'
+2025-07-28T21:57:47.510-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-07-28T21:57:47.533-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-28T21:57:47.541-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Started OnbusApplication in 8.584 seconds (process running for 8.906)
+2025-07-28T21:59:45.537-03:00  INFO 25572 --- [onbus] [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 57 class path changes (0 additions, 57 deletions, 0 modifications)
+2025-07-28T21:59:45.541-03:00  INFO 25572 --- [onbus] [      Thread-10] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-28T21:59:45.546-03:00  INFO 25572 --- [onbus] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-07-28T21:59:45.550-03:00  INFO 25572 --- [onbus] [      Thread-10] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+Hibernate: drop table if exists onibus cascade 
+Hibernate: drop table if exists reserva cascade 
+Hibernate: drop table if exists usuario cascade 
+2025-07-28T21:59:45.557-03:00  WARN 25572 --- [onbus] [      Thread-10] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-07-28T21:59:45.557-03:00  INFO 25572 --- [onbus] [      Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-07-28T21:59:45.558-03:00  INFO 25572 --- [onbus] [      Thread-10] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2025-07-28T21:59:45.654-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Starting OnbusApplication using Java 21.0.3 with PID 25572 (C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio\target\classes started by Gabriel in C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio)
+2025-07-28T21:59:45.654-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : No active profile set, falling back to 1 default profile: "default"
+2025-07-28T21:59:45.837-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-28T21:59:45.840-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 0 JPA repository interfaces.
+2025-07-28T21:59:45.907-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-28T21:59:45.908-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-28T21:59:45.908-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-07-28T21:59:45.930-03:00  INFO 25572 --- [onbus] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-28T21:59:45.930-03:00  INFO 25572 --- [onbus] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 274 ms
+2025-07-28T21:59:45.962-03:00  INFO 25572 --- [onbus] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-28T21:59:45.965-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-28T21:59:45.973-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-28T21:59:45.974-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2025-07-28T21:59:45.977-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:onbus user=SA
+2025-07-28T21:59:45.977-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2025-07-28T21:59:45.978-03:00  WARN 25572 --- [onbus] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-28T21:59:45.978-03:00  INFO 25572 --- [onbus] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-2)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-28T21:59:45.992-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-07-28T21:59:45.992-03:00  INFO 25572 --- [onbus] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-07-28T21:59:46.039-03:00  WARN 25572 --- [onbus] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-28T21:59:46.059-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-07-28T21:59:46.144-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:onbus'
+2025-07-28T21:59:46.156-03:00  WARN 25572 --- [onbus] [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 350afdfc-00e1-4827-9c9e-d8f400d71147
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-28T21:59:46.164-03:00  INFO 25572 --- [onbus] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-28T21:59:46.192-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-07-28T21:59:46.202-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-28T21:59:46.204-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Started OnbusApplication in 0.575 seconds (process running for 127.569)
+2025-07-28T21:59:46.208-03:00  INFO 25572 --- [onbus] [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+   SpringBootWebSecurityConfiguration.SecurityFilterChainConfiguration matched:
+      - AllNestedConditions 2 matched 0 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) did not find any beans; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+   SpringBootWebSecurityConfiguration.WebSecurityEnablerConfiguration matched:
+      - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+      - @ConditionalOnMissingBean (names: springSecurityFilterChain; SearchStrategy: all) did not find any beans (OnBeanCondition)
+
+
+Negative matches:
+-----------------
+
+    None
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2025-07-28T21:59:48.054-03:00  INFO 25572 --- [onbus] [   File Watcher] rtingClassPathChangeChangedEventListener : Restarting due to 57 class path changes (57 additions, 0 deletions, 0 modifications)
+2025-07-28T21:59:48.055-03:00  INFO 25572 --- [onbus] [      Thread-12] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-07-28T21:59:48.058-03:00  INFO 25572 --- [onbus] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-07-28T21:59:48.060-03:00  INFO 25572 --- [onbus] [      Thread-12] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-07-28T21:59:48.060-03:00  WARN 25572 --- [onbus] [      Thread-12] o.s.b.f.support.DisposableBeanAdapter    : Invocation of destroy method failed on bean with name 'inMemoryDatabaseShutdownExecutor': org.h2.jdbc.JdbcSQLNonTransientConnectionException: Database is already closed (to disable automatic closing at VM shutdown, add ";DB_CLOSE_ON_EXIT=FALSE" to the db URL) [90121-232]
+2025-07-28T21:59:48.061-03:00  INFO 25572 --- [onbus] [      Thread-12] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown initiated...
+2025-07-28T21:59:48.061-03:00  INFO 25572 --- [onbus] [      Thread-12] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Shutdown completed.
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v3.4.3)
+
+2025-07-28T21:59:48.130-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Starting OnbusApplication using Java 21.0.3 with PID 25572 (C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio\target\classes started by Gabriel in C:\Users\Gabriel\Desktop\Projeto-integrador-joaoAmbrosio)
+2025-07-28T21:59:48.130-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : No active profile set, falling back to 1 default profile: "default"
+2025-07-28T21:59:48.306-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-07-28T21:59:48.327-03:00  INFO 25572 --- [onbus] [  restartedMain] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 19 ms. Found 6 JPA repository interfaces.
+2025-07-28T21:59:48.396-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-07-28T21:59:48.396-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-07-28T21:59:48.396-03:00  INFO 25572 --- [onbus] [  restartedMain] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.36]
+2025-07-28T21:59:48.416-03:00  INFO 25572 --- [onbus] [  restartedMain] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-07-28T21:59:48.416-03:00  INFO 25572 --- [onbus] [  restartedMain] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 285 ms
+2025-07-28T21:59:48.443-03:00  INFO 25572 --- [onbus] [  restartedMain] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-07-28T21:59:48.445-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-07-28T21:59:48.451-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-07-28T21:59:48.452-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Starting...
+2025-07-28T21:59:48.453-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.pool.HikariPool        : HikariPool-3 - Added connection conn20: url=jdbc:h2:mem:onbus user=SA
+2025-07-28T21:59:48.453-03:00  INFO 25572 --- [onbus] [  restartedMain] com.zaxxer.hikari.HikariDataSource       : HikariPool-3 - Start completed.
+2025-07-28T21:59:48.454-03:00  WARN 25572 --- [onbus] [  restartedMain] org.hibernate.orm.deprecation            : HHH90000025: H2Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-07-28T21:59:48.454-03:00  INFO 25572 --- [onbus] [  restartedMain] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-3)']
+	Database driver: undefined/unknown
+	Database version: 2.3.232
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-07-28T21:59:48.529-03:00  INFO 25572 --- [onbus] [  restartedMain] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists onibus cascade 
+Hibernate: drop table if exists reserva cascade 
+Hibernate: drop table if exists usuario cascade 
+Hibernate: create table onibus (placa varchar(7) not null unique, id_onibus bigint generated by default as identity, id_usuario bigint not null, primary key (id_onibus))
+Hibernate: create table reserva (doca char(1) not null, id_reserva integer generated by default as identity, vaga char(1) not null, horario_chegada timestamp(6) not null, horario_saida timestamp(6) not null, id_onibus bigint not null, id_usuario bigint not null, primary key (id_reserva))
+Hibernate: create table usuario (ativo boolean not null, created_at timestamp(6), id_usuario bigint generated by default as identity, updated_at timestamp(6), cnpj varchar(14) not null, tipo varchar(31) not null, email varchar(225) not null unique, nome varchar(225) not null, senha varchar(225) not null, primary key (id_usuario))
+Hibernate: alter table if exists onibus add constraint FKh11qseghjl6jd224fo22a3270 foreign key (id_usuario) references usuario
+2025-07-28T21:59:48.534-03:00  INFO 25572 --- [onbus] [  restartedMain] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+? Procurando o arquivo de certificado CA: certs/AmazonRootCA1.pem
+? Arquivo de certificado CA encontrado!
+? Certificado CA carregado com sucesso!
+? Procurando o arquivo de certificado do cliente: certs/certificate.pem.crt
+? Arquivo de certificado do cliente encontrado!
+? Certificado do cliente carregado com sucesso!
+? Procurando o arquivo de chave privada: certs/private_pkcs8.pem
+? Arquivo de chave privada encontrado!
+? Decodificando a chave privada...
+? Chave privada carregada com sucesso!
+? Criando o keystore da CA...
+? Criando o keystore do cliente...
+? Configurando o SSLContext...
+? SocketFactory criado com sucesso!
+? Conectado ao AWS IoT Core!
+2025-07-28T21:59:53.686-03:00  WARN 25572 --- [onbus] [  restartedMain] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-07-28T21:59:53.690-03:00  WARN 25572 --- [onbus] [  restartedMain] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: 939f1651-0e50-4ed5-bbcf-70da5e45a92f
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2025-07-28T21:59:53.691-03:00  INFO 25572 --- [onbus] [  restartedMain] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2025-07-28T21:59:53.748-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.v.b.OptionalValidatorFactoryBean     : Failed to set up a Bean Validation provider: jakarta.validation.NoProviderFoundException: Unable to create a Configuration, because no Jakarta Bean Validation provider could be found. Add a provider like Hibernate Validator (RI) to your classpath.
+2025-07-28T21:59:53.770-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.a.h2.H2ConsoleAutoConfiguration    : H2 console available at '/h2-console'. Database available at 'jdbc:h2:mem:onbus'
+2025-07-28T21:59:53.779-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.d.a.OptionalLiveReloadServer       : LiveReload server is running on port 35729
+2025-07-28T21:59:53.786-03:00  INFO 25572 --- [onbus] [  restartedMain] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-07-28T21:59:53.788-03:00  INFO 25572 --- [onbus] [  restartedMain] fatec.pi.rod.onbus.OnbusApplication      : Started OnbusApplication in 5.677 seconds (process running for 135.153)
+2025-07-28T21:59:53.789-03:00  INFO 25572 --- [onbus] [  restartedMain] .ConditionEvaluationDeltaLoggingListener : Condition evaluation delta:
+
+
+==========================
+CONDITION EVALUATION DELTA
+==========================
+
+
+Positive matches:
+-----------------
+
+    None
+
+
+Negative matches:
+-----------------
+
+   SpringBootWebSecurityConfiguration.SecurityFilterChainConfiguration:
+      Did not match:
+         - AllNestedConditions 1 matched 1 did not; NestedCondition on DefaultWebSecurityCondition.Beans @ConditionalOnMissingBean (types: org.springframework.security.web.SecurityFilterChain; SearchStrategy: all) found beans of type 'org.springframework.security.web.SecurityFilterChain' filterChain; NestedCondition on DefaultWebSecurityCondition.Classes @ConditionalOnClass found required classes 'org.springframework.security.web.SecurityFilterChain', 'org.springframework.security.config.annotation.web.builders.HttpSecurity' (DefaultWebSecurityCondition)
+
+   SpringBootWebSecurityConfiguration.WebSecurityEnablerConfiguration:
+      Did not match:
+         - @ConditionalOnMissingBean (names: springSecurityFilterChain; SearchStrategy: all) found beans named springSecurityFilterChain (OnBeanCondition)
+      Matched:
+         - @ConditionalOnClass found required class 'org.springframework.security.config.annotation.web.configuration.EnableWebSecurity' (OnClassCondition)
+
+
+Exclusions:
+-----------
+
+    None
+
+
+Unconditional classes:
+----------------------
+
+    None
+
+
+
+2025-07-28T22:06:30.546-03:00  INFO 25572 --- [onbus] [nio-8080-exec-8] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-07-28T22:06:30.546-03:00  INFO 25572 --- [onbus] [nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-07-28T22:06:30.547-03:00  INFO 25572 --- [onbus] [nio-8080-exec-8] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: select a1_0.id_usuario,a1_0.ativo,a1_0.created_at,a1_0.email,a1_0.nome,a1_0.senha,a1_0.tipo,a1_0.updated_at from usuario a1_0 where a1_0.email=? and a1_0.tipo='ROLE_ADMIN'
+Hibernate: select e1_0.id_usuario,e1_0.ativo,e1_0.created_at,e1_0.email,e1_0.nome,e1_0.senha,e1_0.tipo,e1_0.updated_at,e1_0.cnpj from usuario e1_0 where e1_0.email=? and e1_0.tipo='ROLE_EMPRESA'
+Hibernate: select ge1_0.id_usuario,ge1_0.ativo,ge1_0.created_at,ge1_0.email,ge1_0.nome,ge1_0.senha,ge1_0.tipo,ge1_0.updated_at from usuario ge1_0 where ge1_0.email=? and ge1_0.tipo='ROLE_GESTORENTRADA'
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  12:19 min
+[INFO] Finished at: 2025-07-28T22:09:52-03:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.springframework.boot:spring-boot-maven-plugin:3.4.3:run (default-cli) on project onbus: Process terminated with exit code: 1 -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
