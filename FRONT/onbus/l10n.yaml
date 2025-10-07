@@ -1,0 +1,9 @@
+# Define o diretório onde os arquivos de tradução (.arb) estão.
+arb-dir: lib/l10n
+
+# Define o arquivo modelo. É uma forte convenção usar o inglês (en) como
+# a fonte de verdade para todas as chaves de tradução.
+template-arb-file: app_en.arb
+
+# Define o nome do arquivo .dart que será gerado.
+output-localization-file: app_localizations.dart
