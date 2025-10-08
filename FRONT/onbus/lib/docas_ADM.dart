@@ -79,23 +79,18 @@ class _VagaTelaState extends State<VagaTela> {
   }
 
   // Mapeia o status em texto para a cor correspondente
-  // Em lib/docas_ADM.dart, lib/docas_Empresa.dart e lib/docas_Guiche.dart
   Color _getCorVaga(String status) {
-    final normalizedStatus = status.toLowerCase();
-
-    switch (normalizedStatus) {
+    switch (status) {
       case 'livre':
-        return const Color(0xff41d10d); // Verde (Livre)
+        return Color(0xff41d10d)!;
       case 'preenchido':
-      case 'ocupada':
-        return const Color(0xffdb0b23); // Vermelho (Ocupada)
-      case 'expirada': // <-- Recebido corretamente do serviço!
+        return Color(0xffdb0b23)!;
       case 'stand by':
-        return const Color(0xfff5ce0c); // Amarelo/Âmbar (Expirada/Stand By)
+        return Color(0xfff5ce0c)!;
       default:
         return Colors.grey[400]!;
     }
-}
+  }
 
   // Exibe o pop-up com os detalhes da vaga
   void _showVagaDetails(Map<String, dynamic> vaga) {

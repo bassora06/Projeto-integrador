@@ -94,23 +94,18 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     return _vagas.where((vaga) => vaga['status'] == _filtroStatus.toLowerCase()).toList();
   }
 
-  // Em lib/docas_ADM.dart, lib/docas_Empresa.dart e lib/docas_Guiche.dart
   Color _getCorVaga(String status) {
-    final normalizedStatus = status.toLowerCase();
-
-    switch (normalizedStatus) {
+    switch (status) {
       case 'livre':
-        return const Color(0xff41d10d); // Verde
+        return const Color(0xff41d10d);
       case 'preenchido':
-      case 'ocupada':
-        return const Color(0xffdb0b23); // Vermelho
-      case 'expirada': // Agora funciona!
+        return const Color(0xffdb0b23);
       case 'stand by':
-        return const Color(0xfff5ce0c); // Amarelo/Âmbar
+        return const Color(0xfff5ce0c);
       default:
         return Colors.grey[400]!;
     }
-}
+  }
 
   void _handleLogout() {
     Navigator.of(context).pushAndRemoveUntil(
@@ -252,10 +247,13 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
                                           decoration: BoxDecoration(
                                             color: _getCorVaga(vaga['status'] ?? ''),
                                             borderRadius: BorderRadius.circular(8),
-                                            border: Border.all(color: Colors.white, width: 2),
+                                            border: Border.all(
+                                              color: vaga['excedida'] == true ? const Color(0xfff5ce0c) : Colors.white,
+                                              width: 2,
+                                            ),
                                           ),
                                           child: Text(
-                                            vaga['id']?.replaceFirst('-', l10n.vacancy) ?? 'N/A',
+                                            (vaga['id']?.replaceFirst('-', l10n.vacancy) ?? 'N/A') + (vaga['excedida'] == true ? ' ⚠' : ''),
                                             style: const TextStyle(
                                               color: Colors.white,
                                               fontWeight: FontWeight.bold,

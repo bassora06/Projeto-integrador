@@ -50,23 +50,18 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
     }
   }
 
-  // Em lib/docas_ADM.dart, lib/docas_Empresa.dart e lib/docas_Guiche.dart
   Color _getCorVaga(String status) {
-    final normalizedStatus = status.toLowerCase();
-
-    switch (normalizedStatus) {
+    switch (status) {
       case 'livre':
-        return const Color(0xff41d10d); // Verde (Livre)
+        return const Color(0xff41d10d);
       case 'preenchido':
-      case 'ocupada':
-        return const Color(0xffdb0b23); // Vermelho (Ocupada)
-      case 'expirada': // <-- Recebido corretamente do serviço!
+        return const Color(0xffdb0b23);
       case 'stand by':
-        return const Color(0xfff5ce0c); // Amarelo/Âmbar (Expirada/Stand By)
+        return const Color(0xfff5ce0c);
       default:
         return Colors.grey[400]!;
     }
-}
+  }
 
   void _showSchedulingPopup() {
     final l10n = AppLocalizations.of(context)!;
@@ -142,6 +137,8 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
               Text('${l10n.status}: ${vaga['status']?.toUpperCase() ?? 'N/A'}'),
               const SizedBox(height: 8),
               Text('${l10n.distance}: ${vaga['distance'] ?? 'N/A'}'),
+              const SizedBox(height: 8),
+              Text('Excedida: ${vaga['excedida'] == true ? 'Sim' : 'Não'}'),
             ],
           ),
           actions: [
@@ -285,11 +282,14 @@ class _VagaTelaEmpresaState extends State<VagaTelaEmpresa> {
                                       decoration: BoxDecoration(
                                         color: _getCorVaga(vaga['status'] ?? ''),
                                         borderRadius: BorderRadius.circular(5),
-                                        border: Border.all(color: Colors.white, width: 1.5),
+                                        border: Border.all(
+                                          color: vaga['excedida'] == true ? const Color(0xfff5ce0c) : Colors.white,
+                                          width: 2,
+                                        ),
                                       ),
                                       padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
                                       child: Text(
-                                        '${vaga['id'] ?? 'N/A'}',
+                                        '${vaga['id'] ?? 'N/A'}${vaga['excedida'] == true ? ' ⚠' : ''}',
                                         style: const TextStyle(
                                           color: Colors.white,
                                           fontWeight: FontWeight.bold,
