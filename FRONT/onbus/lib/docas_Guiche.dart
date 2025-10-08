@@ -94,18 +94,23 @@ class _VagaTelaGuicheDesktopState extends State<VagaTelaGuicheDesktop> {
     return _vagas.where((vaga) => vaga['status'] == _filtroStatus.toLowerCase()).toList();
   }
 
+  // Em lib/docas_ADM.dart, lib/docas_Empresa.dart e lib/docas_Guiche.dart
   Color _getCorVaga(String status) {
-    switch (status) {
+    final normalizedStatus = status.toLowerCase();
+
+    switch (normalizedStatus) {
       case 'livre':
-        return const Color(0xff41d10d);
+        return const Color(0xff41d10d); // Verde
       case 'preenchido':
-        return const Color(0xffdb0b23);
+      case 'ocupada':
+        return const Color(0xffdb0b23); // Vermelho
+      case 'expirada': // Agora funciona!
       case 'stand by':
-        return const Color(0xfff5ce0c);
+        return const Color(0xfff5ce0c); // Amarelo/Âmbar
       default:
         return Colors.grey[400]!;
     }
-  }
+}
 
   void _handleLogout() {
     Navigator.of(context).pushAndRemoveUntil(
