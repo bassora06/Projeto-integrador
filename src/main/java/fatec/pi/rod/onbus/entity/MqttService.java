@@ -54,31 +54,43 @@ public class MqttService {
         }
     }
 
+    // Dentro da classe MqttService.java
+
     private IMqttMessageListener criarListener(String topic) {
         return (t, msg) -> {
-            String payload = new String(msg.getPayload());
-            log.logInfo("📨 Mensagem recebida em " + t + ": '" + payload + "'");
+            try {
+                String payload = new String(msg.getPayload());
+                log.logInfo("📨 Mensagem recebida em " + t + ": '" + payload + "'");
 
-            boolean ocupada = payload.equalsIgnoreCase("1") || payload.equalsIgnoreCase("ocupada");
-            boolean livre = payload.equalsIgnoreCase("0") || payload.equalsIgnoreCase("livre");
+                boolean ocupada = payload.equalsIgnoreCase("1") || payload.equalsIgnoreCase("ocupada");
+                boolean livre = payload.equalsIgnoreCase("0") || payload.equalsIgnoreCase("livre");
 
-            // Busca o documento da vaga no MongoDB ou cria um novo se não existir
-            VagaDocument vagaDoc = vagaRepository.findById(t).orElse(new VagaDocument(t, StatusVaga.LIVRE, null, false));
+                // Busca o documento da vaga no MongoDB ou cria um novo se não existir
+                VagaDocument vagaDoc = vagaRepository.findById(t).orElse(new VagaDocument(t, StatusVaga.LIVRE, null, false));
 
-            if (livre) {
-                vagaDoc.setStatus(StatusVaga.LIVRE);
-                vagaDoc.setInicioOcupacao(null);
-                vagaDoc.setExcedida(false); // Reseta o status de excedida
-            } else if (ocupada) {
-                // Só atualiza o início da ocupação se a vaga estava livre antes
-                if (vagaDoc.getStatus() == StatusVaga.LIVRE) {
-                    vagaDoc.setInicioOcupacao(Instant.now());
+                if (livre) {
+                    vagaDoc.setStatus(StatusVaga.LIVRE);
+                    vagaDoc.setInicioOcupacao(null);
+                    vagaDoc.setExcedida(false); // Reseta o status de excedida
+                } else if (ocupada) {
+                    // Só atualiza o início da ocupação se a vaga estava livre antes
+                    if (vagaDoc.getStatus() == StatusVaga.LIVRE) {
+                        vagaDoc.setInicioOcupacao(Instant.now());
+                    }
+                    vagaDoc.setStatus(StatusVaga.OCUPADA);
                 }
-                vagaDoc.setStatus(StatusVaga.OCUPADA);
-            }
 
-            // Salva o estado atualizado no MongoDB
-            vagaRepository.save(vagaDoc);
+                // ---- INÍCIO DA MODIFICAÇÃO ----
+                log.logDebug("📝 Tentando salvar o seguinte documento no MongoDB: ID=" + vagaDoc.getId() + ", Status=" + vagaDoc.getStatus());
+                vagaRepository.save(vagaDoc);
+                log.logSucesso("✅ Documento da vaga '" + t + "' salvo com sucesso no MongoDB!");
+                // ---- FIM DA MODIFICAÇÃO ----
+
+            } catch (Exception e) {
+                // ---- BLOCO DE CAPTURA DE ERRO ADICIONADO ----
+                log.logErro("❌ FALHA AO SALVAR NO MONGODB para o tópico '" + t + "'. Causa: " + e.getMessage());
+                e.printStackTrace(); // Imprime o stack trace completo para depuração detalhada
+            }
         };
     }
 }
